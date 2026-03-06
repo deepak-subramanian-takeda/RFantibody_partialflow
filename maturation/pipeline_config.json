@@ -1,0 +1,19 @@
+{
+  "input_dir": "/home/pymc/Deepak/RFantibody_partialflow/rf2_filtered",
+  "output_dir": "/home/pymc/Deepak/RFantibody_partialflow/maturation",
+  "hotspots": "T101,T135,T171,T198",
+  "model_weights": "/home/pymc/Deepak/RFantibody_partialflow/ckpt/antibody.ckpt",
+  "loops": "H1,H2,H3",
+  "free_loops": "",
+  "energy_threshold": -5.0,
+  "partial_T": 15,
+  "num_diffusion": 20,
+  "num_seqs": 4,
+  "temperature": 0.1,
+  "interface": "H_T",
+  "nanobody": false,
+  "relax": false,
+  "rounds": 1,
+  "top_n": null,
+  "dry_run": false
+}

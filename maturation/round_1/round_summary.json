@@ -1,0 +1,362 @@
+[
+  {
+    "stem": "samples_design_0_dldesign_0_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_0_dldesign_1_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_0_dldesign_2_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_0_dldesign_3_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_1_dldesign_0_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_1_dldesign_1_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_1_dldesign_2_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_1_dldesign_3_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_2_dldesign_0_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_2_dldesign_1_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_2_dldesign_2_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_2_dldesign_3_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_3_dldesign_0_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_3_dldesign_1_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_3_dldesign_2_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_3_dldesign_3_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_4_dldesign_0_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_4_dldesign_1_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_4_dldesign_2_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_4_dldesign_3_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_5_dldesign_0_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_5_dldesign_1_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_5_dldesign_2_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_5_dldesign_3_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_6_dldesign_0_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_6_dldesign_1_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_6_dldesign_2_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_6_dldesign_3_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_7_dldesign_0_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_7_dldesign_1_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_7_dldesign_2_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_7_dldesign_3_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_8_dldesign_0_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_8_dldesign_1_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_8_dldesign_2_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_8_dldesign_3_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_9_dldesign_0_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_9_dldesign_1_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_9_dldesign_2_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  },
+  {
+    "stem": "samples_design_9_dldesign_3_best",
+    "anchors": [],
+    "contig": "",
+    "skipped": true,
+    "skip_reason": "Step 0 failed: No module named 'pyrosetta'",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  }
+]
