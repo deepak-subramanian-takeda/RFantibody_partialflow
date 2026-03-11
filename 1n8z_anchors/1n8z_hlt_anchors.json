@@ -1,0 +1,59 @@
+{
+  "source_pdb": "scripts/examples/example_inputs/1n8z_hlt.pdb",
+  "energy_threshold_kj": -50.0,
+  "scorer": "OpenMM Amber ff14SB inter-chain non-bonded",
+  "anchors_by_cdr": {
+    "L3": [
+      {
+        "chain": "L",
+        "resnum": "214",
+        "resname": "TYR",
+        "dG_kj": -151.08
+      },
+      {
+        "chain": "L",
+        "resnum": "216",
+        "resname": "THR",
+        "dG_kj": -131.37
+      }
+    ],
+    "L1": [
+      {
+        "chain": "L",
+        "resnum": "152",
+        "resname": "ASN",
+        "dG_kj": -119.56
+      },
+      {
+        "chain": "L",
+        "resnum": "153",
+        "resname": "THR",
+        "dG_kj": -61.49
+      }
+    ],
+    "H2": [
+      {
+        "chain": "H",
+        "resnum": "57",
+        "resname": "TYR",
+        "dG_kj": -60.66
+      }
+    ],
+    "H3": [
+      {
+        "chain": "H",
+        "resnum": "105",
+        "resname": "TYR",
+        "dG_kj": -54.17
+      }
+    ]
+  },
+  "all_anchor_residues": [
+    "L214",
+    "L216",
+    "L152",
+    "L153",
+    "H57",
+    "H105"
+  ]
+}

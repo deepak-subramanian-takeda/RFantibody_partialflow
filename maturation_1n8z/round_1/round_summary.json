@@ -1,0 +1,19 @@
+[
+  {
+    "stem": "1n8z_hlt",
+    "anchors": [
+      "L216",
+      "L214",
+      "L152",
+      "L153",
+      "H57",
+      "H105",
+      "L172"
+    ],
+    "contig": "H1-25/5-9/H33-51/4-8/H58-98/9-13/H110-122/0 L123-145/9-13/L157-171/5-9/L179-210/7-11/L220-232/0 T1-607",
+    "skipped": true,
+    "skip_reason": "rfdiffusion exited 127",
+    "diffusion_dir": "",
+    "sequence_dir": ""
+  }
+]

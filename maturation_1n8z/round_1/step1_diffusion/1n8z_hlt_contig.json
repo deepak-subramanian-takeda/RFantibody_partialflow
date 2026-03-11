@@ -1,0 +1,24 @@
+{
+  "source_pdb": "/home/pymc/Deepak/RFantibody_partialflow/hlt_pdbs_orig/1n8z_hlt.pdb",
+  "partial_T": 15,
+  "contig_string": "H1-25/5-9/H33-51/4-8/H58-98/9-13/H110-122/0 L123-145/9-13/L157-171/5-9/L179-210/7-11/L220-232/0 T1-607",
+  "anchor_residues": [
+    "L216",
+    "L214",
+    "L152",
+    "L153",
+    "H57",
+    "L172",
+    "H105"
+  ],
+  "command": [
+    "rfdiffusion",
+    "inference.input_pdb=/home/pymc/Deepak/RFantibody_partialflow/hlt_pdbs_orig/1n8z_hlt.pdb",
+    "inference.output_prefix=/home/pymc/Deepak/RFantibody_partialflow/maturation_1n8z/round_1/step1_diffusion/1n8z_hlt_partial_T15",
+    "inference.num_designs=20",
+    "inference.ckpt_override_path=/home/pymc/Deepak/RFantibody_partialflow/ckpt/antibody.ckpt",
+    "'contigmap.contigs=[H1-25/5-9/H33-51/4-8/H58-98/9-13/H110-122/0 L123-145/9-13/L157-171/5-9/L179-210/7-11/L220-232/0 T1-607]'",
+    "diffuser.partial_T=15",
+    "'ppi.hotspot_res=[T598]'"
+  ]
+}

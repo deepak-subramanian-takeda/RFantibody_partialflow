@@ -1,0 +1,68 @@
+{
+  "source_pdb": "/home/pymc/Deepak/RFantibody_partialflow/hlt_pdbs_orig/1n8z_hlt.pdb",
+  "energy_threshold_kj": -50.0,
+  "scorer": "OpenMM Amber ff14SB inter-chain non-bonded",
+  "anchors_by_cdr": {
+    "L3": [
+      {
+        "chain": "L",
+        "resnum": "216",
+        "resname": "THR",
+        "dG_kj": -133.4
+      },
+      {
+        "chain": "L",
+        "resnum": "214",
+        "resname": "TYR",
+        "dG_kj": -115.75
+      }
+    ],
+    "L1": [
+      {
+        "chain": "L",
+        "resnum": "152",
+        "resname": "ASN",
+        "dG_kj": -100.04
+      },
+      {
+        "chain": "L",
+        "resnum": "153",
+        "resname": "THR",
+        "dG_kj": -89.57
+      }
+    ],
+    "H2": [
+      {
+        "chain": "H",
+        "resnum": "57",
+        "resname": "TYR",
+        "dG_kj": -67.7
+      }
+    ],
+    "H3": [
+      {
+        "chain": "H",
+        "resnum": "105",
+        "resname": "TYR",
+        "dG_kj": -56.67
+      }
+    ],
+    "L2": [
+      {
+        "chain": "L",
+        "resnum": "172",
+        "resname": "SER",
+        "dG_kj": -54.49
+      }
+    ]
+  },
+  "all_anchor_residues": [
+    "L216",
+    "L214",
+    "L152",
+    "L153",
+    "H57",
+    "H105",
+    "L172"
+  ]
+}

@@ -282,6 +282,70 @@ def compute_fixed_positions(
         if any(r.pdb_chain == ch for r in records)
     }
 
+def load_anchor_resnames(anchors_json: str) -> Dict[Tuple[str, int], str]:
+    """
+    Read the anchor JSON and return a dict mapping
+    (chain, resnum) -> three-letter residue name.
+
+    e.g. {('H', 105): 'TYR', ('H', 57): 'TYR', ('L', 214): 'TYR', ...}
+    """
+    with open(anchors_json) as fh:
+        data = json.load(fh)
+
+    resnames: Dict[Tuple[str, int], str] = {}
+    for cdr_anchors in data.get("anchors_by_cdr", {}).values():
+        for entry in cdr_anchors:
+            chain  = entry["chain"]
+            resnum = int(entry["resnum"])
+            resname = entry["resname"].upper().strip()
+            resnames[(chain, resnum)] = resname
+    return resnames
+
+
+def graft_anchor_residues(
+    pdb_path:       str,
+    anchor_resnames: Dict[Tuple[str, int], str],
+    out_path:       str,
+) -> str:
+    """
+    Write a copy of pdb_path to out_path where ATOM/HETATM records for
+    anchor positions have their residue name replaced with the original
+    identity from the source structure.
+
+    RFdiffusion fills all residues with GLY as a placeholder.  ProteinMPNN
+    reads residue names from the PDB when scoring fixed positions, so fixing
+    a GLY at H105 tells MPNN to keep glycine there — not the intended TYR.
+    This function corrects that before ProteinMPNN runs.
+
+    PDB residue name occupies columns 18-20 (0-indexed 17:20), right-aligned
+    in a 3-character field.  Chain is column 22 (0-indexed 21).
+    Residue number is columns 23-26 (0-indexed 22:26).
+    """
+    out_lines = []
+    with open(pdb_path) as fh:
+        for line in fh:
+            if line.startswith("ATOM") or line.startswith("HETATM"):
+                chain = line[21]
+                try:
+                    resnum = int(line[22:26].strip())
+                except ValueError:
+                    out_lines.append(line)
+                    continue
+
+                key = (chain, resnum)
+                if key in anchor_resnames:
+                    correct_name = anchor_resnames[key].ljust(3)[:3]
+                    # PDB format: columns 17-20 are residue name (1-indexed)
+                    # i.e. line[17:20] in 0-indexed Python slicing
+                    line = line[:17] + correct_name + line[20:]
+
+            out_lines.append(line)
+
+    with open(out_path, "w") as fh:
+        fh.writelines(out_lines)
+
+    return out_path    
+
 
 # ---------------------------------------------------------------------------
 # 4. Build chain_id.jsonl
@@ -294,21 +358,25 @@ def build_chain_id_record(
     """
     Produce a chain_id_dict entry for one PDB.
 
-    ProteinMPNN's chain_id_jsonl format:
-        { "pdb_name": [["H", "L"], ["T"]] }
-          ^^^^^^^^^   ^^^^^^^^^^   ^^^^^
-          key          designed    fixed (context)
+    protein_mpnn_run.py expects this format (from protein_mpnn_utils.py
+    tied_featurize / get_chain_id_dict):
 
-    The first inner list = chains to design (sequence can change).
-    The second inner list = chains kept fixed as context.
+        { "pdb_name": {"designed_chain_list": ["H", "L"],
+                       "fixed_chain_list":    ["T"]} }
 
-    We detect which chains are actually present in the PDB so the same
-    function works for both antibody (H+L) and nanobody (H-only) designs.
+    NOT the nested list format [["H","L"],["T"]] which is silently ignored,
+    causing all chains including T to be designed.
     """
     present = {r.pdb_chain for r in records}
     designed = sorted(ch for ch in DESIGNABLE_CHAINS if ch in present)
-    context  = [CONTEXT_CHAIN] if CONTEXT_CHAIN in present else []
-    return {pdb_name: [designed, context]}
+    fixed    = [CONTEXT_CHAIN] if CONTEXT_CHAIN in present else []
+
+    return {
+        pdb_name: {
+            "designed_chain_list": designed,
+            "fixed_chain_list":    fixed,
+        }
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -462,97 +530,196 @@ def run_proteinmpnn(
     temperature:      float,
     extra_args:       List[str],
     dry_run:          bool = False,
+    anchor_set:       Optional[Set[Tuple[str, int]]] = None,
+    loops_to_design:  Optional[List[str]] = None,
+    anchor_resnames:  Optional[Dict[Tuple[str, int], str]] = None,  # NEW
 ) -> None:
-    """
-    Invoke RFantibody's `proteinmpnn` CLI.
-
-    RFantibody's proteinmpnn wrapper accepts:
-      -i / --input-dir        directory of HLT PDBs
-      -o / --output-dir       output directory for designed PDBs
-      -l / --loops            comma-separated CDR names to design
-      -n / --seqs-per-struct  sequences per backbone
-      -t / --temperature      sampling temperature
-
-    It does NOT currently expose --chain_id_jsonl or --fixed_positions_jsonl
-    as first-class flags in the new uv-based CLI (those live in the
-    underlying ProteinMPNN helper scripts). We therefore need to invoke
-    ProteinMPNN's protein_mpnn_run.py directly when fixed positions are
-    required, using the parsed JSONL files we generated above.
-
-    We detect whether the RFantibody `proteinmpnn` CLI accepts
-    --chain-id-jsonl; if it does, we use it. Otherwise we fall back to
-    invoking the underlying protein_mpnn_run.py script directly, which
-    is found inside the rfantibody package installation.
-    """
     os.makedirs(output_dir, exist_ok=True)
 
-    # --- Try the RFantibody high-level CLI first -------------------------
-    # Check if the CLI accepts --chain-id-jsonl by running --help
-    # If not, fall back to the low-level runner.
-    cmd = _build_rfantibody_mpnn_cmd(
-        input_dir=input_dir,
-        output_dir=output_dir,
-        chain_id_jsonl=chain_id_jsonl,
-        fixed_pos_jsonl=fixed_pos_jsonl,
-        loops=loops,
-        num_seqs=num_seqs,
-        temperature=temperature,
-        extra_args=extra_args,
-    )
+    pdb_files = sorted(Path(input_dir).glob("*.pdb"))
+    if not pdb_files:
+        sys.exit(f"[ERROR] No .pdb files found in {input_dir}")
 
-    print(f"\n[Step 2] ProteinMPNN command:")
-    print("    " + " \\\n        ".join(cmd))
+    repo_root = str(Path(__file__).resolve().parent)
+    mpnn_script = _find_protein_mpnn_run(repo_root)
+    if mpnn_script is None:
+        sys.exit(
+            "[ERROR] Cannot locate protein_mpnn_run.py. "
+            "Set RFANTIBODY_MPNN_SCRIPT to its absolute path."
+        )
+
+    weights_dir = os.path.join(repo_root, "weights", "vanilla_model_weights")
+
+    print(f"\n[Step 2] Running protein_mpnn_run.py on {len(pdb_files)} PDB(s)...")
+
+    scratch_root = os.path.join(output_dir, "_jsonl_per_pdb")
+    os.makedirs(scratch_root, exist_ok=True)
+
+    # Directory for grafted PDBs (anchor residues restored from source)
+    grafted_dir = os.path.join(output_dir, "_grafted")
+    os.makedirs(grafted_dir, exist_ok=True)
+
+    for pdb_path in pdb_files:
+        pdb_name = pdb_path.stem
+
+        # ── Step 2a: graft original anchor residue names onto RFdiffusion
+        # GLY placeholders before ProteinMPNN reads the file ──────────────
+        if anchor_resnames:
+            grafted_path = os.path.join(grafted_dir, pdb_path.name)
+            graft_anchor_residues(
+                pdb_path=str(pdb_path),
+                anchor_resnames=anchor_resnames,
+                out_path=grafted_path,
+            )
+            working_pdb = grafted_path
+            print(f"\n  PDB: {pdb_path.name} (anchor residues grafted)")
+        else:
+            working_pdb = str(pdb_path)
+            print(f"\n  PDB: {pdb_path.name}")
+
+        # ── Step 2b: rebuild JSONL records keyed by THIS PDB's stem ──────
+        try:
+            records    = read_residues(working_pdb)
+            cdr_ranges = parse_hlt_remarks(working_pdb)
+            pdb_to_seq = build_pdb_to_seq_map(records)
+
+            if not cdr_ranges:
+                print(f"  [WARN] No CDR REMARKs in {pdb_path.name} — skipping.")
+                continue
+
+            fixed_per_chain = compute_fixed_positions(
+                records=records,
+                cdr_ranges=cdr_ranges,
+                anchor_set=anchor_set or set(),
+                loops_to_design=loops_to_design or [],
+                pdb_to_seq=pdb_to_seq,
+            )
+
+            chain_id_rec  = build_chain_id_record(pdb_name, records)
+            fixed_pos_rec = build_fixed_positions_record(
+                pdb_name, fixed_per_chain, records
+            )
+
+        except Exception as e:
+            print(f"  [WARN] Could not build JSONL for {pdb_path.name}: {e} — skipping.")
+            continue
+
+        _verify_anchors(
+            pdb_name=pdb_name,
+            records=records,
+            fixed_per_chain=fixed_per_chain,
+            anchor_set=anchor_set or set(),
+            pdb_to_seq=pdb_to_seq,
+        )
+
+        pdb_scratch    = os.path.join(scratch_root, pdb_name)
+        os.makedirs(pdb_scratch, exist_ok=True)
+        this_chain_id  = os.path.join(pdb_scratch, "chain_ids.jsonl")
+        this_fixed_pos = os.path.join(pdb_scratch, "fixed_positions.jsonl")
+        write_jsonl([chain_id_rec],  this_chain_id)
+        write_jsonl([fixed_pos_rec], this_fixed_pos)
+
+        cmd = _build_rfantibody_mpnn_cmd(
+            pdb_path=working_pdb,        # ← grafted PDB, not original
+            output_dir=output_dir,
+            chain_id_jsonl=this_chain_id,
+            fixed_pos_jsonl=this_fixed_pos,
+            num_seqs=num_seqs,
+            temperature=temperature,
+            mpnn_script=mpnn_script,
+            extra_args=extra_args,
+            model_weights_dir=weights_dir,
+            model_name="v_48_020",
+        )
+
+        if dry_run:
+            print("  CMD: " + " \\\n       ".join(cmd))
+            for ch, idxs in sorted(fixed_per_chain.items()):
+                n_total = sum(1 for r in records if r.pdb_chain == ch)
+                print(f"  Chain {ch}: {len(idxs)}/{n_total} fixed, "
+                      f"{n_total - len(idxs)} designable")
+            continue
+
+        result = subprocess.run(" ".join(cmd), shell=True)
+        if result.returncode != 0:
+            print(f"  [WARN] protein_mpnn_run.py failed for {pdb_path.name} "
+                  f"(exit code {result.returncode}) — skipping.")
 
     if dry_run:
-        print("[Step 2] DRY RUN — proteinmpnn not invoked.")
-        return
+        print("\n[Step 2] DRY RUN — protein_mpnn_run.py not invoked.")
 
-    result = subprocess.run(" ".join(cmd), shell=True)
-    if result.returncode != 0:
-        sys.exit(f"[ERROR] proteinmpnn exited with code {result.returncode}")
+
+def _verify_anchors(
+    pdb_name:        str,
+    records:         List[ResidueRecord],
+    fixed_per_chain: Dict[str, List[int]],
+    anchor_set:      Set[Tuple[str, int]],
+    pdb_to_seq:      Dict[Tuple[str, int], int],
+) -> None:
+    """
+    Print a warning for any anchor residue that is NOT in the fixed list.
+    This catches indexing bugs before protein_mpnn_run.py silently designs
+    over them.
+    """
+    missing = []
+    for chain, resnum in sorted(anchor_set):
+        key = (chain, resnum)
+        seq_i = pdb_to_seq.get(key)
+        if seq_i is None:
+            missing.append(f"{chain}{resnum} (not found in PDB)")
+            continue
+        if seq_i not in fixed_per_chain.get(chain, []):
+            missing.append(f"{chain}{resnum} (seq_idx={seq_i} NOT in fixed list)")
+
+    if missing:
+        print(f"  [WARN] {pdb_name}: anchor residues not fixed:")
+        for m in missing:
+            print(f"    {m}")
+    else:
+        n = len(anchor_set)
+        print(f"  [OK] All {n} anchor residue(s) confirmed fixed.")
+
+
+def _find_protein_mpnn_run(repo_root: str) -> Optional[str]:
+    candidates = [
+        Path(repo_root) / "src" / "rfantibody" / "proteinmpnn" / "model" / "protein_mpnn_run.py",
+        Path(repo_root) / ".venv" / "lib" / "python3.10" / "site-packages"
+            / "rfantibody" / "proteinmpnn" / "model" / "protein_mpnn_run.py",
+    ]
+    for c in candidates:
+        if c.is_file():
+            return str(c)
+    for p in Path(repo_root).rglob("protein_mpnn_run.py"):
+        if ".venv" not in str(p):
+            return str(p)
+    return None
 
 
 def _build_rfantibody_mpnn_cmd(
-    input_dir:       str,
-    output_dir:      str,
-    chain_id_jsonl:  str,
-    fixed_pos_jsonl: str,
-    loops:           str,
-    num_seqs:        int,
-    temperature:     float,
-    extra_args:      List[str],
+    pdb_path:          str,
+    output_dir:        str,
+    chain_id_jsonl:    str,
+    fixed_pos_jsonl:   str,
+    num_seqs:          int,
+    temperature:       float,
+    mpnn_script:       str,
+    extra_args:        List[str],
+    model_weights_dir: Optional[str] = None,
+    model_name:        str = "v_48_020",
 ) -> List[str]:
-    """
-    Build the proteinmpnn command list.
-
-    RFantibody's new uv-based CLI (see README) exposes:
-        proteinmpnn -i <dir> -o <dir> -l <loops> -n <N> -t <T>
-
-    The --chain-id-jsonl / --fixed-positions-jsonl flags may or may not
-    be present depending on the installed version. We include them
-    unconditionally; the CLI will error if they are not supported, in
-    which case users should follow the fallback instructions printed by
-    this script.
-
-    NOTE: The RFantibody CLI's `-l` flag controls WHICH loops are passed
-    to ProteinMPNN's internal chain mask — it corresponds to the
-    "designed_chain_list" in chain_id_jsonl. Our fixed_positions_jsonl
-    then further restricts within those chains to the specific non-anchor
-    positions. Both constraints are needed together.
-    """
-    cmd = ["proteinmpnn"]
-    cmd += ["-i", input_dir]
-    cmd += ["-o", output_dir]
-    cmd += ["-l", loops]
-    cmd += ["-n", str(num_seqs)]
-    cmd += ["-t", str(temperature)]
-
-    # Pass the JSONL files if they exist
+    cmd = [sys.executable, mpnn_script]
+    cmd += ["--pdb_path",           pdb_path]
+    cmd += ["--out_folder",         output_dir]
+    cmd += ["--num_seq_per_target", str(num_seqs)]
+    cmd += ["--sampling_temp",      str(temperature)]
+    cmd += ["--batch_size",         "1"]
+    cmd += ["--model_name",         model_name]
+    if model_weights_dir:
+        cmd += ["--path_to_model_weights", model_weights_dir]
     if os.path.isfile(chain_id_jsonl):
-        cmd += ["--chain-id-jsonl", chain_id_jsonl]
+        cmd += ["--chain_id_jsonl",         chain_id_jsonl]
     if os.path.isfile(fixed_pos_jsonl):
-        cmd += ["--fixed-positions-jsonl", fixed_pos_jsonl]
-
+        cmd += ["--fixed_positions_jsonl",  fixed_pos_jsonl]
     cmd.extend(extra_args)
     return cmd
 
@@ -627,6 +794,7 @@ def main() -> None:
     # Load anchor set
     print(f"[Step 2] Loading anchors from {anchors_json}")
     anchors = load_anchors(anchors_json)
+    anchor_resnames = load_anchor_resnames(anchors_json)
     anchor_set: Set[Tuple[str, int]] = set(anchors)
     print(f"         {len(anchor_set)} anchor residue(s): "
           f"{[f'{c}{n}' for c,n in sorted(anchor_set)]}")
@@ -701,16 +869,19 @@ def main() -> None:
     # Run ProteinMPNN
     extra = [a for a in args.extra if a != "--"]
     run_proteinmpnn(
-        input_dir=input_dir,
-        output_dir=output_dir,
-        chain_id_jsonl=chain_id_path,
-        fixed_pos_jsonl=fixed_pos_path,
-        loops=args.loops,
-        num_seqs=args.num_seqs,
-        temperature=args.temperature,
-        extra_args=extra,
-        dry_run=args.dry_run,
-    )
+    input_dir=input_dir,
+    output_dir=output_dir,
+    chain_id_jsonl=chain_id_path,
+    fixed_pos_jsonl=fixed_pos_path,
+    loops=args.loops,
+    num_seqs=args.num_seqs,
+    temperature=args.temperature,
+    extra_args=extra,
+    dry_run=args.dry_run,
+    anchor_set=anchor_set,
+    loops_to_design=loops_to_design,
+    anchor_resnames=anchor_resnames,
+)
 
     if not args.dry_run:
         print(f"\n[Step 2] Complete. Outputs in: {output_dir}/")

@@ -1,0 +1,2623 @@
+{
+  "hotspots": [
+    {
+      "residue": "T571",
+      "chain": "T",
+      "resnum": 571,
+      "resname": "PRO",
+      "n_contacts": 51,
+      "min_dist_A": 2.888,
+      "contacting_cdrs": [
+        "H3",
+        "L1",
+        "L3"
+      ],
+      "contact_details": [
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CD2",
+          "cdr_loop": "L3",
+          "distance_A": 2.888
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H3",
+          "distance_A": 3.32
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 3.393
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "NE2",
+          "cdr_loop": "L3",
+          "distance_A": 3.424
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 3.587
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 154,
+          "cdr_resname": "ALA",
+          "cdr_atom": "CB",
+          "cdr_loop": "L1",
+          "distance_A": 3.695
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "L3",
+          "distance_A": 3.712
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CD2",
+          "cdr_loop": "L3",
+          "distance_A": 3.743
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CA",
+          "cdr_loop": "L3",
+          "distance_A": 3.831
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "L3",
+          "distance_A": 3.834
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 3.87
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CB",
+          "cdr_loop": "H3",
+          "distance_A": 3.876
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 3.934
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H3",
+          "distance_A": 3.999
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L3",
+          "distance_A": 4.006
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H3",
+          "distance_A": 4.026
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 154,
+          "cdr_resname": "ALA",
+          "cdr_atom": "CB",
+          "cdr_loop": "L1",
+          "distance_A": 4.113
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CG",
+          "cdr_loop": "L3",
+          "distance_A": 4.13
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 4.202
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 4.22
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 4.22
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L3",
+          "distance_A": 4.237
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.301
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "L3",
+          "distance_A": 4.459
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "NE2",
+          "cdr_loop": "L3",
+          "distance_A": 4.463
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.516
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CD2",
+          "cdr_loop": "L3",
+          "distance_A": 4.526
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 4.539
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.59
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "N",
+          "cdr_loop": "L3",
+          "distance_A": 4.6
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.607
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CB",
+          "cdr_loop": "L3",
+          "distance_A": 4.648
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 4.676
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L3",
+          "distance_A": 4.707
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H3",
+          "distance_A": 4.762
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 154,
+          "cdr_resname": "ALA",
+          "cdr_atom": "CB",
+          "cdr_loop": "L1",
+          "distance_A": 4.763
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CD2",
+          "cdr_loop": "L3",
+          "distance_A": 4.784
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CA",
+          "cdr_loop": "L3",
+          "distance_A": 4.784
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CB",
+          "cdr_loop": "H3",
+          "distance_A": 4.792
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CG",
+          "cdr_loop": "L3",
+          "distance_A": 4.842
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CA",
+          "cdr_loop": "L3",
+          "distance_A": 4.873
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.875
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "NE2",
+          "cdr_loop": "L3",
+          "distance_A": 4.883
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CB",
+          "cdr_loop": "L3",
+          "distance_A": 4.89
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CA",
+          "cdr_loop": "L3",
+          "distance_A": 4.899
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "L3",
+          "distance_A": 4.932
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.965
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 154,
+          "cdr_resname": "ALA",
+          "cdr_atom": "CA",
+          "cdr_loop": "L1",
+          "distance_A": 4.966
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 4.985
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 152,
+          "cdr_resname": "ASN",
+          "cdr_atom": "CB",
+          "cdr_loop": "L1",
+          "distance_A": 4.993
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 154,
+          "cdr_resname": "ALA",
+          "cdr_atom": "CB",
+          "cdr_loop": "L1",
+          "distance_A": 4.999
+        }
+      ]
+    },
+    {
+      "residue": "T572",
+      "chain": "T",
+      "resnum": 572,
+      "resname": "PRO",
+      "n_contacts": 50,
+      "min_dist_A": 3.109,
+      "contacting_cdrs": [
+        "H3",
+        "L3"
+      ],
+      "contact_details": [
+        {
+          "target_atom": "N",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 3.109
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 3.244
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 3.29
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 3.393
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 3.489
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 3.59
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 3.845
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 3.935
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 216,
+          "cdr_resname": "THR",
+          "cdr_atom": "OG1",
+          "cdr_loop": "L3",
+          "distance_A": 3.96
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 3.983
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 216,
+          "cdr_resname": "THR",
+          "cdr_atom": "OG1",
+          "cdr_loop": "L3",
+          "distance_A": 3.989
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H3",
+          "distance_A": 3.999
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 215,
+          "cdr_resname": "THR",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.046
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CB",
+          "cdr_loop": "H3",
+          "distance_A": 4.046
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 215,
+          "cdr_resname": "THR",
+          "cdr_atom": "CA",
+          "cdr_loop": "L3",
+          "distance_A": 4.086
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H3",
+          "distance_A": 4.101
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 4.111
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 4.131
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CD2",
+          "cdr_loop": "L3",
+          "distance_A": 4.131
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 99,
+          "cdr_resname": "TRP",
+          "cdr_atom": "CH2",
+          "cdr_loop": "H3",
+          "distance_A": 4.143
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 4.171
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CD2",
+          "cdr_loop": "L3",
+          "distance_A": 4.209
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 216,
+          "cdr_resname": "THR",
+          "cdr_atom": "N",
+          "cdr_loop": "L3",
+          "distance_A": 4.228
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 99,
+          "cdr_resname": "TRP",
+          "cdr_atom": "CH2",
+          "cdr_loop": "H3",
+          "distance_A": 4.26
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 215,
+          "cdr_resname": "THR",
+          "cdr_atom": "N",
+          "cdr_loop": "L3",
+          "distance_A": 4.301
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.337
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H3",
+          "distance_A": 4.375
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 99,
+          "cdr_resname": "TRP",
+          "cdr_atom": "CZ3",
+          "cdr_loop": "H3",
+          "distance_A": 4.404
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.422
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 215,
+          "cdr_resname": "THR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 4.456
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.475
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 99,
+          "cdr_resname": "TRP",
+          "cdr_atom": "CZ3",
+          "cdr_loop": "H3",
+          "distance_A": 4.478
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.613
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CA",
+          "cdr_loop": "L3",
+          "distance_A": 4.618
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.62
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CB",
+          "cdr_loop": "L3",
+          "distance_A": 4.665
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 215,
+          "cdr_resname": "THR",
+          "cdr_atom": "N",
+          "cdr_loop": "L3",
+          "distance_A": 4.681
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 4.719
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "CG",
+          "cdr_loop": "L3",
+          "distance_A": 4.751
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 215,
+          "cdr_resname": "THR",
+          "cdr_atom": "CA",
+          "cdr_loop": "L3",
+          "distance_A": 4.761
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CA",
+          "cdr_loop": "L3",
+          "distance_A": 4.855
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CA",
+          "cdr_loop": "L3",
+          "distance_A": 4.867
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H3",
+          "distance_A": 4.873
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CB",
+          "cdr_loop": "H3",
+          "distance_A": 4.905
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD2",
+          "cdr_loop": "H3",
+          "distance_A": 4.932
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 213,
+          "cdr_resname": "HIS",
+          "cdr_atom": "C",
+          "cdr_loop": "L3",
+          "distance_A": 4.946
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 216,
+          "cdr_resname": "THR",
+          "cdr_atom": "CB",
+          "cdr_loop": "L3",
+          "distance_A": 4.955
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 4.974
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 99,
+          "cdr_resname": "TRP",
+          "cdr_atom": "CZ2",
+          "cdr_loop": "H3",
+          "distance_A": 4.977
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 4.992
+        }
+      ]
+    },
+    {
+      "residue": "T603",
+      "chain": "T",
+      "resnum": 603,
+      "resname": "PRO",
+      "n_contacts": 33,
+      "min_dist_A": 3.564,
+      "contacting_cdrs": [
+        "L1",
+        "L2"
+      ],
+      "contact_details": [
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CZ",
+          "cdr_loop": "L2",
+          "distance_A": 3.564
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 172,
+          "cdr_resname": "SER",
+          "cdr_atom": "CB",
+          "cdr_loop": "L2",
+          "distance_A": 3.615
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 172,
+          "cdr_resname": "SER",
+          "cdr_atom": "OG",
+          "cdr_loop": "L2",
+          "distance_A": 3.659
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CZ",
+          "cdr_loop": "L2",
+          "distance_A": 3.728
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L2",
+          "distance_A": 3.756
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L2",
+          "distance_A": 3.799
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L2",
+          "distance_A": 3.941
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE2",
+          "cdr_loop": "L2",
+          "distance_A": 4.006
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 172,
+          "cdr_resname": "SER",
+          "cdr_atom": "CB",
+          "cdr_loop": "L2",
+          "distance_A": 4.03
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CD1",
+          "cdr_loop": "L2",
+          "distance_A": 4.051
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CZ",
+          "cdr_loop": "L2",
+          "distance_A": 4.072
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CZ",
+          "cdr_loop": "L2",
+          "distance_A": 4.139
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CZ",
+          "cdr_loop": "L2",
+          "distance_A": 4.179
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE2",
+          "cdr_loop": "L2",
+          "distance_A": 4.294
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L2",
+          "distance_A": 4.299
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 172,
+          "cdr_resname": "SER",
+          "cdr_atom": "OG",
+          "cdr_loop": "L2",
+          "distance_A": 4.342
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CD1",
+          "cdr_loop": "L2",
+          "distance_A": 4.391
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CD2",
+          "cdr_loop": "L2",
+          "distance_A": 4.458
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CD1",
+          "cdr_loop": "L2",
+          "distance_A": 4.462
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CZ",
+          "cdr_loop": "L2",
+          "distance_A": 4.485
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CG",
+          "cdr_loop": "L2",
+          "distance_A": 4.598
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE2",
+          "cdr_loop": "L2",
+          "distance_A": 4.602
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE2",
+          "cdr_loop": "L2",
+          "distance_A": 4.61
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CG",
+          "cdr_loop": "L2",
+          "distance_A": 4.637
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CZ",
+          "cdr_loop": "L2",
+          "distance_A": 4.793
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L2",
+          "distance_A": 4.8
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 153,
+          "cdr_resname": "THR",
+          "cdr_atom": "CG2",
+          "cdr_loop": "L1",
+          "distance_A": 4.814
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L2",
+          "distance_A": 4.837
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CD2",
+          "cdr_loop": "L2",
+          "distance_A": 4.853
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L2",
+          "distance_A": 4.861
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 172,
+          "cdr_resname": "SER",
+          "cdr_atom": "OG",
+          "cdr_loop": "L2",
+          "distance_A": 4.959
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "L",
+          "cdr_resnum": 175,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CE2",
+          "cdr_loop": "L2",
+          "distance_A": 4.963
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "L",
+          "cdr_resnum": 172,
+          "cdr_resname": "SER",
+          "cdr_atom": "CB",
+          "cdr_loop": "L2",
+          "distance_A": 4.966
+        }
+      ]
+    },
+    {
+      "residue": "T558",
+      "chain": "T",
+      "resnum": 558,
+      "resname": "GLU",
+      "n_contacts": 28,
+      "min_dist_A": 3.574,
+      "contacting_cdrs": [
+        "H2"
+      ],
+      "contact_details": [
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H2",
+          "distance_A": 3.574
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CB",
+          "cdr_loop": "H2",
+          "distance_A": 3.664
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CB",
+          "cdr_loop": "H2",
+          "distance_A": 3.689
+        },
+        {
+          "target_atom": "OE2",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CB",
+          "cdr_loop": "H2",
+          "distance_A": 4.009
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CB",
+          "cdr_loop": "H2",
+          "distance_A": 4.034
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H2",
+          "distance_A": 4.051
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H2",
+          "distance_A": 4.172
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H2",
+          "distance_A": 4.239
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H2",
+          "distance_A": 4.342
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 52,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CB",
+          "cdr_loop": "H2",
+          "distance_A": 4.387
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "H2",
+          "distance_A": 4.398
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H2",
+          "distance_A": 4.402
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H2",
+          "distance_A": 4.498
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "C",
+          "cdr_loop": "H2",
+          "distance_A": 4.663
+        },
+        {
+          "target_atom": "OE2",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H2",
+          "distance_A": 4.693
+        },
+        {
+          "target_atom": "OE2",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "C",
+          "cdr_loop": "H2",
+          "distance_A": 4.696
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "C",
+          "cdr_loop": "H2",
+          "distance_A": 4.833
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CA",
+          "cdr_loop": "H2",
+          "distance_A": 4.842
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H2",
+          "distance_A": 4.848
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "H2",
+          "distance_A": 4.876
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H2",
+          "distance_A": 4.885
+        },
+        {
+          "target_atom": "OE2",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "H2",
+          "distance_A": 4.885
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CA",
+          "cdr_loop": "H2",
+          "distance_A": 4.888
+        },
+        {
+          "target_atom": "N",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H2",
+          "distance_A": 4.903
+        },
+        {
+          "target_atom": "OE2",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H2",
+          "distance_A": 4.914
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 52,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD2",
+          "cdr_loop": "H2",
+          "distance_A": 4.924
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 52,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H2",
+          "distance_A": 4.932
+        },
+        {
+          "target_atom": "OE2",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CA",
+          "cdr_loop": "H2",
+          "distance_A": 4.973
+        }
+      ]
+    },
+    {
+      "residue": "T573",
+      "chain": "T",
+      "resnum": 573,
+      "resname": "PHE",
+      "n_contacts": 27,
+      "min_dist_A": 3.441,
+      "contacting_cdrs": [
+        "H3"
+      ],
+      "contact_details": [
+        {
+          "target_atom": "CD1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "H3",
+          "distance_A": 3.441
+        },
+        {
+          "target_atom": "CD1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 3.48
+        },
+        {
+          "target_atom": "CE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE2",
+          "cdr_loop": "H3",
+          "distance_A": 3.593
+        },
+        {
+          "target_atom": "CE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "H3",
+          "distance_A": 3.64
+        },
+        {
+          "target_atom": "CD1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "OH",
+          "cdr_loop": "H3",
+          "distance_A": 3.762
+        },
+        {
+          "target_atom": "CE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD2",
+          "cdr_loop": "H3",
+          "distance_A": 3.865
+        },
+        {
+          "target_atom": "CD1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE2",
+          "cdr_loop": "H3",
+          "distance_A": 3.899
+        },
+        {
+          "target_atom": "CE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 3.948
+        },
+        {
+          "target_atom": "CD1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H3",
+          "distance_A": 3.974
+        },
+        {
+          "target_atom": "CE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 99,
+          "cdr_resname": "TRP",
+          "cdr_atom": "CZ3",
+          "cdr_loop": "H3",
+          "distance_A": 4.052
+        },
+        {
+          "target_atom": "CZ",
+          "cdr_chain": "H",
+          "cdr_resnum": 99,
+          "cdr_resname": "TRP",
+          "cdr_atom": "CZ3",
+          "cdr_loop": "H3",
+          "distance_A": 4.069
+        },
+        {
+          "target_atom": "CE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "OH",
+          "cdr_loop": "H3",
+          "distance_A": 4.158
+        },
+        {
+          "target_atom": "CE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H3",
+          "distance_A": 4.173
+        },
+        {
+          "target_atom": "CE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H3",
+          "distance_A": 4.204
+        },
+        {
+          "target_atom": "CD1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD2",
+          "cdr_loop": "H3",
+          "distance_A": 4.337
+        },
+        {
+          "target_atom": "CD1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H3",
+          "distance_A": 4.386
+        },
+        {
+          "target_atom": "CE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 99,
+          "cdr_resname": "TRP",
+          "cdr_atom": "CE3",
+          "cdr_loop": "H3",
+          "distance_A": 4.57
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 4.63
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "H3",
+          "distance_A": 4.638
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "OH",
+          "cdr_loop": "H3",
+          "distance_A": 4.666
+        },
+        {
+          "target_atom": "CZ",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE2",
+          "cdr_loop": "H3",
+          "distance_A": 4.755
+        },
+        {
+          "target_atom": "CZ",
+          "cdr_chain": "H",
+          "cdr_resnum": 99,
+          "cdr_resname": "TRP",
+          "cdr_atom": "CE3",
+          "cdr_loop": "H3",
+          "distance_A": 4.787
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 4.885
+        },
+        {
+          "target_atom": "CZ",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "H3",
+          "distance_A": 4.939
+        },
+        {
+          "target_atom": "CE1",
+          "cdr_chain": "H",
+          "cdr_resnum": 99,
+          "cdr_resname": "TRP",
+          "cdr_atom": "CH2",
+          "cdr_loop": "H3",
+          "distance_A": 4.949
+        },
+        {
+          "target_atom": "CZ",
+          "cdr_chain": "H",
+          "cdr_resnum": 99,
+          "cdr_resname": "TRP",
+          "cdr_atom": "CH2",
+          "cdr_loop": "H3",
+          "distance_A": 4.96
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "OH",
+          "cdr_loop": "H3",
+          "distance_A": 4.965
+        }
+      ]
+    },
+    {
+      "residue": "T570",
+      "chain": "T",
+      "resnum": 570,
+      "resname": "ASP",
+      "n_contacts": 22,
+      "min_dist_A": 3.496,
+      "contacting_cdrs": [
+        "H3"
+      ],
+      "contact_details": [
+        {
+          "target_atom": "O",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 3.496
+        },
+        {
+          "target_atom": "OD2",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "CA",
+          "cdr_loop": "H3",
+          "distance_A": 3.663
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H3",
+          "distance_A": 3.727
+        },
+        {
+          "target_atom": "OD2",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "O",
+          "cdr_loop": "H3",
+          "distance_A": 3.927
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 3.945
+        },
+        {
+          "target_atom": "OD2",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "C",
+          "cdr_loop": "H3",
+          "distance_A": 4.046
+        },
+        {
+          "target_atom": "OD2",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 4.06
+        },
+        {
+          "target_atom": "OD1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 4.067
+        },
+        {
+          "target_atom": "OD1",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H3",
+          "distance_A": 4.075
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H3",
+          "distance_A": 4.367
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 4.377
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H3",
+          "distance_A": 4.39
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H3",
+          "distance_A": 4.502
+        },
+        {
+          "target_atom": "OD2",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H3",
+          "distance_A": 4.607
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "H3",
+          "distance_A": 4.64
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "CA",
+          "cdr_loop": "H3",
+          "distance_A": 4.664
+        },
+        {
+          "target_atom": "OD1",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "O",
+          "cdr_loop": "H3",
+          "distance_A": 4.742
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "O",
+          "cdr_loop": "H3",
+          "distance_A": 4.803
+        },
+        {
+          "target_atom": "OD2",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "H3",
+          "distance_A": 4.916
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "C",
+          "cdr_loop": "H3",
+          "distance_A": 4.921
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H3",
+          "distance_A": 4.972
+        },
+        {
+          "target_atom": "OD2",
+          "cdr_chain": "H",
+          "cdr_resnum": 105,
+          "cdr_resname": "TYR",
+          "cdr_atom": "OH",
+          "cdr_loop": "H3",
+          "distance_A": 4.985
+        }
+      ]
+    },
+    {
+      "residue": "T602",
+      "chain": "T",
+      "resnum": 602,
+      "resname": "GLN",
+      "n_contacts": 19,
+      "min_dist_A": 3.048,
+      "contacting_cdrs": [
+        "L1"
+      ],
+      "contact_details": [
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "L",
+          "cdr_resnum": 153,
+          "cdr_resname": "THR",
+          "cdr_atom": "CG2",
+          "cdr_loop": "L1",
+          "distance_A": 3.048
+        },
+        {
+          "target_atom": "NE2",
+          "cdr_chain": "L",
+          "cdr_resnum": 152,
+          "cdr_resname": "ASN",
+          "cdr_atom": "ND2",
+          "cdr_loop": "L1",
+          "distance_A": 3.12
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "L",
+          "cdr_resnum": 153,
+          "cdr_resname": "THR",
+          "cdr_atom": "CB",
+          "cdr_loop": "L1",
+          "distance_A": 3.134
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "L",
+          "cdr_resnum": 152,
+          "cdr_resname": "ASN",
+          "cdr_atom": "ND2",
+          "cdr_loop": "L1",
+          "distance_A": 3.221
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "L",
+          "cdr_resnum": 153,
+          "cdr_resname": "THR",
+          "cdr_atom": "OG1",
+          "cdr_loop": "L1",
+          "distance_A": 3.384
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 152,
+          "cdr_resname": "ASN",
+          "cdr_atom": "ND2",
+          "cdr_loop": "L1",
+          "distance_A": 3.563
+        },
+        {
+          "target_atom": "NE2",
+          "cdr_chain": "L",
+          "cdr_resnum": 152,
+          "cdr_resname": "ASN",
+          "cdr_atom": "OD1",
+          "cdr_loop": "L1",
+          "distance_A": 3.951
+        },
+        {
+          "target_atom": "NE2",
+          "cdr_chain": "L",
+          "cdr_resnum": 152,
+          "cdr_resname": "ASN",
+          "cdr_atom": "CG",
+          "cdr_loop": "L1",
+          "distance_A": 3.956
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 153,
+          "cdr_resname": "THR",
+          "cdr_atom": "CG2",
+          "cdr_loop": "L1",
+          "distance_A": 4.221
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 153,
+          "cdr_resname": "THR",
+          "cdr_atom": "CB",
+          "cdr_loop": "L1",
+          "distance_A": 4.278
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "L",
+          "cdr_resnum": 152,
+          "cdr_resname": "ASN",
+          "cdr_atom": "CG",
+          "cdr_loop": "L1",
+          "distance_A": 4.394
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 153,
+          "cdr_resname": "THR",
+          "cdr_atom": "OG1",
+          "cdr_loop": "L1",
+          "distance_A": 4.527
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "L",
+          "cdr_resnum": 153,
+          "cdr_resname": "THR",
+          "cdr_atom": "CA",
+          "cdr_loop": "L1",
+          "distance_A": 4.577
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 152,
+          "cdr_resname": "ASN",
+          "cdr_atom": "CG",
+          "cdr_loop": "L1",
+          "distance_A": 4.595
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 152,
+          "cdr_resname": "ASN",
+          "cdr_atom": "OD1",
+          "cdr_loop": "L1",
+          "distance_A": 4.745
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "L",
+          "cdr_resnum": 152,
+          "cdr_resname": "ASN",
+          "cdr_atom": "OD1",
+          "cdr_loop": "L1",
+          "distance_A": 4.807
+        },
+        {
+          "target_atom": "NE2",
+          "cdr_chain": "L",
+          "cdr_resnum": 153,
+          "cdr_resname": "THR",
+          "cdr_atom": "CB",
+          "cdr_loop": "L1",
+          "distance_A": 4.812
+        },
+        {
+          "target_atom": "OE1",
+          "cdr_chain": "L",
+          "cdr_resnum": 153,
+          "cdr_resname": "THR",
+          "cdr_atom": "N",
+          "cdr_loop": "L1",
+          "distance_A": 4.842
+        },
+        {
+          "target_atom": "NE2",
+          "cdr_chain": "L",
+          "cdr_resnum": 153,
+          "cdr_resname": "THR",
+          "cdr_atom": "CG2",
+          "cdr_loop": "L1",
+          "distance_A": 4.921
+        }
+      ]
+    },
+    {
+      "residue": "T557",
+      "chain": "T",
+      "resnum": 557,
+      "resname": "PRO",
+      "n_contacts": 19,
+      "min_dist_A": 3.512,
+      "contacting_cdrs": [
+        "H2"
+      ],
+      "contact_details": [
+        {
+          "target_atom": "CB",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "H2",
+          "distance_A": 3.512
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "OH",
+          "cdr_loop": "H2",
+          "distance_A": 3.561
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE2",
+          "cdr_loop": "H2",
+          "distance_A": 3.745
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H2",
+          "distance_A": 3.783
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "H2",
+          "distance_A": 3.788
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD2",
+          "cdr_loop": "H2",
+          "distance_A": 3.935
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE2",
+          "cdr_loop": "H2",
+          "distance_A": 3.956
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H2",
+          "distance_A": 3.997
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H2",
+          "distance_A": 4.147
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H2",
+          "distance_A": 4.155
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "OH",
+          "cdr_loop": "H2",
+          "distance_A": 4.317
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "H2",
+          "distance_A": 4.427
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD2",
+          "cdr_loop": "H2",
+          "distance_A": 4.596
+        },
+        {
+          "target_atom": "C",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H2",
+          "distance_A": 4.72
+        },
+        {
+          "target_atom": "CB",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CG",
+          "cdr_loop": "H2",
+          "distance_A": 4.82
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "OH",
+          "cdr_loop": "H2",
+          "distance_A": 4.881
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "H2",
+          "distance_A": 4.893
+        },
+        {
+          "target_atom": "CA",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H2",
+          "distance_A": 4.918
+        },
+        {
+          "target_atom": "O",
+          "cdr_chain": "H",
+          "cdr_resnum": 57,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "H2",
+          "distance_A": 4.922
+        }
+      ]
+    },
+    {
+      "residue": "T569",
+      "chain": "T",
+      "resnum": 569,
+      "resname": "LYS",
+      "n_contacts": 15,
+      "min_dist_A": 2.957,
+      "contacting_cdrs": [
+        "L3"
+      ],
+      "contact_details": [
+        {
+          "target_atom": "NZ",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "OH",
+          "cdr_loop": "L3",
+          "distance_A": 2.957
+        },
+        {
+          "target_atom": "NZ",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "L3",
+          "distance_A": 3.471
+        },
+        {
+          "target_atom": "NZ",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE2",
+          "cdr_loop": "L3",
+          "distance_A": 3.81
+        },
+        {
+          "target_atom": "CE",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "OH",
+          "cdr_loop": "L3",
+          "distance_A": 3.985
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "OH",
+          "cdr_loop": "L3",
+          "distance_A": 4.029
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "L3",
+          "distance_A": 4.141
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L3",
+          "distance_A": 4.179
+        },
+        {
+          "target_atom": "NZ",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L3",
+          "distance_A": 4.315
+        },
+        {
+          "target_atom": "CE",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CZ",
+          "cdr_loop": "L3",
+          "distance_A": 4.415
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "O",
+          "cdr_loop": "L3",
+          "distance_A": 4.668
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE2",
+          "cdr_loop": "L3",
+          "distance_A": 4.845
+        },
+        {
+          "target_atom": "NZ",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD2",
+          "cdr_loop": "L3",
+          "distance_A": 4.877
+        },
+        {
+          "target_atom": "CE",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE1",
+          "cdr_loop": "L3",
+          "distance_A": 4.891
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CD1",
+          "cdr_loop": "L3",
+          "distance_A": 4.913
+        },
+        {
+          "target_atom": "CE",
+          "cdr_chain": "L",
+          "cdr_resnum": 214,
+          "cdr_resname": "TYR",
+          "cdr_atom": "CE2",
+          "cdr_loop": "L3",
+          "distance_A": 4.938
+        }
+      ]
+    },
+    {
+      "residue": "T593",
+      "chain": "T",
+      "resnum": 593,
+      "resname": "LYS",
+      "n_contacts": 12,
+      "min_dist_A": 2.417,
+      "contacting_cdrs": [
+        "H3"
+      ],
+      "contact_details": [
+        {
+          "target_atom": "NZ",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "O",
+          "cdr_loop": "H3",
+          "distance_A": 2.417
+        },
+        {
+          "target_atom": "NZ",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "C",
+          "cdr_loop": "H3",
+          "distance_A": 3.204
+        },
+        {
+          "target_atom": "CE",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "O",
+          "cdr_loop": "H3",
+          "distance_A": 3.439
+        },
+        {
+          "target_atom": "NZ",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "CA",
+          "cdr_loop": "H3",
+          "distance_A": 3.688
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "O",
+          "cdr_loop": "H3",
+          "distance_A": 3.796
+        },
+        {
+          "target_atom": "NZ",
+          "cdr_chain": "H",
+          "cdr_resnum": 104,
+          "cdr_resname": "PHE",
+          "cdr_atom": "N",
+          "cdr_loop": "H3",
+          "distance_A": 4.271
+        },
+        {
+          "target_atom": "CE",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "C",
+          "cdr_loop": "H3",
+          "distance_A": 4.415
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "C",
+          "cdr_loop": "H3",
+          "distance_A": 4.659
+        },
+        {
+          "target_atom": "CD",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "CA",
+          "cdr_loop": "H3",
+          "distance_A": 4.739
+        },
+        {
+          "target_atom": "NZ",
+          "cdr_chain": "H",
+          "cdr_resnum": 104,
+          "cdr_resname": "PHE",
+          "cdr_atom": "CA",
+          "cdr_loop": "H3",
+          "distance_A": 4.772
+        },
+        {
+          "target_atom": "CE",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "CA",
+          "cdr_loop": "H3",
+          "distance_A": 4.84
+        },
+        {
+          "target_atom": "CG",
+          "cdr_chain": "H",
+          "cdr_resnum": 103,
+          "cdr_resname": "GLY",
+          "cdr_atom": "O",
+          "cdr_loop": "H3",
+          "distance_A": 4.999
+        }
+      ]
+    }
+  ],
+  "hotspot_string": "T571,T572,T603,T558,T573,T570,T602,T557,T569,T593"
+}

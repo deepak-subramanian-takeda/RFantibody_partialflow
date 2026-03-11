@@ -1,0 +1,20 @@
+{
+  "input_dir": "/home/pymc/Deepak/RFantibody_partialflow/hlt_pdbs_orig",
+  "output_dir": "/home/pymc/Deepak/RFantibody_partialflow/maturation_1n8z",
+  "hotspots": "T598",
+  "model_weights": "/home/pymc/Deepak/RFantibody_partialflow/ckpt/antibody.ckpt",
+  "loops": "H1,H2,H3,L1,L2,L3",
+  "free_loops": "",
+  "energy_threshold": -50.0,
+  "partial_T": 15,
+  "num_diffusion": 20,
+  "num_seqs": 5,
+  "temperature": 0.1,
+  "interface": "HL_T",
+  "nanobody": false,
+  "rounds": 1,
+  "top_n": null,
+  "dry_run": false,
+  "relax": false,
+  "skip_minimize": false
+}

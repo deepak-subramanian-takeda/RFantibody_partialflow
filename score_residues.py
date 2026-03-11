@@ -1,5 +1,5 @@
 """
-Per-residue energy scoring for protein structures using OpenMM.
+Per-residue energy scoring for protein structures using openmm.
 
 This module calculates per-residue energy contributions from an energy-minimized
 protein structure using the Amber ff14SB force field. The input structure MUST
@@ -8,7 +8,7 @@ be energy minimized before scoring for meaningful results.
 Functions:
     score_residues: Main entry point - loads PDB, calculates per-residue energies, writes TSV
     prepare_structure: Fix missing atoms using pdbfixer
-    minimize_structure: Energy minimize using OpenMM LocalEnergyMinimizer
+    minimize_structure: Energy minimize using openmm LocalEnergyMinimizer
 """
 
 import argparse
@@ -21,11 +21,11 @@ from typing import Optional
 import numpy as np
 
 try:
-    import OpenMM
-    import OpenMM.app as app
-    import OpenMM.unit as unit
+    import openmm
+    import openmm.app as app
+    import openmm.unit as unit
 except ImportError:
-    print("Error: OpenMM not installed. Run: conda install -c conda-forge OpenMM pdbfixer numpy", file=sys.stderr)
+    print("Error: openmm not installed. Run: conda install -c conda-forge openmm pdbfixer numpy", file=sys.stderr)
     sys.exit(1)
 
 try:
@@ -143,7 +143,7 @@ def minimize_structure(
     tolerance: float = 10.0,
 ) -> str:
     """
-    Energy minimize a protein structure using OpenMM.
+    Energy minimize a protein structure using openmm.
 
     Args:
         input_pdb: Path to input PDB file
@@ -187,7 +187,7 @@ def minimize_structure(
     )
 
     # Create integrator (required even for minimization)
-    integrator = OpenMM.LangevinMiddleIntegrator(
+    integrator = openmm.LangevinMiddleIntegrator(
         300 * unit.kelvin,
         1.0 / unit.picosecond,
         0.002 * unit.picoseconds,
@@ -427,7 +427,7 @@ def score_residues(
     )
 
     # Create integrator and simulation
-    integrator = OpenMM.LangevinMiddleIntegrator(
+    integrator = openmm.LangevinMiddleIntegrator(
         300 * unit.kelvin,
         1.0 / unit.picosecond,
         0.002 * unit.picoseconds,
@@ -453,12 +453,12 @@ def score_residues(
 
         # In interface mode, skip bonded terms (only calculate inter-chain non-bonded)
         if interface_mode:
-            if isinstance(force, (OpenMM.HarmonicBondForce, OpenMM.HarmonicAngleForce,
-                                  OpenMM.PeriodicTorsionForce)):
+            if isinstance(force, (openmm.HarmonicBondForce, openmm.HarmonicAngleForce,
+                                  openmm.PeriodicTorsionForce)):
                 continue
 
         # Create a copy of the system with only this force for energy evaluation
-        test_system = OpenMM.System()
+        test_system = openmm.System()
         for i in range(system.getNumParticles()):
             test_system.addParticle(system.getParticleMass(i))
 
@@ -470,24 +470,24 @@ def score_residues(
         test_system.addForce(force_copy)
 
         # Attribute energy based on force type
-        if isinstance(force, OpenMM.HarmonicBondForce):
+        if isinstance(force, openmm.HarmonicBondForce):
             _attribute_bond_energy(force, simulation.context, atom_to_residue,
                                    residue_energies, skipped_residues)
 
-        elif isinstance(force, OpenMM.HarmonicAngleForce):
+        elif isinstance(force, openmm.HarmonicAngleForce):
             _attribute_angle_energy(force, simulation.context, atom_to_residue,
                                     residue_energies, skipped_residues)
 
-        elif isinstance(force, OpenMM.PeriodicTorsionForce):
+        elif isinstance(force, openmm.PeriodicTorsionForce):
             _attribute_torsion_energy(force, simulation.context, atom_to_residue,
                                       residue_energies, skipped_residues)
 
-        elif isinstance(force, OpenMM.NonbondedForce):
+        elif isinstance(force, openmm.NonbondedForce):
             _attribute_nonbonded_energy(force, simulation.context, atom_to_residue,
                                         residue_energies, skipped_residues, pdb.positions,
                                         atom_to_chain, target_chain_set, atom_names)
 
-        elif isinstance(force, OpenMM.CMMotionRemover):
+        elif isinstance(force, openmm.CMMotionRemover):
             # Skip center of mass motion remover - not an energy term
             pass
 
@@ -528,8 +528,8 @@ def _clone_force(force):
     """Create a copy of a force object."""
     # This is a simplified clone - for full functionality, use XML serialization
     try:
-        xml = OpenMM.XmlSerializer.serialize(force)
-        return OpenMM.XmlSerializer.deserialize(xml)
+        xml = openmm.XmlSerializer.serialize(force)
+        return openmm.XmlSerializer.deserialize(xml)
     except Exception:
         return None
 
@@ -816,7 +816,7 @@ def _attribute_nonbonded_energy(force, context, atom_to_residue, residue_energie
 def main():
     """Command-line interface for residue scoring."""
     parser = argparse.ArgumentParser(
-        description="Score per-residue energies for a protein structure using OpenMM.",
+        description="Score per-residue energies for a protein structure using openmm.",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:

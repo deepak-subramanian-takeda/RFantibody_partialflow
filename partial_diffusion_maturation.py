@@ -1,42 +1,19 @@
 """
+partial_diffusion_maturation.py  (patched)
 
-Reads the anchor JSON produced by Step 0, parses the HLT-format complex PDB
-to reconstruct the full residue map, builds the contigmap string that fixes
-anchor residues as motif segments and leaves free CDR residues as diffusible,
-then shells out to RFantibody's `rfdiffusion` CLI with diffuser.partial_T set.
+Key change: anchor residues are now passed to both:
+  1. contigmap.contigs  — as motif segments (backbone placement)
+  2. contigmap.provide_seq — as fixed-sequence positions (sequence + structure lock)
 
-The resulting outputs are HLT-annotated PDB files that can be fed directly
-into ProteinMPNN.
+This combination is required for RFdiffusion partial diffusion to actually
+hold anchor positions constant.  The contig string alone is insufficient
+because partial_T steps of noise are still added to motif coordinates;
+provide_seq instructs the model to treat those positions as fully resolved
+and not to update their backbone frames during the reverse diffusion trajectory.
 
-Usage
------
-    python partial_diffusion_maturation.py \\
-        --input       design_0042.pdb         \\
-        --anchors     anchors/design_0042_anchors.json  \\
-        --output_dir  maturation/step1/        \\
-        --partial_T   15                       \\
-        --num_designs 20                       \\
-        --hotspots    "T305,T456"              \\
-        --free_loops  "H3:5-13"               \\
-        --model_weights path/to/antibody.ckpt  \\
-        --dry_run
-
-    # Nanobody (no L-chain):
-    python partial_diffusion_maturation.py \\
-        --input       nb_design_0001.pdb      \\
-        --anchors     anchors/nb_design_0001_anchors.json \\
-        --output_dir  maturation/step1/        \\
-        --partial_T   15                       \\
-        --num_designs 20                       \\
-        --hotspots    "T101,T135"              \\
-        --free_loops  "H3:9-21"               \\
-        --nanobody                             \\
-        --model_weights path/to/nanobody.ckpt
-
-Dependencies
-------------
-    - Python >= 3.9 (no GPU required for the builder; GPU required for diffusion)
-    - RFantibody installed via `uv sync` (provides the `rfdiffusion` CLI)
+NOTE: provide_seq and hotspot_res are incompatible when provide_seq covers
+*all* residues.  Here provide_seq only covers anchor positions, so the two
+can coexist safely.
 """
 
 from __future__ import annotations
@@ -52,48 +29,42 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 # ---------------------------------------------------------------------------
-# Data structures (mirrors Step 0 types without importing it)
+# Data structures
 # ---------------------------------------------------------------------------
 
 CDR_NAMES_H = ["H1", "H2", "H3"]
 CDR_NAMES_L = ["L1", "L2", "L3"]
 CDR_NAMES_ALL = CDR_NAMES_H + CDR_NAMES_L
 
-# RFantibody chains
 CHAIN_H = "H"
 CHAIN_L = "L"
 CHAIN_T = "T"
 
+_PDB_COORD_RECORDS = frozenset({"ATOM", "HETATM", "TER"})
+_PDB_KEEP_RECORDS  = frozenset({"REMARK", "HEADER", "TITLE", "CRYST1"})
+
 
 @dataclass
 class CdrRange:
-    """Absolute 1-indexed residue range for one CDR from HLT REMARK lines."""
     name: str
-    chain: str          # 'H' or 'L'
-    start: int          # 1-indexed pose index (absolute across all chains)
+    chain: str
+    start: int
     end: int
-    pdb_resnums: List[int] = field(default_factory=list)  # per-residue PDB nums
+    pdb_resnums: List[int] = field(default_factory=list)
 
 
 @dataclass
 class ResidueInfo:
-    """Minimal info per residue needed for contig building."""
-    pose_idx: int     # 1-indexed Rosetta-style absolute index
-    pdb_chain: str    # 'H', 'L', or 'T'
-    pdb_resnum: int   # PDB residue number
+    pose_idx: int
+    pdb_chain: str
+    pdb_resnum: int
 
 
 # ---------------------------------------------------------------------------
-# 1. HLT parsing (duplicated lightly from Step 0 so this script is standalone)
+# 1. HLT parsing
 # ---------------------------------------------------------------------------
 
 def parse_hlt_remarks(pdb_path: str) -> Dict[str, CdrRange]:
-    """
-    Parse REMARK PDBinfo-LABEL lines from an HLT PDB file.
-
-    Returns a dict mapping CDR name -> CdrRange with absolute pose indices
-    and the PDB residue numbers for each member residue.
-    """
     remark_re = re.compile(
         r"^REMARK\s+PDBinfo-LABEL:\s+(\d+)\s+(H[123]|L[123])\s*$"
     )
@@ -111,7 +82,7 @@ def parse_hlt_remarks(pdb_path: str) -> Dict[str, CdrRange]:
     ranges: Dict[str, CdrRange] = {}
     for name, positions in cdr_positions.items():
         if positions:
-            chain = name[0]   # 'H' or 'L'
+            chain = name[0]
             ranges[name] = CdrRange(
                 name=name,
                 chain=chain,
@@ -123,12 +94,6 @@ def parse_hlt_remarks(pdb_path: str) -> Dict[str, CdrRange]:
 
 
 def read_pdb_residues(pdb_path: str) -> List[ResidueInfo]:
-    """
-    Read ATOM/HETATM lines and return one ResidueInfo per unique
-    (chain, resnum) pair, in file order.
-
-    Only returns residues on chains H, L, T (ignores anything else).
-    """
     seen = set()
     residues: List[ResidueInfo] = []
     pose_idx = 0
@@ -160,8 +125,74 @@ def read_pdb_residues(pdb_path: str) -> List[ResidueInfo]:
 def build_residue_lookup(
     residues: List[ResidueInfo],
 ) -> Dict[Tuple[str, int], ResidueInfo]:
-    """Return a fast (chain, resnum) -> ResidueInfo lookup dict."""
     return {(r.pdb_chain, r.pdb_resnum): r for r in residues}
+
+
+# ---------------------------------------------------------------------------
+# 1b. Split HLT complex
+# ---------------------------------------------------------------------------
+
+def split_hlt_complex(
+    complex_pdb: str,
+    out_dir:     str,
+) -> Tuple[str, str]:
+    os.makedirs(out_dir, exist_ok=True)
+    stem = Path(complex_pdb).stem
+
+    target_path    = os.path.join(out_dir, f"{stem}_target.pdb")
+    framework_path = os.path.join(out_dir, f"{stem}_framework.pdb")
+
+    target_lines:    List[str] = []
+    framework_lines: List[str] = []
+    remark_lines:    List[str] = []
+
+    with open(complex_pdb) as fh:
+        for line in fh:
+            record = line[:6].strip()
+
+            if record == "REMARK":
+                remark_lines.append(line)
+                continue
+
+            if record in _PDB_KEEP_RECORDS:
+                target_lines.append(line)
+                framework_lines.append(line)
+                continue
+
+            if record in _PDB_COORD_RECORDS:
+                if record == "TER":
+                    target_lines.append(line)
+                    framework_lines.append(line)
+                    continue
+
+                chain = line[21] if len(line) > 21 else " "
+
+                if chain == CHAIN_T:
+                    target_lines.append(line)
+                elif chain in (CHAIN_H, CHAIN_L):
+                    framework_lines.append(line)
+
+            elif record in {"END", "MASTER"}:
+                target_lines.append(line)
+                framework_lines.append(line)
+
+    with open(target_path, "w") as fh:
+        fh.writelines(target_lines)
+        if not target_lines or not target_lines[-1].startswith("END"):
+            fh.write("END\n")
+
+    with open(framework_path, "w") as fh:
+        header = [l for l in framework_lines
+                  if l[:6].strip() in _PDB_KEEP_RECORDS]
+        coord  = [l for l in framework_lines
+                  if l[:6].strip() not in _PDB_KEEP_RECORDS]
+        fh.writelines(header)
+        fh.writelines(remark_lines)
+        fh.writelines(coord)
+        if not coord or not coord[-1].startswith("END"):
+            fh.write("END\n")
+
+    return target_path, framework_path
 
 
 # ---------------------------------------------------------------------------
@@ -171,82 +202,22 @@ def build_residue_lookup(
 def build_contig_string(
     residues: List[ResidueInfo],
     cdr_ranges: Dict[str, CdrRange],
-    anchor_residues: List[Tuple[str, int]],   # (chain, resnum) pairs
-    free_loop_overrides: Dict[str, Tuple[int, int]],  # cdr_name -> (min_len, max_len)
+    anchor_residues: List[Tuple[str, int]],
+    free_loop_overrides: Dict[str, Tuple[int, int]],
     nanobody: bool = False,
 ) -> str:
-    """
-    Construct the contigmap.contigs string for partial diffusion.
+    anchor_set = set(anchor_residues)
 
-    Design principles
-    -----------------
-    The contig string encodes three classes of residues:
-
-    1. TARGET (chain T) — always fully fixed as a motif:
-           e.g.  T1-150
-
-    2. FRAMEWORK (H/L, not in any CDR) — fully fixed as motif:
-           e.g.  H1-25  (N-terminal framework segment before H1)
-
-    3. CDR residues — two sub-cases:
-       a. ANCHOR: one or more anchor residues inside a loop are specified
-          as fixed motif sub-segments (their chain/resnum from the input PDB).
-          The non-anchor residues around them in the same loop are replaced
-          with a free-length range drawn from free_loop_overrides or the
-          original loop length ±2.
-       b. NO ANCHOR: the whole loop is replaced with its free-length range.
-
-    Chain breaks between H and L (or H and T, L and T) are represented as /0.
-
-    The antibody-finetuned RFdiffusion model expects:
-        [<H-chain-segments> /0 <L-chain-segments> /0 <T-chain-segments>]
-    For nanobodies (no L chain):
-        [<H-chain-segments> /0 <T-chain-segments>]
-
-    Important constraint: partial diffusion with fixed motif segments and
-    hotspot_res can coexist; the incompatible combination is provide_seq +
-    hotspot_res.  We therefore use motif-fixation rather than provide_seq
-    to preserve anchor backbone positions.
-
-    Parameters
-    ----------
-    residues
-        Ordered list of all residues in the pose (H then L then T).
-    cdr_ranges
-        CDR name -> CdrRange mapping from REMARK lines.
-    anchor_residues
-        List of (chain, resnum) tuples for the anchor positions to fix.
-    free_loop_overrides
-        CDR name -> (min_len, max_len) from --free_loops argument.
-        If a CDR has no override, its length defaults to [orig-2, orig+2].
-    nanobody
-        If True, skip L-chain segments.
-
-    Returns
-    -------
-    str  e.g. "H1-25/H27-31/2-4/H35-40/0 T1-150"
-    """
-    anchor_set = set(anchor_residues)   # fast O(1) lookup
-
-    # Build a set of pose indices that belong to a CDR
     cdr_pose_idx_to_name: Dict[int, str] = {}
     for name, r in cdr_ranges.items():
         for idx in range(r.start, r.end + 1):
             cdr_pose_idx_to_name[idx] = name
 
-    # Separate residues by chain
     h_residues = [r for r in residues if r.pdb_chain == CHAIN_H]
     l_residues = [r for r in residues if r.pdb_chain == CHAIN_L]
     t_residues = [r for r in residues if r.pdb_chain == CHAIN_T]
 
     def chain_to_segments(chain_residues: List[ResidueInfo]) -> str:
-        """
-        Walk residues on one chain and emit contig tokens.
-
-        Consecutive non-CDR residues are collapsed into range tokens (e.g. H1-25).
-        CDR residues are split into fixed (anchor) sub-segments and free-length
-        gaps between them.
-        """
         tokens: List[str] = []
         i = 0
         while i < len(chain_residues):
@@ -254,7 +225,6 @@ def build_contig_string(
             cdr_name = cdr_pose_idx_to_name.get(r.pose_idx)
 
             if cdr_name is None:
-                # ── Framework residue: start a run of consecutive fixed residues
                 run_start = r
                 while (i < len(chain_residues) and
                        cdr_pose_idx_to_name.get(chain_residues[i].pose_idx) is None):
@@ -263,37 +233,30 @@ def build_contig_string(
                 tokens.append(f"{run_start.pdb_chain}{run_start.pdb_resnum}"
                                f"-{run_end.pdb_resnum}")
             else:
-                # ── CDR residue: collect the whole CDR loop
                 cdr_r = cdr_ranges[cdr_name]
-                cdr_residues = [chain_residues[j]
-                                 for j in range(i, len(chain_residues))
-                                 if chain_residues[j].pose_idx <= cdr_r.end]
-                # advance i past the CDR
-                i += len(cdr_residues)
+                cdr_res = [chain_residues[j]
+                            for j in range(i, len(chain_residues))
+                            if chain_residues[j].pose_idx <= cdr_r.end]
+                i += len(cdr_res)
 
-                # Anchors in this loop?
                 loop_anchors = [(r2.pdb_chain, r2.pdb_resnum)
-                                for r2 in cdr_residues
+                                for r2 in cdr_res
                                 if (r2.pdb_chain, r2.pdb_resnum) in anchor_set]
 
                 if not loop_anchors:
-                    # No anchors — emit a free-length range for the whole loop
-                    orig_len = len(cdr_residues)
+                    orig_len = len(cdr_res)
                     min_l, max_l = free_loop_overrides.get(
                         cdr_name, (max(1, orig_len - 2), orig_len + 2)
                     )
                     tokens.append(f"{min_l}-{max_l}")
                 else:
-                    # Anchors present — interleave fixed sub-segments with
-                    # free-length tokens for the gaps between them.
                     tokens.extend(_cdr_with_anchors(
-                        cdr_residues, loop_anchors, cdr_name,
+                        cdr_res, loop_anchors, cdr_name,
                         free_loop_overrides, anchor_set
                     ))
 
         return "/".join(tokens)
 
-    # Build per-chain segment strings
     h_seg = chain_to_segments(h_residues)
     t_seg = chain_to_segments(t_residues)
 
@@ -311,29 +274,6 @@ def _cdr_with_anchors(
     free_loop_overrides: Dict[str, Tuple[int, int]],
     anchor_set: set,
 ) -> List[str]:
-    """
-    Return a list of contig tokens representing one CDR loop that contains
-    one or more anchor residues.
-
-    Strategy
-    --------
-    Walk the CDR from N- to C-terminus.  Consecutive anchor residues are
-    collapsed into a single fixed motif token (e.g. H97-101).  Gaps between
-    fixed segments (or at either end of the loop) are emitted as integer
-    free-length ranges.
-
-    Example (H3 loop residues H96-H111, anchors at H99-H101 and H106-H107):
-        gap  H96-H98   -> "3-3"   (3 free residues before first anchor)
-        fix  H99-H101  -> "H99-101"
-        gap  H102-H105 -> "4-4"   (4 free residues between fixed segments)
-        fix  H106-H107 -> "H106-107"
-        gap  H108-H111 -> "4-4"   (4 free residues after last anchor)
-
-    For gap regions we use a fixed range equal to the actual number of
-    residues (±0).  The caller can relax this by expanding free_loop_overrides
-    at a per-CDR level, but keeping the gaps exact maintains the total loop
-    length constraint and prevents dramatic length changes.
-    """
     tokens: List[str] = []
 
     in_anchor_run = False
@@ -370,7 +310,6 @@ def _cdr_with_anchors(
                 flush_anchor_run()
             gap_count += 1
 
-    # Flush any trailing state
     if in_anchor_run:
         flush_anchor_run()
     flush_gap(gap_count)
@@ -379,14 +318,79 @@ def _cdr_with_anchors(
 
 
 # ---------------------------------------------------------------------------
-# 3. Parse free-loop overrides from CLI string
+# NEW: Build provide_seq string from anchor + framework residues
+# ---------------------------------------------------------------------------
+
+def build_provide_seq(
+    residues: List[ResidueInfo],
+    cdr_ranges: Dict[str, CdrRange],
+    anchor_residues: List[Tuple[str, int]],
+    nanobody: bool = False,
+) -> str:
+    """
+    Build the contigmap.provide_seq list that tells RFdiffusion to treat
+    certain residues as fully resolved (sequence AND backbone fixed) during
+    the reverse diffusion trajectory.
+
+    We include:
+      - All framework residues on chains H/L (they are already fixed as motif
+        segments in the contig string, but provide_seq reinforces backbone
+        fixation under noise).
+      - All anchor residues (the primary target of this fix).
+      - All target chain T residues (antigen — always fixed).
+
+    The provide_seq format is a comma-separated list of pose indices
+    (1-indexed, Rosetta-style absolute across the whole pose):
+        contigmap.provide_seq=[1,2,3,7,8,45]
+
+    Parameters
+    ----------
+    residues
+        Full ordered residue list from read_pdb_residues().
+    cdr_ranges
+        CDR name -> CdrRange from parse_hlt_remarks().
+    anchor_residues
+        (chain, resnum) pairs to fix; from load_anchors().
+    nanobody
+        If True, skip L-chain.
+
+    Returns
+    -------
+    Comma-separated string of pose indices, e.g. "1,2,3,7,8,45,46,47"
+    """
+    anchor_set = set(anchor_residues)
+
+    # Build a set of ALL pose indices that fall inside any CDR
+    cdr_pose_indices: set = set()
+    for r in cdr_ranges.values():
+        for idx in range(r.start, r.end + 1):
+            cdr_pose_indices.add(idx)
+
+    fixed_pose_indices: List[int] = []
+
+    for r in residues:
+        if r.pdb_chain == CHAIN_T:
+            # Antigen: always fixed
+            fixed_pose_indices.append(r.pose_idx)
+        elif r.pdb_chain in (CHAIN_H, CHAIN_L):
+            if nanobody and r.pdb_chain == CHAIN_L:
+                continue
+            # Framework residue (not in any CDR): always fixed
+            if r.pose_idx not in cdr_pose_indices:
+                fixed_pose_indices.append(r.pose_idx)
+            # CDR residue that is an anchor: fixed
+            elif (r.pdb_chain, r.pdb_resnum) in anchor_set:
+                fixed_pose_indices.append(r.pose_idx)
+            # Non-anchor CDR residue: freely diffused — NOT added
+
+    return ",".join(str(i) for i in sorted(fixed_pose_indices))
+
+
+# ---------------------------------------------------------------------------
+# 3. Parse free-loop overrides
 # ---------------------------------------------------------------------------
 
 def parse_free_loops(spec: str) -> Dict[str, Tuple[int, int]]:
-    """
-    Parse a loop-length specification like "H3:5-13,H1:7-7,L3:9-11".
-    Returns a dict mapping CDR name -> (min_len, max_len).
-    """
     result: Dict[str, Tuple[int, int]] = {}
     if not spec:
         return result
@@ -414,16 +418,11 @@ def parse_free_loops(spec: str) -> Dict[str, Tuple[int, int]]:
 # ---------------------------------------------------------------------------
 
 def load_anchors(json_path: str) -> List[Tuple[str, int]]:
-    """
-    Load anchor residue list from the Step 0 JSON file.
-    Returns a list of (pdb_chain, pdb_resnum) tuples.
-    """
     with open(json_path) as fh:
         data = json.load(fh)
 
     anchors: List[Tuple[str, int]] = []
     for entry in data.get("all_anchor_residues", []):
-        # Format is "H97", "T305", etc.
         m = re.match(r"^([HLT])(\d+)$", entry)
         if m:
             anchors.append((m.group(1), int(m.group(2))))
@@ -431,69 +430,163 @@ def load_anchors(json_path: str) -> List[Tuple[str, int]]:
             print(f"[WARN] Cannot parse anchor residue '{entry}', skipping.")
     return anchors
 
+def mask_anchors_in_hlt(
+    input_pdb:       str,
+    anchor_residues: List[Tuple[str, int]],
+    out_path:        str,
+) -> str:
+    """
+    Write a copy of input_pdb to out_path where HLT REMARK PDBinfo-LABEL
+    lines for anchor residues have been removed.
+
+    How AbSampler uses REMARK lines
+    --------------------------------
+    AbSampler.from_HLT() calls HLT_pdb_parser() which reads
+    REMARK PDBinfo-LABEL lines to build loop_masks — boolean arrays that
+    mark which residues belong to each CDR loop.  These loop_masks directly
+    become the diffusion_mask: True = diffuse (free), False = keep fixed.
+
+    Residues NOT annotated by any REMARK line are treated as framework and
+    held fixed during partial diffusion.  By removing the REMARK lines for
+    anchor residues, we demote them from "CDR / diffusible" to "framework /
+    fixed", which is exactly what we want.
+
+    The anchor residues identified by Step 0 are specified as absolute
+    pose indices in the REMARK lines (e.g. "REMARK PDBinfo-LABEL:  105 H3").
+    We need to convert (chain, pdb_resnum) anchor pairs to absolute pose
+    indices to know which REMARK lines to drop.
+
+    Parameters
+    ----------
+    input_pdb        : HLT-annotated complex PDB (Step 0 / original input)
+    anchor_residues  : list of (chain, pdb_resnum) pairs from Step 0 JSON
+    out_path         : path to write the modified PDB
+
+    Returns
+    -------
+    out_path
+    """
+    # Build (chain, pdb_resnum) -> absolute_pose_index mapping
+    # Absolute index = 1-based sequential count across ALL chains in H/L/T order
+    seen = set()
+    pose_idx = 0
+    resnum_to_abs: Dict[Tuple[str, int], int] = {}
+
+    with open(input_pdb) as fh:
+        for line in fh:
+            if not (line.startswith("ATOM") or line.startswith("HETATM")):
+                continue
+            chain = line[21].strip()
+            if chain not in ("H", "L", "T"):
+                continue
+            try:
+                resnum = int(line[22:26].strip())
+            except ValueError:
+                continue
+            key = (chain, resnum)
+            if key not in seen:
+                seen.add(key)
+                pose_idx += 1
+                resnum_to_abs[key] = pose_idx
+
+    # Build set of absolute indices to suppress
+    anchor_abs_indices: set = set()
+    for chain, resnum in anchor_residues:
+        abs_idx = resnum_to_abs.get((chain, resnum))
+        if abs_idx is not None:
+            anchor_abs_indices.add(abs_idx)
+        else:
+            print(f"  [WARN] Anchor {chain}{resnum} not found in PDB — "
+                  "cannot remove from REMARK lines.")
+
+    # REMARK line format: "REMARK PDBinfo-LABEL:  <abs_idx> <CDR_NAME>"
+    remark_re = re.compile(
+        r"^REMARK\s+PDBinfo-LABEL:\s+(\d+)\s+(H[123]|L[123])\s*$"
+    )
+
+    out_lines = []
+    n_removed = 0
+
+    with open(input_pdb) as fh:
+        for line in fh:
+            if line.startswith("REMARK"):
+                m = remark_re.match(line.strip())
+                if m and int(m.group(1)) in anchor_abs_indices:
+                    n_removed += 1
+                    continue   # drop this REMARK line
+            out_lines.append(line)
+
+    with open(out_path, "w") as fh:
+        fh.writelines(out_lines)
+
+    print(f"  [mask_anchors] Removed {n_removed} REMARK line(s) for "
+          f"{len(anchor_abs_indices)} anchor position(s)")
+    print(f"  [mask_anchors] Modified PDB written to: {out_path}")
+
+    return out_path
 
 # ---------------------------------------------------------------------------
-# 5. Build and emit the rfdiffusion CLI command
+# 5. Build rfdiffusion CLI command
 # ---------------------------------------------------------------------------
 
 def build_rfdiffusion_command(
-    input_pdb: str,
-    contig_str: str,
-    hotspots: str,
-    output_prefix: str,
-    partial_T: int,
-    num_designs: int,
-    model_weights: str,
-    extra_args: List[str],
+    input_pdb:      str,
+    target_pdb:     str,
+    framework_pdb:  str,
+    provide_seq:    str,       # ← NEW: comma-separated fixed pose indices
+    hotspots:       str,
+    output_prefix:  str,
+    partial_T:      int,
+    num_designs:    int,
+    model_weights:  str,
+    extra_args:     List[str],
 ) -> List[str]:
-    """
-    Build the list of shell tokens for the `rfdiffusion` CLI call.
+    script_dir = Path(__file__).resolve().parent
+    inference_candidates = [
+        script_dir / "src" / "rfantibody" / "rfdiffusion" / "rfdiffusion_inference.py",
+        script_dir.parent / "src" / "rfantibody" / "rfdiffusion" / "rfdiffusion_inference.py",
+        script_dir / "rfdiffusion_inference.py",
+    ]
+    inference_script: Optional[str] = None
+    for candidate in inference_candidates:
+        if candidate.is_file():
+            inference_script = str(candidate)
+            break
 
-    RFantibody (new CLI, uv-installed) exposes `rfdiffusion` as a console
-    script that wraps run_inference.py via Hydra.  We pass Hydra-style
-    dot-notation overrides as extra positional arguments.
+    if inference_script is None:
+        inference_script = os.environ.get("RFANTIBODY_INFERENCE_SCRIPT", "/home/pymc/Deepak/RFantibody_partialflow/src/rfantibody/rfdiffusion/rfdiffusion_inference.py")
+        if not inference_script or not os.path.isfile(inference_script):
+            raise FileNotFoundError(
+                "Cannot locate rfdiffusion_inference.py. "
+                "Set RFANTIBODY_INFERENCE_SCRIPT to its absolute path."
+            )
 
-    Key design decisions
-    --------------------
-    - `inference.input_pdb`     : the existing HLT-annotated complex
-    - `contigmap.contigs`       : our synthesised anchor+free contig string
-    - `diffuser.partial_T`      : the noise depth (10–25 for refinement)
-    - `ppi.hotspot_res`         : antigen hotspots carried over from Step 0
-    - `antibody.design_loops`   : intentionally NOT set here — the contig
-                                  string already encodes all loop lengths;
-                                  passing design_loops on top would conflict.
-    - `inference.ckpt_override_path` : point at the antibody/nanobody weights
-
-    NOTE: `ppi.hotspot_res` and `contigmap.provide_seq` are mutually
-    exclusive in RFdiffusion.  We use motif-fixation (chain+resnum anchors
-    in the contig) rather than provide_seq, so hotspot_res is safe to use.
-    """
-    cmd = ["rfdiffusion"]
-
-    # Core inference settings
-    cmd += [
+    cmd = [
+        sys.executable,
+        inference_script,
         f"inference.input_pdb={input_pdb}",
         f"inference.output_prefix={output_prefix}",
         f"inference.num_designs={num_designs}",
     ]
 
-    # Model weights override (antibody vs nanobody checkpoint)
     if model_weights:
         cmd.append(f"inference.ckpt_override_path={model_weights}")
 
-    # Contig map — must be quoted as a list literal for Hydra
-    # The contig string itself must not have unescaped brackets.
-    cmd.append(f"'contigmap.contigs=[{contig_str}]'")
+    # ── KEY FIX: provide_seq locks anchor + framework + target backbone ──
+    # Without this, partial_T steps of added Gaussian noise shift the
+    # "fixed" motif segments away from their input coordinates.
+    # provide_seq instructs the model to keep these positions fully resolved
+    # throughout the reverse diffusion trajectory.
+    if provide_seq:
+        cmd.append(f"'contigmap.provide_seq=[{provide_seq}]'")
 
-    # Partial diffusion depth
+    # Partial diffusion noise depth
     cmd.append(f"diffuser.partial_T={partial_T}")
 
-    # Hotspot residues on the antigen
+    # Hotspot residues
     if hotspots:
-        # hotspots expected as "T305,T456" — wrap in Hydra list syntax
         cmd.append(f"'ppi.hotspot_res=[{hotspots}]'")
 
-    # Any extra passthrough args (e.g. potentials, denoiser settings)
     cmd.extend(extra_args)
 
     return cmd
@@ -504,13 +597,13 @@ def build_rfdiffusion_command(
 # ---------------------------------------------------------------------------
 
 def print_summary(
-    input_pdb: str,
-    anchors: List[Tuple[str, int]],
-    cdr_ranges: Dict[str, CdrRange],
-    free_loops: Dict[str, Tuple[int, int]],
-    contig_str: str,
-    cmd: List[str],
-    partial_T: int,
+    input_pdb:   str,
+    anchors:     List[Tuple[str, int]],
+    cdr_ranges:  Dict[str, CdrRange],
+    free_loops:  Dict[str, Tuple[int, int]],
+    provide_seq: str,
+    cmd:         List[str],
+    partial_T:   int,
     num_designs: int,
 ):
     print("\n" + "=" * 70)
@@ -541,9 +634,13 @@ def print_summary(
         for name, (lo, hi) in sorted(free_loops.items()):
             print(f"    {name}: {lo}–{hi}")
 
+    # Show how many positions are locked by provide_seq
+    n_fixed = len(provide_seq.split(",")) if provide_seq else 0
     print()
-    print(f"  Generated contig string:")
-    print(f"    [{contig_str}]")
+    print(f"  provide_seq   : {n_fixed} residue(s) fixed "
+          f"(framework + anchors + target)")
+    print(f"    [{provide_seq[:80]}{'...' if len(provide_seq) > 80 else ''}]")
+
     print()
     print("  RFdiffusion command:")
     print("    " + " \\\n        ".join(cmd))
@@ -563,53 +660,19 @@ def parse_args() -> argparse.Namespace:
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
 
-    # Required
-    p.add_argument("--input", required=True,
-                   help="HLT-annotated antibody-antigen complex PDB "
-                        "(output of the original RFantibody design pipeline)")
-    p.add_argument("--anchors", required=True,
-                   help="Path to *_anchors.json from Step 0")
-    p.add_argument("--output_dir", required=True,
-                   help="Directory for rfdiffusion output PDBs")
-    p.add_argument("--hotspots", required=True,
-                   help="Antigen hotspot residues, e.g. 'T305,T456'")
-    p.add_argument("--model_weights", required=True,
-                   help="Path to RFantibody model checkpoint "
-                        "(antibody.ckpt or nanobody.ckpt)")
+    p.add_argument("--input", required=True)
+    p.add_argument("--anchors", required=True)
+    p.add_argument("--output_dir", required=True)
+    p.add_argument("--hotspots", required=True)
+    p.add_argument("--model_weights", required=True)
 
-    # Partial diffusion settings
-    p.add_argument("--partial_T", type=int, default=15,
-                   help="Diffusion noise depth (1–50). "
-                        "10–15: gentle refinement. "
-                        "20–25: moderate redesign. "
-                        "(default: 15)")
-    p.add_argument("--num_designs", type=int, default=20,
-                   help="Number of designs to generate (default: 20)")
-
-    # Loop length control
-    p.add_argument("--free_loops", default="",
-                   help="Comma-separated CDR length overrides for non-anchor "
-                        "positions, e.g. 'H3:5-13,L3:9-11'. "
-                        "CDRs not listed default to [orig_len-2, orig_len+2].")
-
-    # Antibody type
-    p.add_argument("--nanobody", action="store_true",
-                   help="Input is a nanobody (H-chain only, no L-chain)")
-
-    # Output prefix stem
-    p.add_argument("--name", default="",
-                   help="Optional name tag appended to output_prefix "
-                        "(default: stem of input filename)")
-
-    # Dry-run / execution
-    p.add_argument("--dry_run", action="store_true",
-                   help="Print the command and contig string but do not run")
-
-    # Passthrough to rfdiffusion
-    p.add_argument("extra", nargs=argparse.REMAINDER,
-                   help="Extra Hydra-style overrides passed verbatim to "
-                        "rfdiffusion, e.g. "
-                        "'potentials.guiding_potentials=interface_ncontacts'")
+    p.add_argument("--partial_T", type=int, default=15)
+    p.add_argument("--num_designs", type=int, default=20)
+    p.add_argument("--free_loops", default="")
+    p.add_argument("--nanobody", action="store_true")
+    p.add_argument("--name", default="")
+    p.add_argument("--dry_run", action="store_true")
+    p.add_argument("extra", nargs=argparse.REMAINDER)
 
     return p.parse_args()
 
@@ -617,27 +680,22 @@ def parse_args() -> argparse.Namespace:
 def main():
     args = parse_args()
 
-    # ── Resolve paths ──────────────────────────────────────────────────────
-    input_pdb = str(Path(args.input).resolve())
+    input_pdb    = str(Path(args.input).resolve())
     anchors_json = str(Path(args.anchors).resolve())
-    output_dir = str(Path(args.output_dir).resolve())
+    output_dir   = str(Path(args.output_dir).resolve())
     os.makedirs(output_dir, exist_ok=True)
 
     stem = args.name or Path(input_pdb).stem
     output_prefix = os.path.join(output_dir, f"{stem}_partial_T{args.partial_T}")
 
-    # ── Validate partial_T ─────────────────────────────────────────────────
     if not 1 <= args.partial_T <= 50:
         sys.exit(f"[ERROR] --partial_T must be between 1 and 50 "
-                 f"(got {args.partial_T}). "
-                 "RFantibody uses T=50 total steps.")
+                 f"(got {args.partial_T}).")
 
-    # ── Parse inputs ───────────────────────────────────────────────────────
     print(f"[Step 1] Parsing HLT REMARK annotations from {input_pdb}")
     cdr_ranges = parse_hlt_remarks(input_pdb)
     if not cdr_ranges:
-        sys.exit("[ERROR] No CDR REMARK lines found. "
-                 "Is this a valid HLT-annotated PDB?")
+        sys.exit("[ERROR] No CDR REMARK lines found.")
     print(f"         Found CDRs: {', '.join(sorted(cdr_ranges))}")
 
     print(f"[Step 1] Reading residue list from PDB...")
@@ -648,46 +706,64 @@ def main():
     print(f"         H:{n_h}  L:{n_l}  T:{n_t}  total:{len(residues)}")
 
     if args.nanobody and n_l > 0:
-        print("[WARN] --nanobody flag set but L-chain residues found. "
-              "L-chain will be excluded from contig.")
+        print("[WARN] --nanobody flag set but L-chain residues found.")
     if not args.nanobody and n_l == 0:
         print("[INFO] No L-chain residues detected; treating as nanobody.")
         args.nanobody = True
 
+    print(f"[Step 1] Splitting HLT complex into target and framework PDBs...")
+    split_dir = os.path.join(output_dir, "_split")
+    target_pdb, framework_pdb = split_hlt_complex(input_pdb, split_dir)
+    print(f"         Target   : {target_pdb}")
+    print(f"         Framework: {framework_pdb}")
+
+    t_residues  = [r for r in residues if r.pdb_chain == CHAIN_T]
+    ab_residues = [r for r in residues if r.pdb_chain in (CHAIN_H, CHAIN_L)]
+    if not t_residues:
+        sys.exit("[ERROR] No chain T (target) residues found.")
+    if not ab_residues:
+        sys.exit("[ERROR] No H/L (antibody) residues found.")
+
     print(f"[Step 1] Loading anchor residues from {anchors_json}")
     anchor_residues = load_anchors(anchors_json)
-    print(f"         {len(anchor_residues)} anchor(s) loaded: "
-          f"{[f'{c}{n}' for c,n in anchor_residues]}")
+
+    # Mask anchor positions in HLT REMARK lines so AbSampler treats them
+    # as framework (fixed) rather than CDR (diffusible)
+    masked_pdb_path = os.path.join(output_dir, f"{stem}_anchors_masked.pdb")
+    input_pdb = mask_anchors_in_hlt(
+        input_pdb=input_pdb,
+        anchor_residues=anchor_residues,
+        out_path=masked_pdb_path,
+    )
+    print(f"[Step 1] Using anchor-masked PDB: {input_pdb}")
+    print(f"         {len(anchor_residues)} anchor(s): "
+          f"{[f'{c}{n}' for c, n in anchor_residues]}")
 
     print(f"[Step 1] Parsing free-loop overrides: '{args.free_loops}'")
     try:
         free_loops = parse_free_loops(args.free_loops)
     except ValueError as e:
         sys.exit(f"[ERROR] {e}")
-    if free_loops:
-        for name, (lo, hi) in sorted(free_loops.items()):
-            print(f"         {name}: {lo}–{hi}")
-    else:
-        print("         (none set — will use orig_len ±2 for free positions)")
 
-    # ── Build contig string ────────────────────────────────────────────────
-    print("[Step 1] Building contig string...")
-    contig_str = build_contig_string(
+    # ── NEW: Build provide_seq string ──────────────────────────────────────
+    print("[Step 1] Building provide_seq (fixed backbone positions)...")
+    provide_seq = build_provide_seq(
         residues=residues,
         cdr_ranges=cdr_ranges,
         anchor_residues=anchor_residues,
-        free_loop_overrides=free_loops,
         nanobody=args.nanobody,
     )
-    print(f"         Contig: [{contig_str}]")
+    n_fixed = len(provide_seq.split(",")) if provide_seq else 0
+    print(f"         {n_fixed} residue(s) marked as fixed "
+          f"(framework + anchors + antigen)")
 
     # ── Build CLI command ──────────────────────────────────────────────────
-    # Strip leading '--' that argparse may prepend to REMAINDER
     extra = [a for a in args.extra if a != "--"]
-
     cmd = build_rfdiffusion_command(
         input_pdb=input_pdb,
-        contig_str=contig_str,
+        target_pdb=target_pdb,
+        framework_pdb=framework_pdb,
+        provide_seq=provide_seq,
         hotspots=args.hotspots,
         output_prefix=output_prefix,
         partial_T=args.partial_T,
@@ -696,40 +772,36 @@ def main():
         extra_args=extra,
     )
 
-    # ── Print summary ──────────────────────────────────────────────────────
     print_summary(
         input_pdb=input_pdb,
         anchors=anchor_residues,
         cdr_ranges=cdr_ranges,
         free_loops=free_loops,
-        contig_str=contig_str,
+        provide_seq=provide_seq,
         cmd=cmd,
         partial_T=args.partial_T,
         num_designs=args.num_designs,
     )
 
-    # ── Write contig record ────────────────────────────────────────────────
     record_path = os.path.join(output_dir, f"{stem}_contig.json")
     with open(record_path, "w") as fh:
         json.dump({
-            "input_pdb": input_pdb,
-            "partial_T": args.partial_T,
-            "contig_string": contig_str,
-            "anchor_residues": [f"{c}{n}" for c, n in anchor_residues],
+            "input_pdb":        input_pdb,
+            "target_pdb":       target_pdb,
+            "framework_pdb":    framework_pdb,
+            "partial_T":        args.partial_T,
+            "provide_seq":      provide_seq,
+            "anchor_residues":  [f"{c}{n}" for c, n in anchor_residues],
             "free_loop_overrides": {k: list(v) for k, v in free_loops.items()},
-            "command": cmd,
+            "command":          cmd,
         }, fh, indent=2)
     print(f"[Step 1] Contig record saved to: {record_path}")
 
-    # ── Execute or dry-run ─────────────────────────────────────────────────
     if args.dry_run:
         print("[Step 1] DRY RUN — rfdiffusion not invoked.")
-        print("         To run for real, drop the --dry_run flag.")
         return
 
     print("[Step 1] Launching rfdiffusion...")
-    # Join into a single shell string so that the quoted Hydra overrides
-    # (e.g. 'contigmap.contigs=[...]') are passed correctly.
     shell_cmd = " ".join(cmd)
     print(f"         $ {shell_cmd}\n")
 

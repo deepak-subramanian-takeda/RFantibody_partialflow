@@ -100,7 +100,7 @@ try:
         build_contig_string,
         build_rfdiffusion_command,
         parse_free_loops,
-        read_residues as _read_residues_s1,
+        read_pdb_residues as _read_residues_s1,
         parse_hlt_remarks as _parse_hlt_remarks_s1,
     )
     from sequence_design_maturation import (
