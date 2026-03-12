@@ -87,6 +87,7 @@ class ResidueRecord:
     pdb_chain:   str   # 'H', 'L', or 'T'
     pdb_resnum:  int   # PDB residue number (may be non-sequential)
     seq_idx_1:   int   # 1-based sequential index within this chain
+    abs_idx:    int   # global pose index matching REMARK lines
 
 
 @dataclass
@@ -131,18 +132,9 @@ def parse_hlt_remarks(pdb_path: str) -> Dict[str, CdrRange]:
 
 
 def read_residues(pdb_path: str) -> List[ResidueRecord]:
-    """
-    Walk ATOM/HETATM lines and return one ResidueRecord per unique
-    (chain, resnum) in file order. Chains outside {H, L, T} are skipped.
-
-    The sequential index (seq_idx_1) is the per-chain 1-based counter that
-    ProteinMPNN uses in fixed_positions_jsonl — it counts from 1 regardless
-    of PDB residue numbers.
-    """
-    seen:     set = set()
-    records:  List[ResidueRecord] = []
-    counters: Dict[str, int] = defaultdict(int)  # per-chain sequential count
-
+    seen, records = set(), []
+    counters: Dict[str, int] = defaultdict(int)
+    abs_counter = 0
     with open(pdb_path) as fh:
         for line in fh:
             if not (line.startswith("ATOM") or line.startswith("HETATM")):
@@ -158,12 +150,13 @@ def read_residues(pdb_path: str) -> List[ResidueRecord]:
             if key not in seen:
                 seen.add(key)
                 counters[chain] += 1
+                abs_counter += 1
                 records.append(ResidueRecord(
                     pdb_chain=chain,
                     pdb_resnum=resnum,
                     seq_idx_1=counters[chain],
+                    abs_idx=abs_counter,        # ← store it here
                 ))
-
     return records
 
 
@@ -243,20 +236,13 @@ def compute_fixed_positions(
         for abs_idx in range(r.start, r.end + 1):
             abs_to_cdr[abs_idx] = name
 
-    # Build an ordered list of (record, absolute_idx) for H/L residues
-    abs_idx = 0
-    abs_indexed: List[Tuple[ResidueRecord, int]] = []
-    for rec in records:
-        abs_idx += 1
-        abs_indexed.append((rec, abs_idx))
-
     fixed: Dict[str, List[int]] = {ch: [] for ch in DESIGNABLE_CHAINS}
-
-    for rec, a_idx in abs_indexed:
+    
+    # Build an ordered list of (record, absolute_idx) for H/L residues
+    for rec in records:
         if rec.pdb_chain not in DESIGNABLE_CHAINS:
             continue
-
-        cdr_name = abs_to_cdr.get(a_idx)
+        cdr_name = abs_to_cdr.get(rec.abs_idx)
 
         if cdr_name is None:
             # Framework residue — always fix
@@ -523,6 +509,7 @@ def process_pdb(
 def run_proteinmpnn(
     input_dir:        str,
     output_dir:       str,
+    original_hlt_pdb: str,
     chain_id_jsonl:   str,
     fixed_pos_jsonl:  str,
     loops:            str,
@@ -580,7 +567,7 @@ def run_proteinmpnn(
         # ── Step 2b: rebuild JSONL records keyed by THIS PDB's stem ──────
         try:
             records    = read_residues(working_pdb)
-            cdr_ranges = parse_hlt_remarks(working_pdb)
+            cdr_ranges = parse_hlt_remarks(original_hlt_pdb)
             pdb_to_seq = build_pdb_to_seq_map(records)
 
             if not cdr_ranges:
@@ -751,6 +738,8 @@ def parse_args() -> argparse.Namespace:
                         "e.g. 'H1,H2,H3' (nanobody) or "
                         "'H1,H2,H3,L1,L2,L3' (scFv). "
                         "(default: H1,H2,H3)")
+    p.add_argument("--original_hlt_pdb", default="",
+                    help="Original HLT PDB for parsing REMARKs against")
     p.add_argument("--num_seqs", "-n", type=int, default=4,
                    help="Sequences per backbone structure (default: 4)")
     p.add_argument("--temperature", "-t", type=float, default=0.1,
@@ -776,6 +765,7 @@ def main() -> None:
     input_dir  = str(Path(args.input_dir).resolve())
     anchors_json = str(Path(args.anchors).resolve())
     output_dir = str(Path(args.output_dir).resolve())
+    original_hlt_pdb = str(Path(args.original_hlt_pdb).resolve())
     os.makedirs(output_dir, exist_ok=True)
 
     # Parse loop list
@@ -874,6 +864,7 @@ def main() -> None:
     chain_id_jsonl=chain_id_path,
     fixed_pos_jsonl=fixed_pos_path,
     loops=args.loops,
+    original_hlt_pdb=original_hlt_pdb,
     num_seqs=args.num_seqs,
     temperature=args.temperature,
     extra_args=extra,

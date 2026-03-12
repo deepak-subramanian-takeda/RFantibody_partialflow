@@ -27,6 +27,7 @@ import sys
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+import numpy as np
 
 # ---------------------------------------------------------------------------
 # Data structures
@@ -258,13 +259,18 @@ def build_contig_string(
         return "/".join(tokens)
 
     h_seg = chain_to_segments(h_residues)
-    t_seg = chain_to_segments(t_residues)
+    if t_residues:
+        t_first = t_residues[0]
+        t_last  = t_residues[-1]
+        t_seg   = f"{CHAIN_T}{t_first.pdb_resnum}-{t_last.pdb_resnum}"
+    else:
+        t_seg = ""
 
     if nanobody or not l_residues:
-        return f"{h_seg}/0 {t_seg}"
+        return f"{h_seg}/0 {t_seg}" if t_seg else h_seg
     else:
         l_seg = chain_to_segments(l_residues)
-        return f"{h_seg}/0 {l_seg}/0 {t_seg}"
+        return f"{h_seg}/0 {l_seg}/0 {t_seg}" if t_seg else f"{h_seg}/0 {l_seg}"
 
 
 def _cdr_with_anchors(
@@ -318,7 +324,7 @@ def _cdr_with_anchors(
 
 
 # ---------------------------------------------------------------------------
-# NEW: Build provide_seq string from anchor + framework residues
+# 3. Build provide_seq string from anchor + framework residues
 # ---------------------------------------------------------------------------
 
 def build_provide_seq(
@@ -327,40 +333,8 @@ def build_provide_seq(
     anchor_residues: List[Tuple[str, int]],
     nanobody: bool = False,
 ) -> str:
-    """
-    Build the contigmap.provide_seq list that tells RFdiffusion to treat
-    certain residues as fully resolved (sequence AND backbone fixed) during
-    the reverse diffusion trajectory.
-
-    We include:
-      - All framework residues on chains H/L (they are already fixed as motif
-        segments in the contig string, but provide_seq reinforces backbone
-        fixation under noise).
-      - All anchor residues (the primary target of this fix).
-      - All target chain T residues (antigen — always fixed).
-
-    The provide_seq format is a comma-separated list of pose indices
-    (1-indexed, Rosetta-style absolute across the whole pose):
-        contigmap.provide_seq=[1,2,3,7,8,45]
-
-    Parameters
-    ----------
-    residues
-        Full ordered residue list from read_pdb_residues().
-    cdr_ranges
-        CDR name -> CdrRange from parse_hlt_remarks().
-    anchor_residues
-        (chain, resnum) pairs to fix; from load_anchors().
-    nanobody
-        If True, skip L-chain.
-
-    Returns
-    -------
-    Comma-separated string of pose indices, e.g. "1,2,3,7,8,45,46,47"
-    """
     anchor_set = set(anchor_residues)
 
-    # Build a set of ALL pose indices that fall inside any CDR
     cdr_pose_indices: set = set()
     for r in cdr_ranges.values():
         for idx in range(r.start, r.end + 1):
@@ -370,24 +344,20 @@ def build_provide_seq(
 
     for r in residues:
         if r.pdb_chain == CHAIN_T:
-            # Antigen: always fixed
             fixed_pose_indices.append(r.pose_idx)
         elif r.pdb_chain in (CHAIN_H, CHAIN_L):
             if nanobody and r.pdb_chain == CHAIN_L:
                 continue
-            # Framework residue (not in any CDR): always fixed
             if r.pose_idx not in cdr_pose_indices:
                 fixed_pose_indices.append(r.pose_idx)
-            # CDR residue that is an anchor: fixed
             elif (r.pdb_chain, r.pdb_resnum) in anchor_set:
                 fixed_pose_indices.append(r.pose_idx)
-            # Non-anchor CDR residue: freely diffused — NOT added
 
     return ",".join(str(i) for i in sorted(fixed_pose_indices))
 
 
 # ---------------------------------------------------------------------------
-# 3. Parse free-loop overrides
+# 4. Parse free-loop overrides
 # ---------------------------------------------------------------------------
 
 def parse_free_loops(spec: str) -> Dict[str, Tuple[int, int]]:
@@ -414,7 +384,7 @@ def parse_free_loops(spec: str) -> Dict[str, Tuple[int, int]]:
 
 
 # ---------------------------------------------------------------------------
-# 4. Load anchor data from Step 0 JSON
+# 5. Load anchor data from Step 0 JSON
 # ---------------------------------------------------------------------------
 
 def load_anchors(json_path: str) -> List[Tuple[str, int]]:
@@ -430,44 +400,16 @@ def load_anchors(json_path: str) -> List[Tuple[str, int]]:
             print(f"[WARN] Cannot parse anchor residue '{entry}', skipping.")
     return anchors
 
+
+# ---------------------------------------------------------------------------
+# 6. Mask anchor REMARK lines
+# ---------------------------------------------------------------------------
+
 def mask_anchors_in_hlt(
     input_pdb:       str,
     anchor_residues: List[Tuple[str, int]],
     out_path:        str,
 ) -> str:
-    """
-    Write a copy of input_pdb to out_path where HLT REMARK PDBinfo-LABEL
-    lines for anchor residues have been removed.
-
-    How AbSampler uses REMARK lines
-    --------------------------------
-    AbSampler.from_HLT() calls HLT_pdb_parser() which reads
-    REMARK PDBinfo-LABEL lines to build loop_masks — boolean arrays that
-    mark which residues belong to each CDR loop.  These loop_masks directly
-    become the diffusion_mask: True = diffuse (free), False = keep fixed.
-
-    Residues NOT annotated by any REMARK line are treated as framework and
-    held fixed during partial diffusion.  By removing the REMARK lines for
-    anchor residues, we demote them from "CDR / diffusible" to "framework /
-    fixed", which is exactly what we want.
-
-    The anchor residues identified by Step 0 are specified as absolute
-    pose indices in the REMARK lines (e.g. "REMARK PDBinfo-LABEL:  105 H3").
-    We need to convert (chain, pdb_resnum) anchor pairs to absolute pose
-    indices to know which REMARK lines to drop.
-
-    Parameters
-    ----------
-    input_pdb        : HLT-annotated complex PDB (Step 0 / original input)
-    anchor_residues  : list of (chain, pdb_resnum) pairs from Step 0 JSON
-    out_path         : path to write the modified PDB
-
-    Returns
-    -------
-    out_path
-    """
-    # Build (chain, pdb_resnum) -> absolute_pose_index mapping
-    # Absolute index = 1-based sequential count across ALL chains in H/L/T order
     seen = set()
     pose_idx = 0
     resnum_to_abs: Dict[Tuple[str, int], int] = {}
@@ -489,7 +431,6 @@ def mask_anchors_in_hlt(
                 pose_idx += 1
                 resnum_to_abs[key] = pose_idx
 
-    # Build set of absolute indices to suppress
     anchor_abs_indices: set = set()
     for chain, resnum in anchor_residues:
         abs_idx = resnum_to_abs.get((chain, resnum))
@@ -499,11 +440,9 @@ def mask_anchors_in_hlt(
             print(f"  [WARN] Anchor {chain}{resnum} not found in PDB — "
                   "cannot remove from REMARK lines.")
 
-    # REMARK line format: "REMARK PDBinfo-LABEL:  <abs_idx> <CDR_NAME>"
     remark_re = re.compile(
         r"^REMARK\s+PDBinfo-LABEL:\s+(\d+)\s+(H[123]|L[123])\s*$"
     )
-
     out_lines = []
     n_removed = 0
 
@@ -513,7 +452,7 @@ def mask_anchors_in_hlt(
                 m = remark_re.match(line.strip())
                 if m and int(m.group(1)) in anchor_abs_indices:
                     n_removed += 1
-                    continue   # drop this REMARK line
+                    continue
             out_lines.append(line)
 
     with open(out_path, "w") as fh:
@@ -522,18 +461,209 @@ def mask_anchors_in_hlt(
     print(f"  [mask_anchors] Removed {n_removed} REMARK line(s) for "
           f"{len(anchor_abs_indices)} anchor position(s)")
     print(f"  [mask_anchors] Modified PDB written to: {out_path}")
-
     return out_path
 
+
 # ---------------------------------------------------------------------------
-# 5. Build rfdiffusion CLI command
+# 7. Coordinate transform helpers
+# ---------------------------------------------------------------------------
+
+def _read_ca_coords(
+    pdb_path: str,
+    chain:    str,
+    resnums:  Optional[set] = None,
+) -> Tuple[List[int], np.ndarray]:
+    coords: Dict[int, np.ndarray] = {}
+    with open(pdb_path) as fh:
+        for line in fh:
+            if not (line.startswith("ATOM") or line.startswith("HETATM")):
+                continue
+            if line[21] != chain:
+                continue
+            if line[12:16].strip() != "CA":
+                continue
+            try:
+                resnum = int(line[22:26].strip())
+                x = float(line[30:38].strip())
+                y = float(line[38:46].strip())
+                z = float(line[46:54].strip())
+            except ValueError:
+                continue
+            if resnums is None or resnum in resnums:
+                coords[resnum] = np.array([x, y, z], dtype=np.float64)
+
+    ordered = sorted(coords.keys())
+    if not ordered:
+        return [], np.zeros((0, 3), dtype=np.float64)
+    return ordered, np.array([coords[r] for r in ordered], dtype=np.float64)
+
+
+def _estimate_rfdiffusion_transform(
+    input_pdb:  str,
+    output_pdb: str,
+    ref_chain:  str = "H",
+) -> Tuple[np.ndarray, np.ndarray]:
+    in_resnums,  in_coords  = _read_ca_coords(input_pdb,  ref_chain)
+    out_resnums, out_coords = _read_ca_coords(output_pdb, ref_chain)
+
+    common = sorted(set(in_resnums) & set(out_resnums))
+    if len(common) < 3:
+        raise ValueError(
+            f"Too few common Cα atoms on chain {ref_chain} to estimate "
+            f"transform ({len(common)} found, need ≥ 3)."
+        )
+
+    in_idx  = [in_resnums.index(r)  for r in common]
+    out_idx = [out_resnums.index(r) for r in common]
+    P = in_coords[in_idx]
+    Q = out_coords[out_idx]
+
+    p_mean = P.mean(axis=0)
+    q_mean = Q.mean(axis=0)
+    P_c = P - p_mean
+    Q_c = Q - q_mean
+
+    H = P_c.T @ Q_c
+    U, _, Vt = np.linalg.svd(H)
+    d = np.linalg.det(Vt.T @ U.T)
+    D = np.diag([1.0, 1.0, d])
+    R = Vt.T @ D @ U.T
+    t = q_mean - p_mean @ R.T
+
+    P_aligned = P @ R.T + t
+    rmsd = float(np.sqrt(((P_aligned - Q) ** 2).sum(axis=1).mean()))
+    if rmsd > 1.0:
+        print(f"  [WARN] _estimate_rfdiffusion_transform: alignment RMSD "
+              f"= {rmsd:.3f} Å on chain {ref_chain} — transform may be "
+              f"unreliable. Check that framework residues are truly fixed.")
+
+    return R, t
+
+
+def _apply_transform_to_line(line: str, R: np.ndarray, t: np.ndarray) -> str:
+    try:
+        x = float(line[30:38].strip())
+        y = float(line[38:46].strip())
+        z = float(line[46:54].strip())
+    except ValueError:
+        return line
+
+    xyz     = np.array([x, y, z], dtype=np.float64)
+    xyz_new = xyz @ R.T + t
+
+    new_line = (line[:30]
+                + f"{xyz_new[0]:8.3f}"
+                + f"{xyz_new[1]:8.3f}"
+                + f"{xyz_new[2]:8.3f}"
+                + line[54:])
+    return new_line if new_line.endswith("\n") else new_line + "\n"
+
+
+# ---------------------------------------------------------------------------
+# 8. Graft original T-chain sequence onto RFdiffusion outputs
+# ---------------------------------------------------------------------------
+
+def graft_target_sequence(
+    rfdiffusion_pdb: str,
+    original_target: str,
+    input_pdb:       str,
+    out_path:        str,
+    target_chain:    str = CHAIN_T,
+    source_chain:    str = CHAIN_T,
+    ref_chain:       str = CHAIN_H,
+) -> str:
+    try:
+        R, t = _estimate_rfdiffusion_transform(
+            input_pdb=input_pdb,
+            output_pdb=rfdiffusion_pdb,
+            ref_chain=ref_chain,
+        )
+        print(f"  [graft_target_sequence] Transform estimated successfully")
+    except ValueError as e:
+        print(f"  [WARN] Cannot estimate transform: {e} — using identity.")
+        R = np.eye(3)
+        t = np.zeros(3)
+
+    # Read ALL original records for source_chain, keyed by resnum
+    original_records: Dict[int, List[str]] = {}
+    original_resnum_order: List[int] = []   # preserve file order for appending
+    with open(original_target) as fh:
+        for line in fh:
+            if not (line.startswith("ATOM") or line.startswith("HETATM")):
+                continue
+            if line[21] != source_chain:
+                continue
+            try:
+                resnum = int(line[22:26].strip())
+            except ValueError:
+                continue
+            line = _apply_transform_to_line(line, R, t)
+            if source_chain != target_chain:
+                line = line[:21] + target_chain + line[22:]
+            if resnum not in original_records:
+                original_resnum_order.append(resnum)
+            original_records.setdefault(resnum, []).append(line)
+
+    if not original_records:
+        print(f"  [WARN] No chain '{source_chain}' residues in {original_target}")
+        import shutil
+        shutil.copy(rfdiffusion_pdb, out_path)
+        return out_path
+
+    out_lines:        List[str] = []
+    inserted_resnums: set       = set()
+    n_replaced = 0
+
+    # Replace T-chain records that RFdiffusion wrote with original full-atom records
+    with open(rfdiffusion_pdb) as fh:
+        for line in fh:
+            if line[:6].strip() in {"END", "MASTER"}:
+                continue   # drop — we write END ourselves after appending
+            if ((line.startswith("ATOM") or line.startswith("HETATM"))
+                    and line[21] == target_chain):
+                try:
+                    resnum = int(line[22:26].strip())
+                except ValueError:
+                    out_lines.append(line)
+                    continue
+                if resnum not in inserted_resnums:
+                    inserted_resnums.add(resnum)
+                    orig = original_records.get(resnum)
+                    if orig:
+                        out_lines.extend(orig)
+                        n_replaced += 1
+                    else:
+                        out_lines.append(line)
+            else:
+                out_lines.append(line)
+
+    # Append any original T-chain residues that RFdiffusion omitted entirely
+    n_appended = 0
+    for resnum in original_resnum_order:
+        if resnum not in inserted_resnums:
+            out_lines.extend(original_records[resnum])
+            n_appended += 1
+
+    out_lines.append("END\n")
+
+    with open(out_path, "w") as fh:
+        fh.writelines(out_lines)
+
+    print(f"  [graft_target_sequence] Replaced {n_replaced}, "
+          f"appended {n_appended} missing residue(s) on chain {target_chain}")
+    return out_path
+
+
+# ---------------------------------------------------------------------------
+# 9. Build rfdiffusion CLI command
 # ---------------------------------------------------------------------------
 
 def build_rfdiffusion_command(
     input_pdb:      str,
     target_pdb:     str,
     framework_pdb:  str,
-    provide_seq:    str,       # ← NEW: comma-separated fixed pose indices
+    contig_string:  str,
+    provide_seq:    str,
     hotspots:       str,
     output_prefix:  str,
     partial_T:      int,
@@ -554,7 +684,11 @@ def build_rfdiffusion_command(
             break
 
     if inference_script is None:
-        inference_script = os.environ.get("RFANTIBODY_INFERENCE_SCRIPT", "/home/pymc/Deepak/RFantibody_partialflow/src/rfantibody/rfdiffusion/rfdiffusion_inference.py")
+        inference_script = os.environ.get(
+            "RFANTIBODY_INFERENCE_SCRIPT",
+            "/home/pymc/Deepak/RFantibody_partialflow/src/rfantibody/"
+            "rfdiffusion/rfdiffusion_inference.py",
+        )
         if not inference_script or not os.path.isfile(inference_script):
             raise FileNotFoundError(
                 "Cannot locate rfdiffusion_inference.py. "
@@ -572,39 +706,35 @@ def build_rfdiffusion_command(
     if model_weights:
         cmd.append(f"inference.ckpt_override_path={model_weights}")
 
-    # ── KEY FIX: provide_seq locks anchor + framework + target backbone ──
-    # Without this, partial_T steps of added Gaussian noise shift the
-    # "fixed" motif segments away from their input coordinates.
-    # provide_seq instructs the model to keep these positions fully resolved
-    # throughout the reverse diffusion trajectory.
+    if contig_string:
+        cmd.append(f"'contigmap.contigs=[{contig_string}]'")
+
     if provide_seq:
         cmd.append(f"'contigmap.provide_seq=[{provide_seq}]'")
 
-    # Partial diffusion noise depth
     cmd.append(f"diffuser.partial_T={partial_T}")
 
-    # Hotspot residues
     if hotspots:
         cmd.append(f"'ppi.hotspot_res=[{hotspots}]'")
 
     cmd.extend(extra_args)
-
     return cmd
 
 
 # ---------------------------------------------------------------------------
-# 6. Summary / dry-run printer
+# 10. Summary / dry-run printer
 # ---------------------------------------------------------------------------
 
 def print_summary(
-    input_pdb:   str,
-    anchors:     List[Tuple[str, int]],
-    cdr_ranges:  Dict[str, CdrRange],
-    free_loops:  Dict[str, Tuple[int, int]],
-    provide_seq: str,
-    cmd:         List[str],
-    partial_T:   int,
-    num_designs: int,
+    input_pdb:     str,
+    anchors:       List[Tuple[str, int]],
+    cdr_ranges:    Dict[str, CdrRange],
+    free_loops:    Dict[str, Tuple[int, int]],
+    contig_string: str,
+    provide_seq:   str,
+    cmd:           List[str],
+    partial_T:     int,
+    num_designs:   int,
 ):
     print("\n" + "=" * 70)
     print("  Step 1 — Partial Diffusion Maturation")
@@ -634,7 +764,9 @@ def print_summary(
         for name, (lo, hi) in sorted(free_loops.items()):
             print(f"    {name}: {lo}–{hi}")
 
-    # Show how many positions are locked by provide_seq
+    print()
+    print(f"  Contig string : {contig_string}")
+
     n_fixed = len(provide_seq.split(",")) if provide_seq else 0
     print()
     print(f"  provide_seq   : {n_fixed} residue(s) fixed "
@@ -648,7 +780,7 @@ def print_summary(
 
 
 # ---------------------------------------------------------------------------
-# 7. CLI entrypoint
+# 11. CLI entrypoint
 # ---------------------------------------------------------------------------
 
 def parse_args() -> argparse.Namespace:
@@ -672,6 +804,12 @@ def parse_args() -> argparse.Namespace:
     p.add_argument("--nanobody", action="store_true")
     p.add_argument("--name", default="")
     p.add_argument("--dry_run", action="store_true")
+    # ── target_chain: chain ID of the antigen in the input HLT complex ──
+    p.add_argument(
+        "--target_chain", default="T",
+        help="Chain ID of the antigen in the input PDB (default: T). "
+             "Used when reading original coordinates for grafting.",
+    )
     p.add_argument("extra", nargs=argparse.REMAINDER)
 
     return p.parse_args()
@@ -727,14 +865,19 @@ def main():
     print(f"[Step 1] Loading anchor residues from {anchors_json}")
     anchor_residues = load_anchors(anchors_json)
 
+    # Save original input path before reassignment — needed for grafting
+    original_input_pdb = input_pdb
+
     # Mask anchor positions in HLT REMARK lines so AbSampler treats them
     # as framework (fixed) rather than CDR (diffusible)
-    masked_pdb_path = os.path.join(output_dir, f"{stem}_anchors_masked.pdb")
-    input_pdb = mask_anchors_in_hlt(
+    masked_pdb = os.path.join(output_dir, f"{stem}_anchors_masked.pdb")
+    masked_pdb = mask_anchors_in_hlt(
         input_pdb=input_pdb,
         anchor_residues=anchor_residues,
-        out_path=masked_pdb_path,
+        out_path=masked_pdb,
     )
+    # Reassign input_pdb to masked copy for RFdiffusion invocation
+    input_pdb = masked_pdb
     print(f"[Step 1] Using anchor-masked PDB: {input_pdb}")
     print(f"         {len(anchor_residues)} anchor(s): "
           f"{[f'{c}{n}' for c, n in anchor_residues]}")
@@ -745,7 +888,6 @@ def main():
     except ValueError as e:
         sys.exit(f"[ERROR] {e}")
 
-    # ── NEW: Build provide_seq string ──────────────────────────────────────
     print("[Step 1] Building provide_seq (fixed backbone positions)...")
     provide_seq = build_provide_seq(
         residues=residues,
@@ -757,12 +899,22 @@ def main():
     print(f"         {n_fixed} residue(s) marked as fixed "
           f"(framework + anchors + antigen)")
 
-    # ── Build CLI command ──────────────────────────────────────────────────
+    print("[Step 1] Building contig string...")
+    contig_string = build_contig_string(
+        residues=residues,
+        cdr_ranges=cdr_ranges,
+        anchor_residues=anchor_residues,
+        free_loop_overrides=free_loops,
+        nanobody=args.nanobody,
+    )
+    print(f"         {contig_string}")
+
     extra = [a for a in args.extra if a != "--"]
     cmd = build_rfdiffusion_command(
-        input_pdb=input_pdb,
+        input_pdb=input_pdb,           # masked PDB — inference.input_pdb
         target_pdb=target_pdb,
         framework_pdb=framework_pdb,
+        contig_string=contig_string,
         provide_seq=provide_seq,
         hotspots=args.hotspots,
         output_prefix=output_prefix,
@@ -777,6 +929,7 @@ def main():
         anchors=anchor_residues,
         cdr_ranges=cdr_ranges,
         free_loops=free_loops,
+        contig_string=contig_string,
         provide_seq=provide_seq,
         cmd=cmd,
         partial_T=args.partial_T,
@@ -786,14 +939,16 @@ def main():
     record_path = os.path.join(output_dir, f"{stem}_contig.json")
     with open(record_path, "w") as fh:
         json.dump({
-            "input_pdb":        input_pdb,
-            "target_pdb":       target_pdb,
-            "framework_pdb":    framework_pdb,
-            "partial_T":        args.partial_T,
-            "provide_seq":      provide_seq,
-            "anchor_residues":  [f"{c}{n}" for c, n in anchor_residues],
+            "original_input_pdb":  original_input_pdb,
+            "masked_input_pdb":    input_pdb,
+            "target_pdb":          target_pdb,
+            "framework_pdb":       framework_pdb,
+            "partial_T":           args.partial_T,
+            "contig_string":       contig_string,
+            "provide_seq":         provide_seq,
+            "anchor_residues":     [f"{c}{n}" for c, n in anchor_residues],
             "free_loop_overrides": {k: list(v) for k, v in free_loops.items()},
-            "command":          cmd,
+            "command":             cmd,
         }, fh, indent=2)
     print(f"[Step 1] Contig record saved to: {record_path}")
 
@@ -808,6 +963,24 @@ def main():
     result = subprocess.run(shell_cmd, shell=True)
     if result.returncode != 0:
         sys.exit(f"[ERROR] rfdiffusion exited with code {result.returncode}")
+
+    # Graft original T-chain sequence and coordinates onto every output PDB
+    print("\n[Step 1] Grafting original target sequence onto RFdiffusion outputs...")
+    output_pdbs = sorted(Path(output_dir).glob(
+        f"{Path(output_prefix).name}*.pdb"
+    ))
+    if not output_pdbs:
+        print("  [WARN] No output PDBs found to graft — check output_prefix.")
+    for out_pdb in output_pdbs:
+        graft_target_sequence(
+            rfdiffusion_pdb=str(out_pdb),
+            original_target=original_input_pdb,  # unmasked original — has correct T coords
+            input_pdb=masked_pdb,                 # masked PDB used as inference.input_pdb
+            out_path=str(out_pdb),
+            target_chain=CHAIN_T,
+            source_chain=args.target_chain,       # e.g. 'C' if antigen was chain C
+            ref_chain=CHAIN_H,
+        )
 
     print(f"\n[Step 1] Complete. Outputs written to: {output_dir}/")
     print(f"         Feed these PDBs into Step 2 (ProteinMPNN) using:")

@@ -264,66 +264,31 @@ def thread_sequence_onto_pdb(
     with open(out_path, "w") as fh:
         fh.writelines(out_lines)
 
-def restore_hlt_remarks(
-    pdb_path:      str,
-    original_pdb:  str,
-    out_path:      str,
-    ) -> str:
-    """
-    Write a copy of pdb_path to out_path where all REMARK PDBinfo-LABEL
-    lines are replaced with those from original_pdb.
-
-    This is needed because the anchor-masking step in partial_diffusion_
-    maturation.py removes REMARK lines for anchor residues to prevent
-    AbSampler from diffusing them.  Those gaps propagate through rfdiffusion
-    and into the grafted PDBs, causing RF2's CDR parser to raise
-    "CDRs are discontiguous" when it encounters the missing indices.
-
-    The original input PDB (e.g. 1n8z_hlt.pdb) has complete, contiguous
-    REMARK annotations for all CDR loops.  We restore those here so RF2
-    gets a valid HLT file while the backbone coordinates and designed
-    sequences from the threaded PDB are preserved.
-
-    Parameters
-    ----------
-    pdb_path     : threaded PDB from prepare_rf2_inputs (has designed seqs
-                    but incomplete REMARK lines)
-    original_pdb : the original HLT complex used as Step 1 input (has
-                    complete REMARK lines)
-    out_path     : path to write the restored PDB
-    """
-    # Read complete REMARK PDBinfo-LABEL lines from original
+def restore_hlt_remarks(pdb_path, original_pdb, out_path):
     original_remarks = []
     with open(original_pdb) as fh:
         for line in fh:
             if re.match(r"^REMARK\s+PDBinfo-LABEL:", line):
-                original_remarks.append(line if line.endswith("\n")
-                                        else line + "\n")
+                original_remarks.append(line if line.endswith("\n") else line + "\n")
 
-    # Copy pdb_path, replacing any existing REMARK PDBinfo-LABEL lines
-    # with the complete set from original_pdb
     out_lines = []
     remarks_inserted = False
-
     with open(pdb_path) as fh:
         for line in fh:
             if re.match(r"^REMARK\s+PDBinfo-LABEL:", line):
-                # Skip existing (possibly incomplete) REMARK lines;
-                # insert the full set once at the position of the first one
                 if not remarks_inserted:
                     out_lines.extend(original_remarks)
                     remarks_inserted = True
-                # else: discard subsequent incomplete REMARK lines
+                # Always skip the existing incomplete line (don't conditionally drop)
             else:
                 out_lines.append(line)
 
-    # If no REMARK lines existed at all, insert before first ATOM record
+    # Insert before first ATOM if no REMARK block existed
     if not remarks_inserted:
         final_lines = []
         inserted = False
         for line in out_lines:
-            if not inserted and (line.startswith("ATOM") or
-                                    line.startswith("HETATM")):
+            if not inserted and (line.startswith("ATOM") or line.startswith("HETATM")):
                 final_lines.extend(original_remarks)
                 inserted = True
             final_lines.append(line)
@@ -331,7 +296,6 @@ def restore_hlt_remarks(
 
     with open(out_path, "w") as fh:
         fh.writelines(out_lines)
-
     return out_path
 
 
