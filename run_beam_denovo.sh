@@ -27,10 +27,10 @@ PYTHON="${RFANTIBODY_ROOT}/.venv/bin/python"
 SCRIPT="${RFANTIBODY_ROOT}/beam_denovo_maturation.py"
 
 # ── Required inputs ───────────────────────────────────────────────────────────
-INPUT_PDB="/home/pymc/Deepak/RFantibody_partialflow/scripts/examples/example_inputs/5y2l_hlt_B.pdb"          # HLT-formatted complex
-ANCHORS_JSON="/home/pymc/Deepak/RFantibody_partialflow/5y2l_B_anchors/5y2l_hlt_B_anchors.json"      # Step 0 anchor output
-OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/5y2l_B_beam_denovo_width16_rounds4"
-HOTSPOTS="T49,T42,T53,T19,T38,T20"                           # e.g. "T305,T456"
+INPUT_PDB="/home/pymc/Deepak/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb"          # HLT-formatted complex
+ANCHORS_JSON="/home/pymc/Deepak/RFantibody_partialflow/1n8z_anchors/1n8z_hlt_anchors.json"      # Step 0 anchor output
+OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4"
+HOTSPOTS="T570,T571,T572,T573"                           # e.g. "T305,T456"
 MODEL_WEIGHTS="${RFANTIBODY_ROOT}/weights/RFdiffusion_Ab.pt"
 MPNN_WEIGHTS="${THERMOMPNN_ROOT}/vanilla_model_weights/v_48_020.pt"
 
@@ -50,7 +50,7 @@ W_BSA=0.5
 FREE_LOOPS=""          # e.g. "H3:5-13" or leave empty
 NANOBODY_FLAG=""       # set to "--nanobody" for nanobody design
 DEVICE="cuda"
-RUN_NAME="beam_run_5y2l_B"     # used for log/pid file names
+RUN_NAME="beam_run_1n8z"     # used for log/pid file names
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Internal — do not edit below here
