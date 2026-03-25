@@ -1,0 +1,364 @@
+/home/pymc/Deepak/RFantibody_partialflow/.venv/lib/python3.10/site-packages/Bio/pairwise2.py:278: BiopythonDeprecationWarning: Bio.pairwise2 has been deprecated, and we intend to remove it in a future release of Biopython. As an alternative, please consider using Bio.Align.PairwiseAligner as a replacement, and contact the Biopython developers if you still need the Bio.pairwise2 module.
+  warnings.warn(
+[ProteinMPNN] Found protein_mpnn_utils.py at: /home/pymc/Deepak/RFantibody_partialflow/src/rfantibody/proteinmpnn/model
+[FK] Parsing HLT: /home/pymc/Deepak/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb
+[FK] 6 anchor(s): ['L214', 'L216', 'L152', 'L153', 'H57', 'H105']
+[FK] Contig: H1-25/5-9/H33-51/4-8/H57-57/H58-98/5-8/H105-105/4-5/H110-122/0 L123-145/6-9/L152-153/3-4/L157-171/5-9/L179-210/3-5/L214-214/1-2/L216-216/3-5/L220-232/0 T1-607
+[FK] Loading ThermoMPNN...
+[FK] Loading ProteinMPNN...
+[FK] Annealing schedule (linear): ['0.250', '0.500', '0.750', '1.000']
+[FK] Initialising 16 trajectories...
+
+[FK] ── Round 1/4  γ_r=0.250 ──
+  t000: rfdiffusion...     [INFO] Framework alignment RMSD: 0.842 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t001: rfdiffusion...     [INFO] Framework alignment RMSD: 0.748 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t002: rfdiffusion...     [INFO] Framework alignment RMSD: 0.780 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t003: rfdiffusion...     [INFO] Framework alignment RMSD: 0.674 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t004: rfdiffusion...     [INFO] Framework alignment RMSD: 0.808 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t005: rfdiffusion...     [INFO] Framework alignment RMSD: 1.521 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t006: rfdiffusion...     [INFO] Framework alignment RMSD: 0.911 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t007: rfdiffusion...     [INFO] Framework alignment RMSD: 1.545 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t008: rfdiffusion...     [INFO] Framework alignment RMSD: 0.778 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t009: rfdiffusion...     [INFO] Framework alignment RMSD: 0.725 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t010: rfdiffusion...     [INFO] Framework alignment RMSD: 1.674 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t011: rfdiffusion...     [INFO] Framework alignment RMSD: 1.394 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t012: rfdiffusion...     [INFO] Framework alignment RMSD: 1.467 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t013: rfdiffusion...     [INFO] Framework alignment RMSD: 0.860 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t014: rfdiffusion...     [INFO] Framework alignment RMSD: 0.630 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t015: rfdiffusion...     [INFO] Framework alignment RMSD: 0.890 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  Scoring 16 trajectories...
+    t000  score=-0.884  thermo=-0.884  bsa=0  log_w=-0.221
+    t001  score=-0.818  thermo=-0.818  bsa=0  log_w=-0.204
+    t002  score=-0.884  thermo=-0.884  bsa=0  log_w=-0.221
+    t003  score=-0.764  thermo=-0.764  bsa=0  log_w=-0.191
+    t004  score=-0.909  thermo=-0.909  bsa=0  log_w=-0.227
+    t005  score=-1.035  thermo=-1.035  bsa=0  log_w=-0.259
+    t006  score=-0.796  thermo=-0.796  bsa=0  log_w=-0.199
+    t007  score=-0.870  thermo=-0.870  bsa=0  log_w=-0.217
+    t008  score=-0.795  thermo=-0.795  bsa=0  log_w=-0.199
+    t009  score=-0.947  thermo=-0.947  bsa=0  log_w=-0.237
+    t010  score=-0.953  thermo=-0.953  bsa=0  log_w=-0.238
+    t011  score=-0.880  thermo=-0.880  bsa=0  log_w=-0.220
+    t012  score=-0.878  thermo=-0.878  bsa=0  log_w=-0.219
+    t013  score=-0.850  thermo=-0.850  bsa=0  log_w=-0.212
+    t014  score=-0.953  thermo=-0.953  bsa=0  log_w=-0.238
+    t015  score=-0.941  thermo=-0.941  bsa=0  log_w=-0.235
+  ESS = 16.0 / 16  (max_w=0.064  min_w=0.060)
+
+[FK] ── Round 2/4  γ_r=0.500 ──
+  t000: rfdiffusion...     [INFO] Framework alignment RMSD: 0.845 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t001: rfdiffusion...     [INFO] Framework alignment RMSD: 0.906 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t002: rfdiffusion...     [INFO] Framework alignment RMSD: 0.844 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t003: rfdiffusion...     [INFO] Framework alignment RMSD: 0.823 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t004: rfdiffusion...     [INFO] Framework alignment RMSD: 0.776 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t005: rfdiffusion...     [INFO] Framework alignment RMSD: 0.957 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t006: rfdiffusion...     [INFO] Framework alignment RMSD: 0.831 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t007: rfdiffusion...     [INFO] Framework alignment RMSD: 1.436 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t008: rfdiffusion...     [INFO] Framework alignment RMSD: 0.763 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t009: rfdiffusion...     [INFO] Framework alignment RMSD: 0.725 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t010: rfdiffusion...     [INFO] Framework alignment RMSD: 1.486 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t011: rfdiffusion...     [INFO] Framework alignment RMSD: 1.434 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t012: rfdiffusion...     [INFO] Framework alignment RMSD: 1.648 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t013: rfdiffusion...     [INFO] Framework alignment RMSD: 0.712 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t014: rfdiffusion...     [INFO] Framework alignment RMSD: 0.703 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t015: rfdiffusion...     [INFO] Framework alignment RMSD: 0.878 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  Scoring 16 trajectories...
+    t000  score=-0.859  thermo=-0.859  bsa=0  log_w=-0.650
+    t001  score=-0.887  thermo=-0.887  bsa=0  log_w=-0.648
+    t002  score=-0.845  thermo=-0.845  bsa=0  log_w=-0.643
+    t003  score=-0.741  thermo=-0.741  bsa=0  log_w=-0.562
+    t004  score=-0.706  thermo=-0.706  bsa=0  log_w=-0.580
+    t005  score=-0.928  thermo=-0.928  bsa=0  log_w=-0.723
+    t006  score=-0.831  thermo=-0.831  bsa=0  log_w=-0.614
+    t007  score=-0.982  thermo=-0.982  bsa=0  log_w=-0.708
+    t008  score=-0.859  thermo=-0.859  bsa=0  log_w=-0.628
+    t009  score=-0.829  thermo=-0.829  bsa=0  log_w=-0.651
+    t010  score=-0.897  thermo=-0.897  bsa=0  log_w=-0.687
+    t011  score=-0.864  thermo=-0.864  bsa=0  log_w=-0.652
+    t012  score=-0.834  thermo=-0.834  bsa=0  log_w=-0.637
+    t013  score=-0.789  thermo=-0.789  bsa=0  log_w=-0.607
+    t014  score=-0.857  thermo=-0.857  bsa=0  log_w=-0.667
+    t015  score=-0.862  thermo=-0.862  bsa=0  log_w=-0.666
+  ESS = 16.0 / 16  (max_w=0.068  min_w=0.058)
+
+[FK] ── Round 3/4  γ_r=0.750 ──
+  t000: rfdiffusion...     [INFO] Framework alignment RMSD: 0.831 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t001: rfdiffusion...     [INFO] Framework alignment RMSD: 0.788 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t002: rfdiffusion...     [INFO] Framework alignment RMSD: 1.040 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t003: rfdiffusion...     [INFO] Framework alignment RMSD: 0.760 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t004: rfdiffusion...     [INFO] Framework alignment RMSD: 1.108 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t005: rfdiffusion...     [INFO] Framework alignment RMSD: 0.781 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t006: rfdiffusion...     [INFO] Framework alignment RMSD: 0.787 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t007: rfdiffusion...     [INFO] Framework alignment RMSD: 1.842 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t008: rfdiffusion...     [INFO] Framework alignment RMSD: 1.081 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t009: rfdiffusion...     [INFO] Framework alignment RMSD: 0.831 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t010: rfdiffusion...     [INFO] Framework alignment RMSD: 1.510 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t011: rfdiffusion...     [INFO] Framework alignment RMSD: 1.594 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t012: rfdiffusion...     [INFO] Framework alignment RMSD: 1.595 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t013: rfdiffusion...     [INFO] Framework alignment RMSD: 0.877 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t014: rfdiffusion...     [INFO] Framework alignment RMSD: 0.853 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t015: rfdiffusion...     [INFO] Framework alignment RMSD: 0.974 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  Scoring 16 trajectories...
+    t000  score=-0.732  thermo=-0.732  bsa=0  log_w=-1.200
+    t001  score=-0.834  thermo=-0.834  bsa=0  log_w=-1.273
+    t002  score=-0.861  thermo=-0.861  bsa=0  log_w=-1.289
+    t003  score=-0.832  thermo=-0.832  bsa=0  log_w=-1.186
+    t004  score=-0.807  thermo=-0.807  bsa=0  log_w=-1.185
+    t005  score=-0.847  thermo=-0.847  bsa=0  log_w=-1.358
+    t006  score=-0.799  thermo=-0.799  bsa=0  log_w=-1.213
+    t007  score=-0.896  thermo=-0.896  bsa=0  log_w=-1.380
+    t008  score=-0.795  thermo=-0.795  bsa=0  log_w=-1.224
+    t009  score=-0.835  thermo=-0.835  bsa=0  log_w=-1.277
+    t010  score=-0.880  thermo=-0.880  bsa=0  log_w=-1.347
+    t011  score=-0.807  thermo=-0.807  bsa=0  log_w=-1.257
+    t012  score=-0.736  thermo=-0.736  bsa=0  log_w=-1.188
+    t013  score=-0.862  thermo=-0.862  bsa=0  log_w=-1.253
+    t014  score=-0.726  thermo=-0.726  bsa=0  log_w=-1.211
+    t015  score=-0.786  thermo=-0.786  bsa=0  log_w=-1.256
+  ESS = 15.9 / 16  (max_w=0.067  min_w=0.055)
+
+[FK] ── Round 4/4  γ_r=1.000 ──
+  t000: rfdiffusion...     [INFO] Framework alignment RMSD: 1.035 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t001: rfdiffusion...     [INFO] Framework alignment RMSD: 0.794 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t002: rfdiffusion...     [INFO] Framework alignment RMSD: 1.587 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t003: rfdiffusion...     [INFO] Framework alignment RMSD: 0.854 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t004: rfdiffusion...     [INFO] Framework alignment RMSD: 0.982 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t005: rfdiffusion...     [INFO] Framework alignment RMSD: 0.843 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t006: rfdiffusion...     [INFO] Framework alignment RMSD: 0.833 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t007: rfdiffusion...     [INFO] Framework alignment RMSD: 2.012 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t008: rfdiffusion...     [INFO] Framework alignment RMSD: 0.705 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t009: rfdiffusion...     [INFO] Framework alignment RMSD: 0.812 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t010: rfdiffusion...     [INFO] Framework alignment RMSD: 1.574 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t011: rfdiffusion...     [INFO] Framework alignment RMSD: 1.662 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t012: rfdiffusion...     [INFO] Framework alignment RMSD: 1.566 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t013: rfdiffusion...     [INFO] Framework alignment RMSD: 0.765 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t014: rfdiffusion...     [INFO] Framework alignment RMSD: 0.816 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  t015: rfdiffusion...     [INFO] Framework alignment RMSD: 0.903 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+done
+  Scoring 16 trajectories...
+    t000  score=-0.837  thermo=-0.837  bsa=0  log_w=-2.036
+    t001  score=-0.921  thermo=-0.921  bsa=0  log_w=-2.194
+    t002  score=-0.889  thermo=-0.889  bsa=0  log_w=-2.178
+    t003  score=-0.845  thermo=-0.845  bsa=0  log_w=-2.030
+    t004  score=-0.894  thermo=-0.894  bsa=0  log_w=-2.079
+    t005  score=-0.729  thermo=-0.729  bsa=0  log_w=-2.087
+    t006  score=-0.841  thermo=-0.841  bsa=0  log_w=-2.055
+    t007  score=-0.788  thermo=-0.788  bsa=0  log_w=-2.169
+    t008  score=-0.833  thermo=-0.833  bsa=0  log_w=-2.057
+    t009  score=-0.688  thermo=-0.688  bsa=0  log_w=-1.965
+    t010  score=-0.872  thermo=-0.872  bsa=0  log_w=-2.219
+    t011  score=-0.756  thermo=-0.756  bsa=0  log_w=-2.013
+    t012  score=-0.924  thermo=-0.924  bsa=0  log_w=-2.112
+    t013  score=-0.789  thermo=-0.789  bsa=0  log_w=-2.042
+    t014  score=-0.893  thermo=-0.893  bsa=0  log_w=-2.105
+    t015  score=-0.891  thermo=-0.891  bsa=0  log_w=-2.146
+  ESS = 15.9 / 16  (max_w=0.071  min_w=0.055)
+
+[FK] Drawing 5 designs from FK-weighted distribution...
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_fk_denovo_traj16_rounds4/final_designs/fk_run_1n8z_fk_rank000_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 000  traj=007  log_w=-2.169  norm_w=0.0578  → fk_run_1n8z_fk_rank000_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_fk_denovo_traj16_rounds4/final_designs/fk_run_1n8z_fk_rank001_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 001  traj=008  log_w=-2.057  norm_w=0.0646  → fk_run_1n8z_fk_rank001_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_fk_denovo_traj16_rounds4/final_designs/fk_run_1n8z_fk_rank002_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 002  traj=002  log_w=-2.178  norm_w=0.0573  → fk_run_1n8z_fk_rank002_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_fk_denovo_traj16_rounds4/final_designs/fk_run_1n8z_fk_rank003_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 003  traj=012  log_w=-2.112  norm_w=0.0612  → fk_run_1n8z_fk_rank003_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_fk_denovo_traj16_rounds4/final_designs/fk_run_1n8z_fk_rank004_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 004  traj=011  log_w=-2.013  norm_w=0.0675  → fk_run_1n8z_fk_rank004_final.pdb
+[FK] Weight summary → /home/pymc/Deepak/RFantibody_partialflow/1n8z_fk_denovo_traj16_rounds4/fk_run_1n8z_fk_summary.json

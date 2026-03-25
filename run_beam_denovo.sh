@@ -42,7 +42,6 @@ THERMO_CHECKPOINT="${THERMOMPNN_ROOT}/models/thermoMPNN_default.pt"
 # ── Beam search hyperparameters ───────────────────────────────────────────────
 BEAM_WIDTH=16
 N_ROUNDS=4
-GUIDANCE_SCALE=1.0
 W_THERMO=1.0
 W_BSA=0.5
 
@@ -72,7 +71,6 @@ CMD=(
     --thermo_checkpoint "$THERMO_CHECKPOINT"
     --beam_width     "$BEAM_WIDTH"
     --n_rounds       "$N_ROUNDS"
-    --guidance_scale "$GUIDANCE_SCALE"
     --w_thermo       "$W_THERMO"
     --w_bsa          "$W_BSA"
     --device         "$DEVICE"
