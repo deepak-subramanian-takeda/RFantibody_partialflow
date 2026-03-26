@@ -1,0 +1,162 @@
+[
+  {
+    "design": "beam_run_1n8z_beam_rank012_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank012_final.pdb",
+    "plddt": 40.0444,
+    "ipae": 29.5169,
+    "binder_rmsd": 84.0238,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank012_final/cc2c8f3f5f8e_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank012_final/cc2c8f3f5f8e_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank005_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank005_final.pdb",
+    "plddt": 39.8364,
+    "ipae": 29.5,
+    "binder_rmsd": 53.9243,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank005_final/606196266adb_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank005_final/606196266adb_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank001_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank001_final.pdb",
+    "plddt": 39.4991,
+    "ipae": 29.3066,
+    "binder_rmsd": 43.6303,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank001_final/8fd186ab90a8_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank001_final/8fd186ab90a8_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank009_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank009_final.pdb",
+    "plddt": 39.3727,
+    "ipae": 29.4737,
+    "binder_rmsd": 44.0903,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank009_final/1b4e64b3fde1_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank009_final/1b4e64b3fde1_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank008_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank008_final.pdb",
+    "plddt": 39.2585,
+    "ipae": 29.3777,
+    "binder_rmsd": 83.5408,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank008_final/a74f08f45aa1_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank008_final/a74f08f45aa1_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank000_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank000_final.pdb",
+    "plddt": 38.4218,
+    "ipae": 29.6937,
+    "binder_rmsd": 54.2423,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank000_final/5918ad038582_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank000_final/5918ad038582_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank010_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank010_final.pdb",
+    "plddt": 38.2248,
+    "ipae": 29.3222,
+    "binder_rmsd": 30.1275,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank010_final/61ae4288baf5_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank010_final/61ae4288baf5_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank013_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank013_final.pdb",
+    "plddt": 37.9098,
+    "ipae": 29.2717,
+    "binder_rmsd": 68.0083,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank013_final/c8da7e6c2c97_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank013_final/c8da7e6c2c97_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank003_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank003_final.pdb",
+    "plddt": 37.8853,
+    "ipae": 29.7064,
+    "binder_rmsd": 54.7396,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank003_final/8c4a3ca4d24d_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank003_final/8c4a3ca4d24d_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank014_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank014_final.pdb",
+    "plddt": 36.8666,
+    "ipae": 29.5292,
+    "binder_rmsd": 67.8972,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank014_final/85c7afb5ea77_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank014_final/85c7afb5ea77_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank004_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank004_final.pdb",
+    "plddt": 36.421,
+    "ipae": 29.8677,
+    "binder_rmsd": 66.8633,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank004_final/21cdde926e02_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank004_final/21cdde926e02_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank011_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank011_final.pdb",
+    "plddt": 32.2861,
+    "ipae": 29.8196,
+    "binder_rmsd": 77.3851,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank011_final/ee4437d16925_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank011_final/ee4437d16925_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank015_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank015_final.pdb",
+    "plddt": 31.9712,
+    "ipae": 30.1758,
+    "binder_rmsd": 52.8511,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank015_final/a85fec4cff05_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank015_final/a85fec4cff05_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank002_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank002_final.pdb",
+    "plddt": 31.905,
+    "ipae": 30.0547,
+    "binder_rmsd": 79.7924,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank002_final/aad53a8ad234_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank002_final/aad53a8ad234_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank007_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank007_final.pdb",
+    "plddt": 31.6568,
+    "ipae": 30.0446,
+    "binder_rmsd": 45.6798,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank007_final/3a14a9bc74a3_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank007_final/3a14a9bc74a3_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "beam_run_1n8z_beam_rank006_final",
+    "pdb_path": "1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank006_final.pdb",
+    "plddt": 31.5028,
+    "ipae": 30.0033,
+    "binder_rmsd": 78.3067,
+    "af2_pdb": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank006_final/ff7975998b65_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_beam_denovo_width16_rounds4/_af2_eval/beam_run_1n8z_beam_rank006_final/ff7975998b65_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  }
+]

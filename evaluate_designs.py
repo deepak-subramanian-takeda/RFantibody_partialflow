@@ -197,7 +197,11 @@ def write_colabfold_fasta(
         seqs.append(s)
 
     stem   = Path(pdb_path).stem
-    header = f">{stem}"
+    # ColabFold's MMseqs2 API rejects job names over 20 characters.
+    # Use a stable short hash of the full stem as the header instead.
+    import hashlib
+    short_id = hashlib.md5(stem.encode()).hexdigest()[:12]
+    header = f">{short_id}"
     body   = ":".join(seqs)
 
     with open(out_fasta, "w") as f:
@@ -210,40 +214,87 @@ def write_colabfold_fasta(
 # ─────────────────────────────────────────────────────────────────────────────
 
 def run_colabfold(
-    fasta_path:      str,
-    af2_out_dir:     str,
-    conda_env:       str,
-    num_recycles:    int = 3,
-    num_models:      int = 1,
-    use_gpu:         bool = True,
+    fasta_path:          str,
+    af2_out_dir:         str,
+    colabfold_batch_bin: str,
+    colabfold_python:    str,
+    num_recycles:        int  = 3,
+    num_models:          int  = 1,
+    use_gpu:             bool = True,
 ) -> bool:
     """
-    Run colabfold_batch inside a conda environment.
+    Run colabfold_batch by invoking it explicitly with the colabfold conda
+    env Python, bypassing the broken build-time shebang in the script.
     Returns True on success.
     """
     os.makedirs(af2_out_dir, exist_ok=True)
 
-    # Build the activation + colabfold_batch command as a single shell string
-    # so conda activate works correctly in a non-interactive shell.
-    activate = f"source $(conda info --base)/etc/profile.d/conda.sh && conda activate {conda_env}"
-    cf_cmd   = (
-        f"colabfold_batch"
-        f" --num-recycle {num_recycles}"
-        f" --num-models {num_models}"
-        f" --model-type alphafold2_multimer_v3"
-        f" --rank iptm"
-        + (" --use-gpu-relax" if use_gpu else "")
-        + f" {fasta_path} {af2_out_dir}"
+    if not os.path.isfile(colabfold_batch_bin):
+        print(f"  [ERROR] colabfold_batch script not found at: {colabfold_batch_bin}")
+        return False
+    if not os.path.isfile(colabfold_python):
+        print(f"  [ERROR] colabfold Python not found at: {colabfold_python}")
+        return False
+
+    env = os.environ.copy()
+    # Disable SSL verification to work around certificate issues with the
+    # ColabFold MSA server on servers with missing/untrusted CA certificates.
+    env["PYTHONHTTPSVERIFY"]  = "0"
+    env["CURL_CA_BUNDLE"]     = ""
+    env["REQUESTS_CA_BUNDLE"] = ""
+    # Point jax/XLA at the cuDNN bundled inside the colabfold env's jaxlib,
+    # since there is no system CUDA installation at /usr/local/cuda.
+    jaxlib_dir = os.path.join(
+        os.path.dirname(colabfold_python), "..",
+        "lib", "python3.10", "site-packages", "jaxlib", "cuda",
     )
-    full_cmd = f"{activate} && {cf_cmd}"
+    jaxlib_dir = os.path.realpath(jaxlib_dir)
+    existing_ld = env.get("LD_LIBRARY_PATH", "")
+    env["LD_LIBRARY_PATH"]           = f"{jaxlib_dir}:{existing_ld}" if existing_ld else jaxlib_dir
+    env["TF_CUDNN_USE_AUTOTUNE"]     = "0"
+    env["XLA_PYTHON_CLIENT_PREALLOCATE"] = "false"
+    # Remove any stale XLA_FLAGS that pointed at a non-existent cuda dir
+    env.pop("XLA_FLAGS", None)
+    print(f"  [AF2] LD_LIBRARY_PATH includes: {jaxlib_dir}")
+
+    print(f"  [AF2] Using Python:   {colabfold_python}")
+    print(f"  [AF2] Using script:   {colabfold_batch_bin}")
+
+    cmd = [
+        colabfold_python,
+        colabfold_batch_bin,
+        "--num-recycle",  str(num_recycles),
+        "--num-models",   str(num_models),
+        "--model-type",   "alphafold2_multimer_v3",
+        "--rank",         "iptm",
+        "--msa-mode",     "single_sequence",  # skip MSA server entirely
+        fasta_path,
+        af2_out_dir,
+    ]
+    if use_gpu:
+        cmd.insert(-2, "--use-gpu-relax")
 
     print(f"  [AF2] Running colabfold_batch → {af2_out_dir}")
-    result = subprocess.run(
-        full_cmd, shell=True, executable="/bin/bash",
-        capture_output=False,
-    )
+    print(f"  [AF2] Command: {' '.join(cmd)}")
+
+    result = subprocess.run(cmd, capture_output=True, text=True, env=env)
+
+    # Always print stdout/stderr so failures are visible
+    if result.stdout.strip():
+        print(result.stdout)
+    if result.stderr.strip():
+        print(result.stderr)
+
     if result.returncode != 0:
         print(f"  [ERROR] colabfold_batch failed (exit {result.returncode})")
+        # Write stderr to a log file alongside the outputs for later inspection
+        err_log = os.path.join(af2_out_dir, "colabfold_error.log")
+        os.makedirs(af2_out_dir, exist_ok=True)
+        with open(err_log, "w") as f:
+            f.write(f"Command: {' '.join(cmd)}\n\n")
+            f.write(f"STDOUT:\n{result.stdout}\n\n")
+            f.write(f"STDERR:\n{result.stderr}\n")
+        print(f"  [AF2] Error log written to {err_log}")
         return False
     return True
 
@@ -254,28 +305,44 @@ def run_colabfold(
 
 def find_top_af2_result(af2_out_dir: str, stem: str) -> Optional[Dict]:
     """
-    Locate the rank_001 JSON scores file and PDB from colabfold_batch output.
-    ColabFold names files like: <stem>_scores_rank_001_*.json
+    Locate the rank_001 scores JSON, PAE JSON, and PDB from colabfold_batch output.
+
+    ColabFold 1.5.5 writes output files named after the FASTA header (a short
+    hash), not the design stem, so we search by pattern only:
+      <hash>_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json
+      <hash>_predicted_aligned_error_v1.json   ← PAE lives here separately
+      <hash>_unrelaxed_rank_001_...pdb
     """
     out = Path(af2_out_dir)
-    # Scores JSON
-    score_files = sorted(out.glob(f"{stem}*rank_001*scores*.json"))
-    if not score_files:
-        # Try without stem prefix (ColabFold sometimes truncates)
-        score_files = sorted(out.glob("*rank_001*scores*.json"))
+
+    # Scores JSON (contains plddt, iptm, ptm but NOT pae in v1.5.5)
+    score_files = sorted(out.glob("*_scores_rank_001_*.json"))
     if not score_files:
         print(f"  [WARN] No rank_001 scores JSON found in {af2_out_dir}")
         return None
-
     score_file = score_files[0]
     with open(score_file) as f:
         scores = json.load(f)
 
-    # Relaxed or unrelaxed PDB
-    pdb_files = sorted(out.glob(f"*rank_001*.pdb"))
+    # PAE JSON — stored separately in colabfold 1.5.5
+    pae_files = sorted(out.glob("*_predicted_aligned_error_v1.json"))
+    pae_data  = None
+    if pae_files:
+        with open(pae_files[0]) as f:
+            pae_data = json.load(f)
+    else:
+        print(f"  [WARN] No predicted_aligned_error JSON found in {af2_out_dir}")
+
+    # Unrelaxed rank_001 PDB
+    pdb_files = sorted(out.glob("*rank_001*.pdb"))
     pdb_file  = str(pdb_files[0]) if pdb_files else None
 
-    return {"scores": scores, "pdb": pdb_file, "scores_json": str(score_file)}
+    return {
+        "scores":      scores,
+        "pae_data":    pae_data,
+        "pdb":         pdb_file,
+        "scores_json": str(score_file),
+    }
 
 
 def extract_plddt(scores: Dict) -> float:
@@ -290,7 +357,7 @@ def extract_plddt(scores: Dict) -> float:
 
 
 def extract_ipae(
-    scores:        Dict,
+    pae_data:      Dict,
     pdb_path:      str,
     binder_chains: set = BINDER_CHAINS,
     target_chain:  str = CHAIN_T,
@@ -298,22 +365,26 @@ def extract_ipae(
     """
     Interface pAE (ipAE): mean PAE between binder residues and target residues.
 
-    ColabFold scores JSON contains 'pae' as a 2-D list of shape (N, N).
-    We average the off-diagonal block: pae[binder_idx, target_idx] and
-    pae[target_idx, binder_idx].
+    In ColabFold 1.5.5 the PAE matrix is stored in a separate
+    *_predicted_aligned_error_v1.json file as:
+        {"predicted_aligned_error": [[...], ...], "max_predicted_aligned_error": X}
 
     Chain residue counts are inferred from the AF2 prediction PDB itself.
     """
-    pae_matrix = scores.get("pae")
-    if pae_matrix is None:
+    pae_raw = pae_data.get("predicted_aligned_error")
+    if pae_raw is None:
         return float("nan")
 
-    pae = np.array(pae_matrix)
+    pae = np.array(pae_raw)
 
     # Infer per-chain residue counts from the AF2 PDB (multimer output)
     # ColabFold preserves chain order: H, L, T (same as FASTA input order)
     if pdb_path is None or not os.path.isfile(pdb_path):
         return float("nan")
+
+    # ColabFold reassigns chains alphabetically in its output PDB.
+    # FASTA order was H, L, T → maps to A, B, C in the AF2 PDB.
+    af2_to_hlt = {"A": CHAIN_H, "B": CHAIN_L, "C": CHAIN_T}
 
     chain_sizes: Dict[str, int] = {}
     current_chain, current_res = None, None
@@ -328,7 +399,8 @@ def extract_ipae(
             key     = (res_seq, ins)
             if ch != current_chain:
                 if current_chain is not None:
-                    chain_sizes[current_chain] = count
+                    hlt_chain = af2_to_hlt.get(current_chain, current_chain)
+                    chain_sizes[hlt_chain] = count
                 current_chain = ch
                 current_res   = set()
                 count         = 0
@@ -336,7 +408,8 @@ def extract_ipae(
                 current_res.add(key)
                 count += 1
     if current_chain is not None:
-        chain_sizes[current_chain] = count
+        hlt_chain = af2_to_hlt.get(current_chain, current_chain)
+        chain_sizes[hlt_chain] = count
 
     # Build residue index ranges per chain
     chain_order = list(chain_sizes.keys())
@@ -378,8 +451,9 @@ def extract_ipae(
 def evaluate_design(
     pdb_path:        str,
     reference_pdb:   str,
-    af2_work_dir:    str,
-    conda_env:       str,
+    af2_work_dir:        str,
+    colabfold_batch_bin: str,
+    colabfold_python:    str,
     num_recycles:    int  = 3,
     num_models:      int  = 1,
     use_gpu:         bool = True,
@@ -433,7 +507,8 @@ def evaluate_design(
         success = run_colabfold(
             fasta_path=fasta_path,
             af2_out_dir=out_dir,
-            conda_env=conda_env,
+            colabfold_batch_bin=colabfold_batch_bin,
+            colabfold_python=colabfold_python,
             num_recycles=num_recycles,
             num_models=num_models,
             use_gpu=use_gpu,
@@ -447,7 +522,8 @@ def evaluate_design(
         result["error"] = "AF2 outputs not found after run"
         return result
 
-    scores                    = af2_result["scores"]
+    scores   = af2_result["scores"]
+    pae_data = af2_result["pae_data"]
     result["af2_pdb"]         = af2_result["pdb"]
     result["af2_scores_json"] = af2_result["scores_json"]
 
@@ -455,7 +531,7 @@ def evaluate_design(
     result["plddt"] = round(plddt, 4) if not np.isnan(plddt) else None
     print(f"  pLDDT  = {plddt:.2f}")
 
-    ipae = extract_ipae(scores, af2_result["pdb"])
+    ipae = extract_ipae(pae_data, af2_result["pdb"]) if pae_data else float("nan")
     result["ipae"] = round(ipae, 4) if not np.isnan(ipae) else None
     print(f"  ipAE   = {ipae:.3f}")
 
@@ -478,9 +554,13 @@ def main():
                         "(HLT-formatted; used as RMSD reference)")
     p.add_argument("--output",    default="evaluation_results.json",
                    help="Path for the output JSON (default: evaluation_results.json)")
-    p.add_argument("--colabfold_conda", default="colabfold",
-                   help="Name or path of the conda environment containing "
-                        "colabfold_batch (default: 'colabfold')")
+    p.add_argument("--colabfold_batch_bin",
+                   default="/home/pymc/miniconda3/envs/colabfold_env/bin/colabfold_batch",
+                   help="Direct path to the colabfold_batch script")
+    p.add_argument("--colabfold_python",
+                   default="/home/pymc/miniconda3/envs/colabfold_env/bin/python",
+                   help="Python interpreter to use for colabfold_batch "
+                        "(default: colabfold_env conda env python)")
     p.add_argument("--af2_num_recycles", type=int, default=3,
                    help="Number of AF2 recycles (default: 3)")
     p.add_argument("--af2_num_models",   type=int, default=1,
@@ -517,7 +597,8 @@ def main():
             pdb_path=str(pdb),
             reference_pdb=args.reference,
             af2_work_dir=str(af2_work),
-            conda_env=args.colabfold_conda,
+            colabfold_batch_bin=args.colabfold_batch_bin,
+            colabfold_python=args.colabfold_python,
             num_recycles=args.af2_num_recycles,
             num_models=args.af2_num_models,
             use_gpu=use_gpu,

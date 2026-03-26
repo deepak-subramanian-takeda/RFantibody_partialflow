@@ -1,0 +1,52 @@
+[
+  {
+    "design": "fk_run_1n8z_fk_rank004_final",
+    "pdb_path": "1n8z_fk_denovo_traj16_rounds4/final_designs/fk_run_1n8z_fk_rank004_final.pdb",
+    "plddt": 39.2586,
+    "ipae": 29.3397,
+    "binder_rmsd": 13.5789,
+    "af2_pdb": "1n8z_fk_denovo_traj16_rounds4/_af2_eval/fk_run_1n8z_fk_rank004_final/6e4184d1daea_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_fk_denovo_traj16_rounds4/_af2_eval/fk_run_1n8z_fk_rank004_final/6e4184d1daea_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "fk_run_1n8z_fk_rank002_final",
+    "pdb_path": "1n8z_fk_denovo_traj16_rounds4/final_designs/fk_run_1n8z_fk_rank002_final.pdb",
+    "plddt": 38.7321,
+    "ipae": 29.3994,
+    "binder_rmsd": 51.7493,
+    "af2_pdb": "1n8z_fk_denovo_traj16_rounds4/_af2_eval/fk_run_1n8z_fk_rank002_final/cd38ce944a62_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_fk_denovo_traj16_rounds4/_af2_eval/fk_run_1n8z_fk_rank002_final/cd38ce944a62_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "fk_run_1n8z_fk_rank000_final",
+    "pdb_path": "1n8z_fk_denovo_traj16_rounds4/final_designs/fk_run_1n8z_fk_rank000_final.pdb",
+    "plddt": 38.1499,
+    "ipae": 29.6412,
+    "binder_rmsd": 50.5845,
+    "af2_pdb": "1n8z_fk_denovo_traj16_rounds4/_af2_eval/fk_run_1n8z_fk_rank000_final/bd4c72de0d1a_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_fk_denovo_traj16_rounds4/_af2_eval/fk_run_1n8z_fk_rank000_final/bd4c72de0d1a_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "fk_run_1n8z_fk_rank001_final",
+    "pdb_path": "1n8z_fk_denovo_traj16_rounds4/final_designs/fk_run_1n8z_fk_rank001_final.pdb",
+    "plddt": 32.2703,
+    "ipae": 30.1089,
+    "binder_rmsd": 51.7814,
+    "af2_pdb": "1n8z_fk_denovo_traj16_rounds4/_af2_eval/fk_run_1n8z_fk_rank001_final/818665a911e6_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_fk_denovo_traj16_rounds4/_af2_eval/fk_run_1n8z_fk_rank001_final/818665a911e6_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  },
+  {
+    "design": "fk_run_1n8z_fk_rank003_final",
+    "pdb_path": "1n8z_fk_denovo_traj16_rounds4/final_designs/fk_run_1n8z_fk_rank003_final.pdb",
+    "plddt": 31.574,
+    "ipae": 30.0984,
+    "binder_rmsd": 21.4782,
+    "af2_pdb": "1n8z_fk_denovo_traj16_rounds4/_af2_eval/fk_run_1n8z_fk_rank003_final/00aa4ab5c3af_unrelaxed_rank_001_alphafold2_multimer_v3_model_1_seed_000.pdb",
+    "af2_scores_json": "1n8z_fk_denovo_traj16_rounds4/_af2_eval/fk_run_1n8z_fk_rank003_final/00aa4ab5c3af_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json",
+    "error": null
+  }
+]
