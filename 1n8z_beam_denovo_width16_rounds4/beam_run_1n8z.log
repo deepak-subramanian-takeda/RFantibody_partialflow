@@ -1,0 +1,1443 @@
+/home/pymc/Deepak/RFantibody_partialflow/.venv/lib/python3.10/site-packages/Bio/pairwise2.py:278: BiopythonDeprecationWarning: Bio.pairwise2 has been deprecated, and we intend to remove it in a future release of Biopython. As an alternative, please consider using Bio.Align.PairwiseAligner as a replacement, and contact the Biopython developers if you still need the Bio.pairwise2 module.
+  warnings.warn(
+[ProteinMPNN] Found protein_mpnn_utils.py at: /home/pymc/Deepak/RFantibody_partialflow/src/rfantibody/proteinmpnn/model
+[Beam] Parsing HLT: /home/pymc/Deepak/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb
+[Beam] 6 anchor(s): ['L214', 'L216', 'L152', 'L153', 'H57', 'H105']
+[Beam] Contig: H1-25/5-9/H33-51/4-8/H57-57/H58-98/5-8/H105-105/4-5/H110-122/0 L123-145/6-9/L152-153/3-4/L157-171/5-9/L179-210/3-5/L214-214/1-2/L216-216/3-5/L220-232/0 T1-607
+[Beam] Loading ThermoMPNN...
+[Beam] Loading ProteinMPNN...
+
+[Beam] ── Round 0 (initialise beam, generating 64 seeds) ──
+  seed 1/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.850 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.919
+  seed 2/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.403 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.846
+  seed 3/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.979 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.859
+  seed 4/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.835 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.833
+  seed 5/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.297 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.817
+  seed 6/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.032 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.813
+  seed 7/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.650 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.906
+  seed 8/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.322 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.896
+  seed 9/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.695 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.898
+  seed 10/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.733 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.850
+  seed 11/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.867 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.814
+  seed 12/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.687 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.775
+  seed 13/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.629 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.789
+  seed 14/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.000 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.794
+  seed 15/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.412 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.807
+  seed 16/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.707 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.923
+  seed 17/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.460 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.739
+  seed 18/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.714 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.790
+  seed 19/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.758 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.888
+  seed 20/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.884 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.920
+  seed 21/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.654 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.701
+  seed 22/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.738 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.924
+  seed 23/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.897 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-1.015
+  seed 24/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.440 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.797
+  seed 25/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.936 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.863
+  seed 26/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.195 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.793
+  seed 27/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.957 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.864
+  seed 28/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.796 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.873
+  seed 29/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.638 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.896
+  seed 30/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.887 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.990
+  seed 31/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.463 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.826
+  seed 32/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.820 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.934
+  seed 33/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.906 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.798
+  seed 34/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.614 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.984
+  seed 35/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.327 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.859
+  seed 36/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.306 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.963
+  seed 37/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.734 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.937
+  seed 38/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.191 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.771
+  seed 39/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.530 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-1.037
+  seed 40/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.923 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.916
+  seed 41/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.553 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.933
+  seed 42/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.370 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.964
+  seed 43/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.692 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.752
+  seed 44/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.607 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.912
+  seed 45/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.852 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.856
+  seed 46/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.623 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.889
+  seed 47/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.787 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.834
+  seed 48/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.745 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.888
+  seed 49/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.855 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.874
+  seed 50/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.986 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.742
+  seed 51/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.874 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.929
+  seed 52/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.468 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.942
+  seed 53/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.707 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.842
+  seed 54/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.996 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.994
+  seed 55/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.641 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.803
+  seed 56/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.323 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.930
+  seed 57/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.435 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.827
+  seed 58/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.939 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.841
+  seed 59/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.641 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.797
+  seed 60/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.163 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.850
+  seed 61/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.339 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.826
+  seed 62/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.583 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.837
+  seed 63/64: rfdiffusion...     [INFO] Framework alignment RMSD: 1.220 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.843
+  seed 64/64: rfdiffusion...     [INFO] Framework alignment RMSD: 0.606 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.931
+
+[Beam] Initial beam (16 nodes):
+  rank 0  node=20  score=-0.701
+  rank 1  node=16  score=-0.739
+  rank 2  node=49  score=-0.742
+  rank 3  node=42  score=-0.752
+  rank 4  node=37  score=-0.771
+  rank 5  node=11  score=-0.775
+  rank 6  node=12  score=-0.789
+  rank 7  node=17  score=-0.790
+  rank 8  node=25  score=-0.793
+  rank 9  node=13  score=-0.794
+  rank 10  node=23  score=-0.797
+  rank 11  node=58  score=-0.797
+  rank 12  node=32  score=-0.798
+  rank 13  node=54  score=-0.803
+  rank 14  node=14  score=-0.807
+  rank 15  node=5  score=-0.813
+
+[Beam] ── Round 1/4  beam=16  branch=4  candidates=64 ──
+  parent=20 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.763 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.856  cumulative=-1.557
+  parent=20 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.735 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.869  cumulative=-1.570
+  parent=20 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.703 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.901  cumulative=-1.602
+  parent=20 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.677 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.875  cumulative=-1.576
+  parent=16 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.472 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.967  cumulative=-1.706
+  parent=16 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.515 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.877  cumulative=-1.616
+  parent=16 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.733 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.792  cumulative=-1.532
+  parent=16 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.492 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.917  cumulative=-1.656
+  parent=49 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.942 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.883  cumulative=-1.625
+  parent=49 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.764 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.925  cumulative=-1.667
+  parent=49 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.784 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.801  cumulative=-1.543
+  parent=49 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.820 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.821  cumulative=-1.563
+  parent=42 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.860 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.898  cumulative=-1.650
+  parent=42 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.745 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.861  cumulative=-1.613
+  parent=42 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.703 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.919  cumulative=-1.672
+  parent=42 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.745 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.728  cumulative=-1.480
+  parent=37 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.244 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.887  cumulative=-1.658
+  parent=37 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.423 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.726  cumulative=-1.497
+  parent=37 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.189 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.836  cumulative=-1.607
+  parent=37 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.145 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.673  cumulative=-1.444
+  parent=11 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.849 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.899  cumulative=-1.674
+  parent=11 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.763 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.852  cumulative=-1.627
+  parent=11 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.649 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.807  cumulative=-1.581
+  parent=11 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.057 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.862  cumulative=-1.637
+  parent=12 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.732 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.873  cumulative=-1.662
+  parent=12 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.786 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.784  cumulative=-1.573
+  parent=12 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.771 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.839  cumulative=-1.628
+  parent=12 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.763 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.815  cumulative=-1.603
+  parent=17 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.970 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.761  cumulative=-1.552
+  parent=17 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.747 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.758  cumulative=-1.548
+  parent=17 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.742 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.749  cumulative=-1.540
+  parent=17 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.239 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.641  cumulative=-1.432
+  parent=25 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.527 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.802  cumulative=-1.595
+  parent=25 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.853 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.972  cumulative=-1.765
+  parent=25 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.909 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.855  cumulative=-1.648
+  parent=25 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.567 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.924  cumulative=-1.718
+  parent=13 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.741 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-1.011  cumulative=-1.805
+  parent=13 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.372 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.790  cumulative=-1.583
+  parent=13 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.231 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.922  cumulative=-1.716
+  parent=13 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.847 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.896  cumulative=-1.689
+  parent=23 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.499 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.874  cumulative=-1.671
+  parent=23 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.443 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.783  cumulative=-1.580
+  parent=23 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.496 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.940  cumulative=-1.737
+  parent=23 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.612 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.740  cumulative=-1.537
+  parent=58 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.820 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.802  cumulative=-1.599
+  parent=58 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.874 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.870  cumulative=-1.667
+  parent=58 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.696 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.758  cumulative=-1.555
+  parent=58 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.520 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.771  cumulative=-1.569
+  parent=32 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.805 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.889  cumulative=-1.687
+  parent=32 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.849 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.908  cumulative=-1.706
+  parent=32 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.680 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.829  cumulative=-1.627
+  parent=32 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.825 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.891  cumulative=-1.689
+  parent=54 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.974 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.854  cumulative=-1.657
+  parent=54 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 4.021 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.888  cumulative=-1.691
+  parent=54 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.853 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.962  cumulative=-1.765
+  parent=54 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.771 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.781  cumulative=-1.583
+  parent=14 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 2.046 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.786  cumulative=-1.593
+  parent=14 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.442 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.791  cumulative=-1.598
+  parent=14 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.571 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.841  cumulative=-1.648
+  parent=14 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.483 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.795  cumulative=-1.602
+  parent=5 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.800 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.841  cumulative=-1.654
+  parent=5 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.446 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.851  cumulative=-1.664
+  parent=5 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.020 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.820  cumulative=-1.633
+  parent=5 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.740 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.937  cumulative=-1.750
+
+  Beam after pruning (16 survivors):
+    rank 0  node=95  parent=17  score(latest)=-0.641  score(cumulative)=-1.432
+    rank 1  node=83  parent=37  score(latest)=-0.673  score(cumulative)=-1.444
+    rank 2  node=79  parent=42  score(latest)=-0.728  score(cumulative)=-1.480
+    rank 3  node=81  parent=37  score(latest)=-0.726  score(cumulative)=-1.497
+    rank 4  node=70  parent=16  score(latest)=-0.792  score(cumulative)=-1.532
+    rank 5  node=107  parent=23  score(latest)=-0.740  score(cumulative)=-1.537
+    rank 6  node=94  parent=17  score(latest)=-0.749  score(cumulative)=-1.540
+    rank 7  node=74  parent=49  score(latest)=-0.801  score(cumulative)=-1.543
+    rank 8  node=93  parent=17  score(latest)=-0.758  score(cumulative)=-1.548
+    rank 9  node=92  parent=17  score(latest)=-0.761  score(cumulative)=-1.552
+    rank 10  node=110  parent=58  score(latest)=-0.758  score(cumulative)=-1.555
+    rank 11  node=64  parent=20  score(latest)=-0.856  score(cumulative)=-1.557
+    rank 12  node=75  parent=49  score(latest)=-0.821  score(cumulative)=-1.563
+    rank 13  node=111  parent=58  score(latest)=-0.771  score(cumulative)=-1.569
+    rank 14  node=65  parent=20  score(latest)=-0.869  score(cumulative)=-1.570
+    rank 15  node=89  parent=12  score(latest)=-0.784  score(cumulative)=-1.573
+  Diversity: 9/16 unique parents in beam
+
+[Beam] ── Round 2/4  beam=16  branch=4  candidates=64 ──
+  parent=95 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.149 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.667  cumulative=-2.099
+  parent=95 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.159 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.720  cumulative=-2.151
+  parent=95 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.184 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.754  cumulative=-2.186
+  parent=95 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.140 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.753  cumulative=-2.185
+  parent=83 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.206 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.755  cumulative=-2.199
+  parent=83 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.297 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.740  cumulative=-2.184
+  parent=83 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.112 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.789  cumulative=-2.233
+  parent=83 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.255 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.802  cumulative=-2.246
+  parent=79 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 2.295 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.883  cumulative=-2.364
+  parent=79 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.779 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.814  cumulative=-2.294
+  parent=79 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.854 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.836  cumulative=-2.316
+  parent=79 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.817 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.902  cumulative=-2.382
+  parent=81 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.340 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.871  cumulative=-2.368
+  parent=81 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.363 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.850  cumulative=-2.348
+  parent=81 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.425 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.803  cumulative=-2.301
+  parent=81 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.508 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.875  cumulative=-2.372
+  parent=70 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.588 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.901  cumulative=-2.433
+  parent=70 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.662 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.793  cumulative=-2.325
+  parent=70 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.382 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.874  cumulative=-2.406
+  parent=70 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.697 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.814  cumulative=-2.346
+  parent=107 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.991 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.730  cumulative=-2.267
+  parent=107 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 4.170 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.794  cumulative=-2.331
+  parent=107 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.629 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.783  cumulative=-2.320
+  parent=107 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.388 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.871  cumulative=-2.408
+  parent=94 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.733 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.757  cumulative=-2.297
+  parent=94 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.812 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.757  cumulative=-2.297
+  parent=94 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.967 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.736  cumulative=-2.276
+  parent=94 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.888 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.832  cumulative=-2.372
+  parent=74 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.808 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.713  cumulative=-2.256
+  parent=74 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.826 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.834  cumulative=-2.378
+  parent=74 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.955 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.689  cumulative=-2.232
+  parent=74 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 4.198 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.788  cumulative=-2.331
+  parent=93 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.863 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.781  cumulative=-2.329
+  parent=93 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.823 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.777  cumulative=-2.326
+  parent=93 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.773 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.914  cumulative=-2.463
+  parent=93 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.766 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.865  cumulative=-2.414
+  parent=92 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.883 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.759  cumulative=-2.311
+  parent=92 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.816 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.754  cumulative=-2.305
+  parent=92 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.761 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.778  cumulative=-2.330
+  parent=92 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.860 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.814  cumulative=-2.366
+  parent=110 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.776 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.871  cumulative=-2.426
+  parent=110 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.762 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.897  cumulative=-2.452
+  parent=110 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.711 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.787  cumulative=-2.342
+  parent=110 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.820 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.799  cumulative=-2.353
+  parent=64 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.792 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.857  cumulative=-2.415
+  parent=64 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 4.153 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.785  cumulative=-2.342
+  parent=64 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.790 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.894  cumulative=-2.451
+  parent=64 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.783 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.810  cumulative=-2.367
+  parent=75 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.820 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.792  cumulative=-2.354
+  parent=75 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.839 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.753  cumulative=-2.316
+  parent=75 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.027 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.711  cumulative=-2.274
+  parent=75 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.795 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.887  cumulative=-2.449
+  parent=111 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.370 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.824  cumulative=-2.393
+  parent=111 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.399 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.857  cumulative=-2.426
+  parent=111 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.314 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.811  cumulative=-2.379
+  parent=111 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.407 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.780  cumulative=-2.349
+  parent=65 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.102 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.832  cumulative=-2.402
+  parent=65 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.757 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.852  cumulative=-2.421
+  parent=65 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.798 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.901  cumulative=-2.471
+  parent=65 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.725 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.836  cumulative=-2.405
+  parent=89 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.956 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.675  cumulative=-2.247
+  parent=89 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.866 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.788  cumulative=-2.360
+  parent=89 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.880 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.825  cumulative=-2.398
+  parent=89 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.657 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.681  cumulative=-2.254
+
+  Beam after pruning (16 survivors):
+    rank 0  node=128  parent=95  score(latest)=-0.667  score(cumulative)=-2.099
+    rank 1  node=129  parent=95  score(latest)=-0.720  score(cumulative)=-2.151
+    rank 2  node=133  parent=83  score(latest)=-0.740  score(cumulative)=-2.184
+    rank 3  node=131  parent=95  score(latest)=-0.753  score(cumulative)=-2.185
+    rank 4  node=130  parent=95  score(latest)=-0.754  score(cumulative)=-2.186
+    rank 5  node=132  parent=83  score(latest)=-0.755  score(cumulative)=-2.199
+    rank 6  node=158  parent=74  score(latest)=-0.689  score(cumulative)=-2.232
+    rank 7  node=134  parent=83  score(latest)=-0.789  score(cumulative)=-2.233
+    rank 8  node=135  parent=83  score(latest)=-0.802  score(cumulative)=-2.246
+    rank 9  node=188  parent=89  score(latest)=-0.675  score(cumulative)=-2.247
+    rank 10  node=191  parent=89  score(latest)=-0.681  score(cumulative)=-2.254
+    rank 11  node=156  parent=74  score(latest)=-0.713  score(cumulative)=-2.256
+    rank 12  node=148  parent=107  score(latest)=-0.730  score(cumulative)=-2.267
+    rank 13  node=178  parent=75  score(latest)=-0.711  score(cumulative)=-2.274
+    rank 14  node=154  parent=94  score(latest)=-0.736  score(cumulative)=-2.276
+    rank 15  node=137  parent=79  score(latest)=-0.814  score(cumulative)=-2.294
+  Diversity: 8/16 unique parents in beam
+
+[Beam] ── Round 3/4  beam=16  branch=4  candidates=64 ──
+  parent=128 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.125 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.809  cumulative=-2.908
+  parent=128 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.187 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.754  cumulative=-2.853
+  parent=128 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.159 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.811  cumulative=-2.910
+  parent=128 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.125 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.833  cumulative=-2.932
+  parent=129 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.163 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.708  cumulative=-2.859
+  parent=129 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.233 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.867  cumulative=-3.019
+  parent=129 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.345 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.787  cumulative=-2.938
+  parent=129 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.334 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.776  cumulative=-2.928
+  parent=133 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.392 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.813  cumulative=-2.997
+  parent=133 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.427 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.931  cumulative=-3.115
+  parent=133 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.271 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.771  cumulative=-2.955
+  parent=133 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.334 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.753  cumulative=-2.936
+  parent=131 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.249 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.838  cumulative=-3.023
+  parent=131 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.180 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.797  cumulative=-2.982
+  parent=131 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.201 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.804  cumulative=-2.989
+  parent=131 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.230 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.830  cumulative=-3.015
+  parent=130 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.266 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.803  cumulative=-2.989
+  parent=130 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.338 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.861  cumulative=-3.047
+  parent=130 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.284 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.739  cumulative=-2.924
+  parent=130 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.236 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.830  cumulative=-3.015
+  parent=132 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.247 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.747  cumulative=-2.946
+  parent=132 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.258 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.951  cumulative=-3.151
+  parent=132 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.246 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.778  cumulative=-2.977
+  parent=132 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.441 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.915  cumulative=-3.114
+  parent=158 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.887 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.876  cumulative=-3.108
+  parent=158 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.932 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.882  cumulative=-3.115
+  parent=158 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.948 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.833  cumulative=-3.066
+  parent=158 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.831 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.760  cumulative=-2.992
+  parent=134 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.350 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.736  cumulative=-2.969
+  parent=134 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.227 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.897  cumulative=-3.130
+  parent=134 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.176 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.784  cumulative=-3.017
+  parent=134 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.411 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.834  cumulative=-3.068
+  parent=135 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.192 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.715  cumulative=-2.962
+  parent=135 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.320 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.778  cumulative=-3.025
+  parent=135 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.422 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.768  cumulative=-3.014
+  parent=135 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.295 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.829  cumulative=-3.076
+  parent=188 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.928 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.789  cumulative=-3.037
+  parent=188 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.843 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.777  cumulative=-3.024
+  parent=188 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.767 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.856  cumulative=-3.104
+  parent=188 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.796 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.793  cumulative=-3.040
+  parent=191 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.802 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.817  cumulative=-3.071
+  parent=191 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.764 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.881  cumulative=-3.135
+  parent=191 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.771 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.825  cumulative=-3.079
+  parent=191 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.803 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.812  cumulative=-3.066
+  parent=156 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.437 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.737  cumulative=-2.993
+  parent=156 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.866 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.805  cumulative=-3.061
+  parent=156 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.760 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.786  cumulative=-3.042
+  parent=156 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.983 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.839  cumulative=-3.095
+  parent=148 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 2.015 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.686  cumulative=-2.954
+  parent=148 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.659 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.913  cumulative=-3.180
+  parent=148 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.832 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.767  cumulative=-3.035
+  parent=148 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.785 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.769  cumulative=-3.036
+  parent=178 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.138 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.773  cumulative=-3.046
+  parent=178 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.365 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.819  cumulative=-3.092
+  parent=178 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.213 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.822  cumulative=-3.095
+  parent=178 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.225 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.679  cumulative=-2.952
+  parent=154 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.121 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.805  cumulative=-3.081
+  parent=154 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.833 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.790  cumulative=-3.066
+  parent=154 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.758 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.893  cumulative=-3.169
+  parent=154 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.832 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.810  cumulative=-3.085
+  parent=137 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.791 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.715  cumulative=-3.010
+  parent=137 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.409 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.831  cumulative=-3.126
+  parent=137 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.841 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.868  cumulative=-3.163
+  parent=137 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 0.765 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.790  cumulative=-3.085
+
+  Beam after pruning (16 survivors):
+    rank 0  node=193  parent=128  score(latest)=-0.754  score(cumulative)=-2.853
+    rank 1  node=196  parent=129  score(latest)=-0.708  score(cumulative)=-2.859
+    rank 2  node=192  parent=128  score(latest)=-0.809  score(cumulative)=-2.908
+    rank 3  node=194  parent=128  score(latest)=-0.811  score(cumulative)=-2.910
+    rank 4  node=210  parent=130  score(latest)=-0.739  score(cumulative)=-2.924
+    rank 5  node=199  parent=129  score(latest)=-0.776  score(cumulative)=-2.928
+    rank 6  node=195  parent=128  score(latest)=-0.833  score(cumulative)=-2.932
+    rank 7  node=203  parent=133  score(latest)=-0.753  score(cumulative)=-2.936
+    rank 8  node=198  parent=129  score(latest)=-0.787  score(cumulative)=-2.938
+    rank 9  node=212  parent=132  score(latest)=-0.747  score(cumulative)=-2.946
+    rank 10  node=247  parent=178  score(latest)=-0.679  score(cumulative)=-2.952
+    rank 11  node=240  parent=148  score(latest)=-0.686  score(cumulative)=-2.954
+    rank 12  node=202  parent=133  score(latest)=-0.771  score(cumulative)=-2.955
+    rank 13  node=224  parent=135  score(latest)=-0.715  score(cumulative)=-2.962
+    rank 14  node=220  parent=134  score(latest)=-0.736  score(cumulative)=-2.969
+    rank 15  node=214  parent=132  score(latest)=-0.778  score(cumulative)=-2.977
+  Diversity: 9/16 unique parents in beam
+
+[Beam] ── Round 4/4  beam=16  branch=4  candidates=64 ──
+  parent=193 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.180 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.657  cumulative=-3.511
+  parent=193 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.293 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.961  cumulative=-3.814
+  parent=193 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.257 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.836  cumulative=-3.689
+  parent=193 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.128 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.801  cumulative=-3.654
+  parent=196 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.337 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.816  cumulative=-3.675
+  parent=196 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.357 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.854  cumulative=-3.714
+  parent=196 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.506 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.859  cumulative=-3.719
+  parent=196 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.206 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.732  cumulative=-3.592
+  parent=192 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.144 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.895  cumulative=-3.804
+  parent=192 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.204 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.840  cumulative=-3.748
+  parent=192 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.236 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.854  cumulative=-3.762
+  parent=192 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.128 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.858  cumulative=-3.766
+  parent=194 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.306 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.731  cumulative=-3.641
+  parent=194 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.216 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.796  cumulative=-3.706
+  parent=194 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.250 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.848  cumulative=-3.758
+  parent=194 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.213 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.747  cumulative=-3.658
+  parent=210 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.323 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.810  cumulative=-3.734
+  parent=210 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.213 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.919  cumulative=-3.844
+  parent=210 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.271 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.725  cumulative=-3.649
+  parent=210 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.342 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.762  cumulative=-3.686
+  parent=199 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.499 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.723  cumulative=-3.650
+  parent=199 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.329 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.953  cumulative=-3.881
+  parent=199 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.501 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.755  cumulative=-3.682
+  parent=199 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.334 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.789  cumulative=-3.717
+  parent=195 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.224 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.829  cumulative=-3.762
+  parent=195 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.160 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.802  cumulative=-3.734
+  parent=195 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.269 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.848  cumulative=-3.781
+  parent=195 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.083 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.769  cumulative=-3.701
+  parent=203 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.296 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.822  cumulative=-3.759
+  parent=203 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.260 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.913  cumulative=-3.849
+  parent=203 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.414 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.724  cumulative=-3.660
+  parent=203 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.380 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.868  cumulative=-3.805
+  parent=198 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.269 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.842  cumulative=-3.780
+  parent=198 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.287 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.866  cumulative=-3.803
+  parent=198 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.272 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.710  cumulative=-3.648
+  parent=198 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.573 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.807  cumulative=-3.745
+  parent=212 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.367 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.838  cumulative=-3.784
+  parent=212 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.276 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.788  cumulative=-3.734
+  parent=212 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.266 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.742  cumulative=-3.688
+  parent=212 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.362 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.801  cumulative=-3.747
+  parent=247 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.195 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.745  cumulative=-3.697
+  parent=247 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.298 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.952  cumulative=-3.905
+  parent=247 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.212 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.729  cumulative=-3.682
+  parent=247 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.226 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.835  cumulative=-3.787
+  parent=240 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.765 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.758  cumulative=-3.711
+  parent=240 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 2.421 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.820  cumulative=-3.773
+  parent=240 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 2.114 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.860  cumulative=-3.814
+  parent=240 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.771 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.840  cumulative=-3.793
+  parent=202 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.295 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.800  cumulative=-3.754
+  parent=202 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.342 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.836  cumulative=-3.790
+  parent=202 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.298 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.710  cumulative=-3.664
+  parent=202 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.448 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.841  cumulative=-3.796
+  parent=224 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.346 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.834  cumulative=-3.795
+  parent=224 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.234 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.796  cumulative=-3.757
+  parent=224 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.289 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.810  cumulative=-3.771
+  parent=224 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.332 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.854  cumulative=-3.815
+  parent=220 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.286 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.932  cumulative=-3.901
+  parent=220 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.360 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.958  cumulative=-3.927
+  parent=220 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.358 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.786  cumulative=-3.755
+  parent=220 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.256 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.855  cumulative=-3.824
+  parent=214 child=1/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.274 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.965  cumulative=-3.942
+  parent=214 child=2/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.244 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.738  cumulative=-3.715
+  parent=214 child=3/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.258 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.817  cumulative=-3.794
+  parent=214 child=4/4: rfdiffusion...     [INFO] Framework alignment RMSD: 1.234 Å (98 Ca)
+    [INFO] Restored residue names for 6 anchor position(s)
+    [INFO] Restored residue names for 6 anchor position(s)
+score=-0.890  cumulative=-3.867
+
+  Beam after pruning (16 survivors):
+    rank 0  node=256  parent=193  score(latest)=-0.657  score(cumulative)=-3.511
+    rank 1  node=263  parent=196  score(latest)=-0.732  score(cumulative)=-3.592
+    rank 2  node=268  parent=194  score(latest)=-0.731  score(cumulative)=-3.641
+    rank 3  node=290  parent=198  score(latest)=-0.710  score(cumulative)=-3.648
+    rank 4  node=274  parent=210  score(latest)=-0.725  score(cumulative)=-3.649
+    rank 5  node=276  parent=199  score(latest)=-0.723  score(cumulative)=-3.650
+    rank 6  node=259  parent=193  score(latest)=-0.801  score(cumulative)=-3.654
+    rank 7  node=271  parent=194  score(latest)=-0.747  score(cumulative)=-3.658
+    rank 8  node=286  parent=203  score(latest)=-0.724  score(cumulative)=-3.660
+    rank 9  node=306  parent=202  score(latest)=-0.710  score(cumulative)=-3.664
+    rank 10  node=260  parent=196  score(latest)=-0.816  score(cumulative)=-3.675
+    rank 11  node=298  parent=247  score(latest)=-0.729  score(cumulative)=-3.682
+    rank 12  node=278  parent=199  score(latest)=-0.755  score(cumulative)=-3.682
+    rank 13  node=275  parent=210  score(latest)=-0.762  score(cumulative)=-3.686
+    rank 14  node=294  parent=212  score(latest)=-0.742  score(cumulative)=-3.688
+    rank 15  node=258  parent=193  score(latest)=-0.836  score(cumulative)=-3.689
+  Diversity: 10/16 unique parents in beam
+
+[Beam] Writing 16 final designs to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank000_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 000  node=256  cumulative_score=-3.511  → beam_run_1n8z_beam_rank000_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank001_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 001  node=263  cumulative_score=-3.592  → beam_run_1n8z_beam_rank001_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank002_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 002  node=268  cumulative_score=-3.641  → beam_run_1n8z_beam_rank002_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank003_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 003  node=290  cumulative_score=-3.648  → beam_run_1n8z_beam_rank003_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank004_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 004  node=274  cumulative_score=-3.649  → beam_run_1n8z_beam_rank004_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank005_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 005  node=276  cumulative_score=-3.650  → beam_run_1n8z_beam_rank005_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank006_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 006  node=259  cumulative_score=-3.654  → beam_run_1n8z_beam_rank006_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank007_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 007  node=271  cumulative_score=-3.658  → beam_run_1n8z_beam_rank007_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank008_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 008  node=286  cumulative_score=-3.660  → beam_run_1n8z_beam_rank008_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank009_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 009  node=306  cumulative_score=-3.664  → beam_run_1n8z_beam_rank009_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank010_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 010  node=260  cumulative_score=-3.675  → beam_run_1n8z_beam_rank010_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank011_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 011  node=298  cumulative_score=-3.682  → beam_run_1n8z_beam_rank011_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank012_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 012  node=278  cumulative_score=-3.682  → beam_run_1n8z_beam_rank012_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank013_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 013  node=275  cumulative_score=-3.686  → beam_run_1n8z_beam_rank013_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank014_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 014  node=294  cumulative_score=-3.688  → beam_run_1n8z_beam_rank014_final.pdb
+    [INFO] Sidechain packing written to /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/final_designs/beam_run_1n8z_beam_rank015_packed.pdb
+    [INFO] Restored residue names for 6 anchor position(s)
+  rank 015  node=258  cumulative_score=-3.689  → beam_run_1n8z_beam_rank015_final.pdb
+[Beam] Summary → /home/pymc/Deepak/RFantibody_partialflow/1n8z_beam_denovo_width16_rounds4/beam_run_1n8z_beam_summary.json
