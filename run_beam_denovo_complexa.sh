@@ -29,10 +29,10 @@ SCRIPT="${RFANTIBODY_ROOT}/beam_denovo_maturation_complexa.py"
 # ── Required inputs ───────────────────────────────────────────────────────────
 INPUT_PDB="/home/pymc/Deepak/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb"
 ANCHORS_JSON="/home/pymc/Deepak/RFantibody_partialflow/1n8z_anchors/1n8z_hlt_anchors.json"
-OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/1n8z_cbeam_denovo_width16_cp4"
+OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/1n8z_cbeam_denovo_width8_cp2_steps5"
 HOTSPOTS="T570,T571,T572,T573"
 MODEL_WEIGHTS="${RFANTIBODY_ROOT}/weights/RFdiffusion_Ab.pt"
-MPNN_WEIGHTS="${THERMOMPNN_ROOT}/vanilla_model_weights/v_48_020.pt"
+MPNN_WEIGHTS="${RFANTIBODY_ROOT}/weights/vanilla_model_weights/v_48_020.pt"
 
 # ── ThermoMPNN config ─────────────────────────────────────────────────────────
 THERMO_LOCAL_YAML="${THERMOMPNN_ROOT}/local.yaml"
@@ -48,10 +48,10 @@ AF2_NUM_RECYCLES=1    # low recycle count keeps beam rollouts fast
 AF2_NUM_MODELS=1
 
 # ── Beam search hyperparameters ───────────────────────────────────────────────
-BEAM_WIDTH=4          # N: survivors kept after each checkpoint prune
+BEAM_WIDTH=8          # N: survivors kept after each checkpoint prune
 BRANCH_FACTOR=4       # L: rollouts launched per survivor per checkpoint
-N_CHECKPOINTS=4       # number of expand-score-prune cycles
-STEPS_PER_CHECKPOINT=1
+N_CHECKPOINTS=2       # number of expand-score-prune cycles
+STEPS_PER_CHECKPOINT=5
 RANKING_MODE="cumulative"   # cumulative | latest | average
 
 # ── Reward weights ────────────────────────────────────────────────────────────
@@ -61,7 +61,7 @@ IPAE_THRESHOLD=7.0    # success criterion: ipAE < threshold (Å)
 
 # ── Optional ──────────────────────────────────────────────────────────────────
 FREE_LOOPS=""          # e.g. "H3:5-13" or leave empty
-NANOBODY_FLAG=""       # set to "--nanobody" for nanobody design
+NANOBODY_FLAG="--nanobody"       # set to "--nanobody" for nanobody design
 DEVICE="cuda"
 RUN_NAME="cbeam_run_1n8z"
 
@@ -95,6 +95,7 @@ CMD=(
     --af2_num_models      "$AF2_NUM_MODELS"
     --device              "$DEVICE"
     --name                "$RUN_NAME"
+    --nanobody            "$NANOBODY_FLAG"
 )
 
 # Append colabfold paths only if the binary exists

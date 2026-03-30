@@ -108,6 +108,28 @@ AA1_TO_3 = {v: k for k, v in AA3_TO_1.items()}
 # Contig builder
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _chain_contiguous_segments(chain_residues: List[ResidueInfo]) -> str:
+    """
+    Build a contig string for a fixed (non-diffused) chain by emitting one
+    token per contiguous block of residue numbers, e.g.:
+        T1-302/T306-360/T365-580/T591-607
+    A new segment is started whenever the PDB residue number is not exactly
+    prev + 1 (i.e. there is a numbering gap in the source PDB).
+    """
+    if not chain_residues:
+        return ""
+    tokens: List[str] = []
+    seg_start = chain_residues[0]
+    prev = chain_residues[0]
+    for r in chain_residues[1:]:
+        if r.pdb_resnum != prev.pdb_resnum + 1:
+            tokens.append(f"{seg_start.pdb_chain}{seg_start.pdb_resnum}-{prev.pdb_resnum}")
+            seg_start = r
+        prev = r
+    tokens.append(f"{seg_start.pdb_chain}{seg_start.pdb_resnum}-{prev.pdb_resnum}")
+    return "/".join(tokens)
+
+
 def build_denovo_contig(
     residues:            List[ResidueInfo],
     cdr_ranges:          Dict[str, CdrRange],
@@ -153,10 +175,10 @@ def build_denovo_contig(
         return "/".join(tokens)
 
     h_seg = chain_segments(h_res)
-    if t_res:
-        t_seg = f"{CHAIN_T}{t_res[0].pdb_resnum}-{t_res[-1].pdb_resnum}"
-    else:
-        t_seg = ""
+    # Use gap-aware segment builder for the target chain instead of the
+    # naive first-to-last span, which produced T1-607 even when residues
+    # 303-305, 361-364, 581-590, etc. were absent from the PDB.
+    t_seg = _chain_contiguous_segments(t_res)
 
     if nanobody or not l_res:
         return f"{h_seg}/0 {t_seg}" if t_seg else h_seg

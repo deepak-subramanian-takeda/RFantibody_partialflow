@@ -29,7 +29,7 @@ SCRIPT="${RFANTIBODY_ROOT}/smc_denovo_maturation.py"
 # ── Required inputs ───────────────────────────────────────────────────────────
 INPUT_PDB="/home/pymc/Deepak/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb"          # HLT-formatted complex
 ANCHORS_JSON="/home/pymc/Deepak/RFantibody_partialflow/1n8z_anchors/1n8z_hlt_anchors.json"      # Step 0 anchor output
-OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/1n8z_smc_denovo_particles4_rounds6"
+OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/1n8z_smc_denovo_particles16_rounds4"
 HOTSPOTS="T570,T571,T572,T573"                           # e.g. "T305,T456"
 MODEL_WEIGHTS="${RFANTIBODY_ROOT}/weights/RFdiffusion_Ab.pt"
 MPNN_WEIGHTS="${THERMOMPNN_ROOT}/vanilla_model_weights/v_48_020.pt"
@@ -40,8 +40,8 @@ THERMO_MODEL_YAML="${THERMOMPNN_ROOT}/config.yaml"
 THERMO_CHECKPOINT="${THERMOMPNN_ROOT}/models/thermoMPNN_default.pt"
 
 # ── SMC hyperparameters ───────────────────────────────────────────────────────
-N_PARTICLES=4
-N_ROUNDS=6
+N_PARTICLES=16
+N_ROUNDS=4
 GUIDANCE_SCALE=1.0
 ESS_THRESHOLD=0.5
 W_THERMO=1.0
@@ -51,7 +51,7 @@ W_BSA=0.5
 FREE_LOOPS=""          # e.g. "H3:5-13" or leave empty
 NANOBODY_FLAG=""       # set to "--nanobody" for nanobody design
 DEVICE="cuda"
-RUN_NAME="smc_run"     # used for log/pid file names
+RUN_NAME="smc_run_1n8z"     # used for log/pid file names
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Internal — do not edit below here
