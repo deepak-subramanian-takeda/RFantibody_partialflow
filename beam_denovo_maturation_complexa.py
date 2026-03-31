@@ -29,20 +29,20 @@ Complexa-style (trajectory-level beam, Sec. 3.4 of the paper):
 
 Reward function:
   Two complementary objectives are combined (cf. paper Sec. 3.3 and
-  Tab. 3 which shows fipAE + fH-Bond are additive):
+  Tab. 3 which shows fipTM + fH-Bond are additive):
 
-      R(s) = w_ipae  * score_ipAE(s)          # interface quality
+      R(s) = w_iptm  * score_ipTM(s)          # interface quality
            + w_thermo * score_thermo(s)        # thermodynamic stability
 
   where:
-    score_ipAE(s)   = ipAE_threshold - ipAE(s)   (higher is better;
-                      ipAE < 7.0 Å is the standard success criterion)
+    score_ipTM(s)   = ipTM_threshold - ipTM(s)   (higher is better;
+                      ipTM < 7.0 Å is the standard success criterion)
     score_thermo(s) = -DDG(s)                    (ThermoMPNN ΔΔG;
                       more negative = more stable → larger reward)
 
-  ipAE is obtained by running AlphaFold2-Multimer (via ColabDesign /
+  ipTM is obtained by running AlphaFold2-Multimer (via ColabDesign /
   af2_runner) on the binder–target complex.  This mirrors the paper's
-  use of fipAE as the primary inference-time reward signal.
+  use of fipTM as the primary inference-time reward signal.
 
 Noise-level gating:
   Scoring is computationally expensive, so a checkpoint fires only once
@@ -100,10 +100,13 @@ from smc_denovo_maturation import (
 
 from evaluate_designs import (
     write_colabfold_fasta,
+    _get_chain_sequence_range,
+    compute_target_crop,
     run_colabfold,
     find_top_af2_result,
     extract_plddt,
-    extract_ipae,
+    extract_iptm,
+    extract_iptm,
     BINDER_CHAINS,
 )
 
@@ -116,72 +119,84 @@ from partial_diffusion_maturation import (
     split_hlt_complex,
 )
 
+def write_renumbered_pdb(input_pdb: str, output_pdb: str) -> Dict[Tuple[str,int], int]:
+    """
+    Write a copy of input_pdb with all residues renumbered sequentially
+    from 1, preserving chain IDs. Returns mapping of
+    (original_chain, original_resnum) -> new_resnum.
+    """
+    mapping: Dict[Tuple[str,int], int] = {}
+    counter = 0
+    current_key = None
+    lines_out = []
+
+    with open(input_pdb) as f:
+        for line in f:
+            if line.startswith(("ATOM", "HETATM")):
+                chain  = line[21]
+                resnum = int(line[22:26])
+                key    = (chain, resnum)
+                if key != current_key:
+                    counter += 1
+                    mapping[key] = counter
+                    current_key = key
+                new_resnum = mapping[key]
+                line = line[:22] + f"{new_resnum:4d}" + line[26:]
+            lines_out.append(line)
+
+    with open(output_pdb, "w") as f:
+        f.writelines(lines_out)
+
+    return mapping
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ipAE reward via colabfold_batch  (mirrors evaluate_designs.py)
+# ipTM reward via colabfold_batch  (mirrors evaluate_designs.py)
 # ─────────────────────────────────────────────────────────────────────────────
 
-def run_af2_multimer(
-    binder_pdb:          str,
-    af2_work_dir:        str,
-    colabfold_batch_bin: str,
-    colabfold_python:    str,
-    num_recycles:        int  = 1,
-    num_models:          int  = 1,
-    use_gpu:             bool = True,
-    overwrite:           bool = False,
-) -> Optional[float]:
-    """
-    Fold the binder–target complex with AlphaFold2-Multimer (colabfold_batch)
-    and return ipAE (Å).  Returns None on any failure.
-
-    Uses the same FASTA/runner/parser stack as evaluate_designs.py:
-      write_colabfold_fasta → run_colabfold → find_top_af2_result → extract_ipae
-
-    We default to num_recycles=1 (vs. 3 at eval time) to keep beam search
-    rollouts fast; the reward signal is directional even at low recycle depth.
-    """
+def run_af2_multimer(binder_pdb, af2_work_dir, colabfold_batch_bin,
+                     colabfold_python, num_recycles=1, num_models=1,
+                     use_gpu=True, overwrite=False):
     os.makedirs(af2_work_dir, exist_ok=True)
     stem    = Path(binder_pdb).stem
     out_dir = os.path.join(af2_work_dir, stem)
 
-    # Skip recomputation if outputs already present
     already_done = (
-        not overwrite
-        and os.path.isdir(out_dir)
+        not overwrite and os.path.isdir(out_dir)
         and any(Path(out_dir).glob("*rank_001*scores*.json"))
     )
 
     if not already_done:
+        # Crop target to epitope region to fit in GPU memory
+        try:
+            target_crop = compute_target_crop(binder_pdb)
+        except ValueError as e:
+            print(f"  [AF2 WARN] {e}")
+            return None
+
         fasta_path = os.path.join(af2_work_dir, f"{stem}.fasta")
-        # Chain order must match evaluate_designs.py convention: H, L, T
         chains = [c for c in [CHAIN_H, CHAIN_L, CHAIN_T]
                   if _chain_present(binder_pdb, c)]
-        ok = write_colabfold_fasta(binder_pdb, fasta_path, chains)
+        ok = write_colabfold_fasta(binder_pdb, fasta_path, chains,
+                                   target_crop=target_crop)
         if not ok:
             return None
 
         success = run_colabfold(
-            fasta_path=fasta_path,
-            af2_out_dir=out_dir,
+            fasta_path=fasta_path, af2_out_dir=out_dir,
             colabfold_batch_bin=colabfold_batch_bin,
             colabfold_python=colabfold_python,
-            num_recycles=num_recycles,
-            num_models=num_models,
+            num_recycles=num_recycles, num_models=num_models,
             use_gpu=use_gpu,
         )
         if not success:
             return None
 
     af2_result = find_top_af2_result(out_dir, stem)
-    if af2_result is None or af2_result["pae_data"] is None:
+    if af2_result is None or af2_result["scores"] is None:
         return None
 
-    ipae = extract_ipae(
-        pae_data=af2_result["pae_data"],
-        pdb_path=af2_result["pdb"],
-    )
-    return None if (ipae is None or np.isnan(ipae)) else ipae
+    iptm = extract_iptm(af2_result["scores"])
+    return None if np.isnan(iptm) else iptm
 
 
 def _chain_present(pdb_path: str, chain: str) -> bool:
@@ -194,11 +209,11 @@ def _chain_present(pdb_path: str, chain: str) -> bool:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Composite reward  R = w_ipae * score_ipAE + w_thermo * score_thermo
+# Composite reward  R = w_iptm * score_ipTM + w_thermo * score_thermo
 # ─────────────────────────────────────────────────────────────────────────────
 
-# Default ipAE threshold for converting to a reward (paper uses 7.0 Å).
-IPAE_SUCCESS_THRESHOLD = 7.0
+# Default ipTM threshold for converting to a reward (paper uses 7.0 Å).
+IPTM_SUCCESS_THRESHOLD = 0.6
 
 
 def score_complexa_reward(
@@ -209,9 +224,9 @@ def score_complexa_reward(
     thermo,
     cdr_mask:            torch.Tensor,
     epitope_ca:          torch.Tensor,
-    w_ipae:              float = 1.0,
+    w_iptm:              float = 1.0,
     w_thermo:            float = 0.5,
-    ipae_threshold:      float = IPAE_SUCCESS_THRESHOLD,
+    iptm_threshold:      float = IPTM_SUCCESS_THRESHOLD,
     af2_num_recycles:    int   = 1,
     af2_num_models:      int   = 1,
     use_gpu:             bool  = True,
@@ -220,10 +235,10 @@ def score_complexa_reward(
     """
     Complexa-style composite reward:
 
-        R = w_ipae  * (ipae_threshold - ipAE)     ← interface quality
+        R = w_iptm  * (iptm_threshold - ipTM)     ← interface quality
           + w_thermo * (-DDG)                      ← thermodynamic stability
 
-    ipAE is computed via colabfold_batch (same pipeline as evaluate_designs.py).
+    ipTM is computed via colabfold_batch (same pipeline as evaluate_designs.py).
     Falls back to ThermoMPNN-only if colabfold_batch_bin is empty/missing.
 
     Returns (reward_scalar, breakdown_dict).
@@ -235,10 +250,13 @@ def score_complexa_reward(
     )
     ddg = thermo_bd.get("ddg", 0.0)
 
-    # ── ipAE component (colabfold_batch) ─────────────────────────────────────
-    ipae: Optional[float] = None
+    thermo.cpu()
+    torch.cuda.empty_cache()
+
+    # ── ipTM component (colabfold_batch) ─────────────────────────────────────
+    iptm: Optional[float] = None
     if colabfold_batch_bin and os.path.isfile(colabfold_batch_bin):
-        ipae = run_af2_multimer(
+        iptm = run_af2_multimer(
             binder_pdb=pdb_path,
             af2_work_dir=af2_work_dir,
             colabfold_batch_bin=colabfold_batch_bin,
@@ -248,20 +266,21 @@ def score_complexa_reward(
             use_gpu=use_gpu,
         )
 
+    thermo.to(device)
     # ── Combine ───────────────────────────────────────────────────────────────
     reward_thermo = w_thermo * (-ddg)
-    if ipae is not None:
-        reward_ipae = w_ipae * (ipae_threshold - ipae)
-        reward      = reward_thermo + reward_ipae
-        success     = ipae < ipae_threshold
+    if iptm is not None:
+        reward_iptm = w_iptm * (iptm)
+        reward      = reward_thermo + reward_iptm
+        success     = iptm > 0.6
     else:
-        reward_ipae = 0.0
+        reward_iptm = 0.0
         reward      = reward_thermo
         success     = False
 
     breakdown = {
-        "ddg": ddg, "ipae": ipae,
-        "reward_thermo": reward_thermo, "reward_ipae": reward_ipae,
+        "ddg": ddg, "iptm": iptm,
+        "reward_thermo": reward_thermo, "reward_iptm": reward_iptm,
         "reward": reward, "success": success,
         **thermo_bd,
     }
@@ -333,6 +352,7 @@ def _rollout_and_score(
     hotspots:            str,
     model_weights:       str,
     input_pdb:           str,
+    renumbered_pdb:      str,
     anchor_residues:     list,
     cdr_ranges,
     extra_args:          List[str],
@@ -340,9 +360,9 @@ def _rollout_and_score(
     cdr_mask:            torch.Tensor,
     thermo,
     epitope_ca:          torch.Tensor,
-    w_ipae:              float,
+    w_iptm:              float,
     w_thermo:            float,
-    ipae_threshold:      float,
+    iptm_threshold:      float,
     af2_work_dir:        str,
     colabfold_batch_bin: str,
     colabfold_python:    str,
@@ -377,7 +397,7 @@ def _rollout_and_score(
         hotspots=hotspots,
         output_prefix=out_prefix,
         model_weights=model_weights,
-        original_pdb=input_pdb,
+        original_pdb=renumbered_pdb,
         anchor_residues=anchor_residues,
         cdr_ranges=cdr_ranges,
         extra_args=extra_args,
@@ -404,18 +424,18 @@ def _rollout_and_score(
         thermo=thermo,
         cdr_mask=cdr_mask,
         epitope_ca=epitope_ca,
-        w_ipae=w_ipae,
+        w_iptm=w_iptm,
         w_thermo=w_thermo,
-        ipae_threshold=ipae_threshold,
+        iptm_threshold=iptm_threshold,
         af2_num_recycles=af2_num_recycles,
         af2_num_models=af2_num_models,
         use_gpu=use_gpu,
         device=device,
     )
 
-    ipae_str = f"ipAE={bd['ipae']:.3f}" if bd["ipae"] is not None else "ipAE=N/A"
+    iptm_str = f"ipTM={bd['iptm']:.3f}" if bd["iptm"] is not None else "ipTM=N/A"
     print(
-        f"reward={reward:+.3f}  {ipae_str}  "
+        f"reward={reward:+.3f}  {iptm_str}  "
         f"DDG={bd['ddg']:+.3f}  success={bd['success']}"
     )
 
@@ -457,9 +477,9 @@ def run_beam_denovo_complexa(
     af2_num_recycles:    int   = 1,
     af2_num_models:      int   = 1,
     # ── reward weights ───────────────────────────────────────────────────────
-    w_ipae:             float = 1.0,    # weight on ipAE reward component
+    w_iptm:             float = 1.0,    # weight on ipTM reward component
     w_thermo:           float = 0.5,    # weight on ThermoMPNN ΔΔG component
-    ipae_threshold:     float = IPAE_SUCCESS_THRESHOLD,
+    iptm_threshold:     float = IPTM_SUCCESS_THRESHOLD,
     # ── ThermoMPNN ──────────────────────────────────────────────────────────
     thermo_local_yaml:  str   = "",
     thermo_model_yaml:  str   = "",
@@ -486,14 +506,14 @@ def run_beam_denovo_complexa(
                      from that node's structure → N*L candidate nodes C_c.
         2. Rollout  — each candidate is independently completed to a clean
                       structure, sequence-designed, and scored:
-                        R(·) = w_ipae*(threshold − ipAE) + w_thermo*(−ΔΔG)
+                        R(·) = w_iptm*(threshold − ipTM) + w_thermo*(−ΔΔG)
         3. Prune   — keep the N candidates with the highest R score:
                         B_c = argmax_{T⊆C_c, |T|=N} Σ_{i∈T} R(·)
 
     Key departure from the original code:
-      • The reward now uses ipAE (AlphaFold2-Multimer) as the primary
+      • The reward now uses ipTM (AlphaFold2-Multimer) as the primary
         interface quality signal, replacing BSA contact counting.
-      • ipAE = None silently degrades to ThermoMPNN-only scoring so the
+      • ipTM = None silently degrades to ThermoMPNN-only scoring so the
         code still runs without ColabDesign installed.
 
     Returns the final beam (N nodes), sorted by ranking_mode descending.
@@ -555,22 +575,48 @@ def run_beam_denovo_complexa(
     os.makedirs(af2_work_dir, exist_ok=True)
 
     if colabfold_batch_bin and os.path.isfile(colabfold_batch_bin):
-        print(f"[Complexa-Beam] colabfold_batch: {colabfold_batch_bin} — ipAE reward ENABLED.")
+        print(f"[Complexa-Beam] colabfold_batch: {colabfold_batch_bin} — ipTM reward ENABLED.")
     else:
         print(
-            "[Complexa-Beam] colabfold_batch NOT found — ipAE reward DISABLED; "
+            "[Complexa-Beam] colabfold_batch NOT found — ipTM reward DISABLED; "
             "running ThermoMPNN-only scoring.  Pass --colabfold_batch_bin to enable."
         )
 
     # shared kwargs forwarded to every _rollout_and_score call
+    # Renumber input PDB sequentially
+    renumbered_pdb = os.path.join(work_dir, "input_renumbered.pdb")
+    resnum_mapping = write_renumbered_pdb(input_pdb, renumbered_pdb)
+
+    # Remap hotspots using the mapping
+    def remap_hotspots(hotspot_str, mapping):
+        remapped = []
+        for tok in hotspot_str.split(","):
+            chain, resnum = tok.strip()[0], int(tok.strip()[1:])
+            new_resnum = mapping[(chain, resnum)]
+            remapped.append(f"{chain}{new_resnum}")
+        return ",".join(remapped)
+
+    remapped_hotspots = remap_hotspots(hotspots, resnum_mapping)
+
+    # Rebuild contig using renumbered residue numbers — no gaps, no remapping needed
+    renumbered_residues = read_pdb_residues(renumbered_pdb)
+    remapped_contig = build_denovo_contig(
+        renumbered_residues, cdr_ranges, anchor_residues,
+        free_loops, nanobody
+    )
+
+    print(f"[Complexa-Beam] Renumbered input PDB: {renumbered_pdb}")
+    print(f"[Complexa-Beam] Remapped hotspots: {hotspots} -> {remapped_hotspots}")
+    print(f"[Complexa-Beam] Remapped contig: {remapped_contig}")
+    
     rollout_kw = dict(
-        work_dir=work_dir, contig_string=contig_string,
-        hotspots=hotspots, model_weights=model_weights,
-        input_pdb=input_pdb, anchor_residues=anchor_residues,
+        work_dir=work_dir, model_weights=model_weights,
+        input_pdb=input_pdb, renumbered_pdb=renumbered_pdb, contig_string=remapped_contig,
+        hotspots=remapped_hotspots, anchor_residues=anchor_residues,
         cdr_ranges=cdr_ranges, extra_args=extra_args,
         mpnn=mpnn, cdr_mask=cdr_mask, thermo=thermo,
-        epitope_ca=epitope_ca, w_ipae=w_ipae, w_thermo=w_thermo,
-        ipae_threshold=ipae_threshold, af2_work_dir=af2_work_dir,
+        epitope_ca=epitope_ca, w_iptm=w_iptm, w_thermo=w_thermo,
+        iptm_threshold=iptm_threshold, af2_work_dir=af2_work_dir,
         colabfold_batch_bin=colabfold_batch_bin,
         colabfold_python=colabfold_python,
         af2_num_recycles=af2_num_recycles,
@@ -588,8 +634,9 @@ def run_beam_denovo_complexa(
     node_counter = 0
     # Synthetic root node so every real seed has a parent
     root_node = BeamNode(
-        idx=-1, pdb_path=input_pdb, parent_idx=None,
-        checkpoint_born=-1, cumulative_reward=0.0
+        idx=-1, pdb_path=renumbered_pdb,   # ← use renumbered PDB
+        parent_idx=None, checkpoint_born=-1,
+        cumulative_reward=0.0
     )
 
     seed_candidates: List[BeamNode] = []
@@ -660,14 +707,14 @@ def run_beam_denovo_complexa(
                 "or switching to Feynman-Kac steering for softer pruning."
             )
 
-        # Summary of in-silico successes (ipAE < threshold) in surviving beam
+        # Summary of in-silico successes (ipTM < threshold) in surviving beam
         n_success = sum(
             1 for n in beam
             if n.reward_history and n.reward_history[-1].get("success", False)
         )
         print(
             f"  In-silico successes in beam "
-            f"(ipAE < {ipae_threshold:.1f} Å): {n_success}/{len(beam)}"
+            f"(ipTM < {iptm_threshold:.1f} Å): {n_success}/{len(beam)}"
         )
 
     # ── 6. Write final outputs ────────────────────────────────────────────────
@@ -697,14 +744,14 @@ def run_beam_denovo_complexa(
             out_path=final,
         )
         last_h = node.reward_history[-1] if node.reward_history else {}
-        ipae_str = (
-            f"ipAE={last_h['ipae']:.3f}" if last_h.get("ipae") is not None
-            else "ipAE=N/A"
+        iptm_str = (
+            f"ipTM={last_h['iptm']:.3f}" if last_h.get("iptm") is not None
+            else "ipTM=N/A"
         )
         print(
             f"  rank {rank:03d}  node={node.idx}  "
             f"{ranking_mode}_reward={rank_fn(node):+.3f}  "
-            f"{ipae_str}  DDG={last_h.get('ddg', float('nan')):+.3f}  "
+            f"{iptm_str}  DDG={last_h.get('ddg', float('nan')):+.3f}  "
             f"→ {Path(final).name}"
         )
 
@@ -719,7 +766,7 @@ def run_beam_denovo_complexa(
             "checkpoint_born":   node.checkpoint_born,
             "cumulative_reward": node.cumulative_reward,
             f"{ranking_mode}_reward": rank_fn(node),
-            "final_ipae":        last_h.get("ipae"),
+            "final_iptm":        last_h.get("iptm"),
             "final_ddg":         last_h.get("ddg"),
             "final_success":     last_h.get("success"),
             "final_pdb":         os.path.basename(node.pdb_path),
@@ -747,16 +794,16 @@ def _print_beam(
     print(f"\n  {label} ({len(beam)} nodes):")
     for rank, node in enumerate(beam):
         last_h = node.reward_history[-1] if node.reward_history else {}
-        ipae_str = (
-            f"ipAE={last_h['ipae']:.3f}" if last_h.get("ipae") is not None
-            else "ipAE=N/A"
+        iptm_str = (
+            f"ipTM={last_h['iptm']:.3f}" if last_h.get("iptm") is not None
+            else "ipTM=N/A"
         )
         print(
             f"    rank {rank:02d}  node={node.idx:04d}  "
             f"parent={node.parent_idx}  "
             f"{ranking_mode}={rank_fn(node):+.3f}  "
             f"latest={last_h.get('reward', float('nan')):+.3f}  "
-            f"{ipae_str}"
+            f"{iptm_str}"
         )
 
 
@@ -776,7 +823,7 @@ def _apply_sequence_and_anchors(
         backbone_pdb=pdb_path,
         cdr_mask=cdr_mask,
         out_pdb=seq_pdb,
-        temperature=0.1,
+        temperature=0.2,
         device=device,
     )
     out = result or pdb_path
@@ -800,8 +847,8 @@ def parse_args() -> argparse.Namespace:
     p = argparse.ArgumentParser(
         description=(
             "Complexa-style beam search for de novo antibody design. "
-            "Reward = w_ipae*(threshold - ipAE) + w_thermo*(-DDG).  "
-            "Requires ColabDesign for ipAE; falls back to ThermoMPNN-only."
+            "Reward = w_iptm*(threshold - ipTM) + w_thermo*(-DDG).  "
+            "Requires ColabDesign for ipTM; falls back to ThermoMPNN-only."
         ),
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog=__doc__,
@@ -843,12 +890,12 @@ def parse_args() -> argparse.Namespace:
                    choices=["cumulative", "latest", "average"],
                    help="How to rank candidates at prune time (default: cumulative)")
     # ── reward weights ────────────────────────────────────────────────────────
-    p.add_argument("--w_ipae",         type=float, default=1.0,
-                   help="Weight on ipAE reward component (default 1.0)")
+    p.add_argument("--w_iptm",         type=float, default=1.0,
+                   help="Weight on ipTM reward component (default 1.0)")
     p.add_argument("--w_thermo",       type=float, default=0.5,
                    help="Weight on ThermoMPNN DDG component (default 0.5)")
-    p.add_argument("--ipae_threshold", type=float, default=IPAE_SUCCESS_THRESHOLD,
-                   help=f"ipAE success threshold in Å (default {IPAE_SUCCESS_THRESHOLD})")
+    p.add_argument("--iptm_threshold", type=float, default=IPTM_SUCCESS_THRESHOLD,
+                   help=f"ipTM success threshold (default {IPTM_SUCCESS_THRESHOLD})")
     # ── other ─────────────────────────────────────────────────────────────────
     p.add_argument("--free_loops", default="")
     p.add_argument("--nanobody",   action="store_true")
@@ -877,9 +924,9 @@ def main() -> None:
         colabfold_python=args.colabfold_python,
         af2_num_recycles=args.af2_num_recycles,
         af2_num_models=args.af2_num_models,
-        w_ipae=args.w_ipae,
+        w_iptm=args.w_iptm,
         w_thermo=args.w_thermo,
-        ipae_threshold=args.ipae_threshold,
+        iptm_threshold=args.iptm_threshold,
         thermo_local_yaml=args.thermo_local_yaml,
         thermo_model_yaml=args.thermo_model_yaml,
         thermo_checkpoint=args.thermo_checkpoint,

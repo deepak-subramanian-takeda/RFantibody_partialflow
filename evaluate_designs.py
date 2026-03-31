@@ -178,34 +178,122 @@ def compute_binder_rmsd(
 # FASTA preparation for ColabFold
 # ─────────────────────────────────────────────────────────────────────────────
 
+# ─────────────────────────────────────────────────────────────────────────────
+# PATCH 1: Add these two helpers anywhere after the imports
+# (e.g. right after get_chain_sequence)
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _get_chain_sequence_range(pdb_path: str, chain: str,
+                               start: int, end: int) -> str:
+    """Extract one-letter sequence for residues [start, end] on chain."""
+    aa3to1 = {
+        "ALA":"A","ARG":"R","ASN":"N","ASP":"D","CYS":"C",
+        "GLN":"Q","GLU":"E","GLY":"G","HIS":"H","ILE":"I",
+        "LEU":"L","LYS":"K","MET":"M","PHE":"F","PRO":"P",
+        "SER":"S","THR":"T","TRP":"W","TYR":"Y","VAL":"V",
+    }
+    seen, seq = set(), []
+    with open(pdb_path) as f:
+        for line in f:
+            if not line.startswith("ATOM") or line[21] != chain:
+                continue
+            rn = int(line[22:26])
+            if rn < start or rn > end or rn in seen:
+                continue
+            seen.add(rn)
+            seq.append(aa3to1.get(line[17:20].strip(), "X"))
+    return "".join(seq)
+
+
+def compute_target_crop(
+    pdb_path:           str,
+    contact_threshold:  float = 12.0,
+    padding:            int   = 20,
+) -> Tuple[int, int]:
+    """
+    Find all target (chain T) Cα atoms within contact_threshold Å of any
+    binder (chain H or L) Cα, extend by padding residues on each side.
+    Returns (start_resnum, end_resnum) in the PDB's own residue numbering.
+    Falls back to the full target range if no contacts are found.
+    """
+    binder_ca:  List[np.ndarray] = []
+    target_xyz: List[np.ndarray] = []
+    target_rns: List[int]        = []
+
+    with open(pdb_path) as f:
+        for line in f:
+            if not line.startswith("ATOM") or line[12:16].strip() != "CA":
+                continue
+            ch  = line[21]
+            rn  = int(line[22:26])
+            xyz = np.array([float(line[30:38]),
+                            float(line[38:46]),
+                            float(line[46:54])])
+            if ch in ("H", "L"):
+                binder_ca.append(xyz)
+            elif ch == "T":
+                target_xyz.append(xyz)
+                target_rns.append(rn)
+
+    if not binder_ca or not target_xyz:
+        if target_rns:
+            return (target_rns[0], target_rns[-1])
+        raise ValueError(f"No binder or target Cα atoms found in {pdb_path}")
+
+    B = np.array(binder_ca)
+    contact_rns = [
+        rn for xyz, rn in zip(target_xyz, target_rns)
+        if np.linalg.norm(B - xyz, axis=1).min() < contact_threshold
+    ]
+
+    all_rns = sorted(set(target_rns))
+    if not contact_rns:
+        print(f"  [AF2 WARN] No contacts within {contact_threshold} Å "
+              f"— using full target chain.")
+        return (all_rns[0], all_rns[-1])
+
+    start = max(all_rns[0],  min(contact_rns) - padding)
+    end   = min(all_rns[-1], max(contact_rns) + padding)
+    return (start, end)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PATCH 2: Replace the existing write_colabfold_fasta with this version
+# (adds optional target_crop parameter)
+# ─────────────────────────────────────────────────────────────────────────────
+
 def write_colabfold_fasta(
-    pdb_path: str,
-    out_fasta: str,
-    chains_ordered: List[str],
+    pdb_path:        str,
+    out_fasta:       str,
+    chains_ordered:  List[str],
+    target_crop:     Optional[Tuple[int, int]] = None,
 ) -> bool:
     """
     Write a multimer FASTA for colabfold_batch.
     Chains are joined with ':' as the ColabFold multimer separator.
+    If target_crop=(start, end) is provided, only T-chain residues in that
+    residue number range are included, reducing GPU memory requirements.
     Returns False if any chain sequence is empty.
     """
+    import hashlib
     seqs = []
     for ch in chains_ordered:
-        s = get_chain_sequence(pdb_path, ch)
+        if ch == CHAIN_T and target_crop is not None:
+            start, end = target_crop
+            s = _get_chain_sequence_range(pdb_path, ch, start, end)
+            print(f"  [AF2] Target cropped to T{start}-{end} "
+                  f"({len(s)} residues)", flush=True)
+        else:
+            s = get_chain_sequence(pdb_path, ch)
         if not s:
             print(f"  [WARN] Chain {ch} has no residues in {pdb_path}")
             return False
         seqs.append(s)
 
-    stem   = Path(pdb_path).stem
-    # ColabFold's MMseqs2 API rejects job names over 20 characters.
-    # Use a stable short hash of the full stem as the header instead.
-    import hashlib
+    stem     = Path(pdb_path).stem
     short_id = hashlib.md5(stem.encode()).hexdigest()[:12]
-    header = f">{short_id}"
-    body   = ":".join(seqs)
-
     with open(out_fasta, "w") as f:
-        f.write(f"{header}\n{body}\n")
+        f.write(f">{short_id}\n{':'.join(seqs)}\n")
     return True
 
 
@@ -267,7 +355,7 @@ def run_colabfold(
         "--num-models",   str(num_models),
         "--model-type",   "alphafold2_multimer_v3",
         "--rank",         "iptm",
-        "--msa-mode",     "single_sequence",  # skip MSA server entirely
+        # "--msa-mode",     "single_sequence",  # skip MSA server entirely
         fasta_path,
         af2_out_dir,
     ]
@@ -355,6 +443,10 @@ def extract_plddt(scores: Dict) -> float:
         return float("nan")
     return float(np.mean(plddt))
 
+def extract_iptm(scores: Dict) -> float:
+    """ipTM from ColabFold scores JSON. Range 0–1, higher is better."""
+    val = scores.get("iptm")
+    return float(val) if val is not None else float("nan")
 
 def extract_ipae(
     pae_data:      Dict,
@@ -435,8 +527,29 @@ def extract_ipae(
         print(f"  [WARN] Could not locate binder or target residues in AF2 PDB.")
         return float("nan")
 
+    # Temporarily add inside extract_ipae after chain_sizes is built:
+    print(f"  [DEBUG extract_ipae] chain_sizes: {chain_sizes}")
+    print(f"  [DEBUG extract_ipae] PAE matrix shape: {pae.shape}")
+    print(f"  [DEBUG extract_ipae] ranges: {ranges}")
+    print(f"  [DEBUG extract_ipae] binder_idx count: {len(binder_idx)}")
+    print(f"  [DEBUG extract_ipae] target_idx count: {len(target_idx)}")
+    
     b = np.array(binder_idx)
     t = np.array(target_idx)
+
+    # Add temporarily inside extract_ipae after computing b and t arrays:
+    pae_bt = pae[np.ix_(b, t)]
+    pae_tb = pae[np.ix_(t, b)]
+    print(f"  [DEBUG] PAE binder->target: min={pae_bt.min():.1f} mean={pae_bt.mean():.1f} max={pae_bt.max():.1f}")
+    print(f"  [DEBUG] PAE target->binder: min={pae_tb.min():.1f} mean={pae_tb.mean():.1f} max={pae_tb.max():.1f}")
+
+    # Also check just the CDR region (H residues 99-122, L residues 145-175 approx)
+    cdr_idx = list(range(98, 122)) + list(range(144, 175))  # 0-based
+    cdr_idx = [i for i in cdr_idx if i < len(b)]
+    if cdr_idx:
+        cdr_b = np.array(cdr_idx)
+        pae_cdr_t = pae[np.ix_(cdr_b, t)]
+        print(f"  [DEBUG] PAE CDR->target: min={pae_cdr_t.min():.1f} mean={pae_cdr_t.mean():.1f} max={pae_cdr_t.max():.1f}")
 
     # Average PAE in both directions across the interface
     ipae = float(np.mean([pae[np.ix_(b, t)].mean(),
@@ -498,8 +611,18 @@ def evaluate_design(
     if already_done:
         print(f"  [AF2] Existing results found, skipping rerun (use --overwrite to force).")
     else:
+        # In evaluate_design, before the write_colabfold_fasta call:
+        print(f"  [DEBUG evaluate_design] calling write_colabfold_fasta without crop", flush=True)
         fasta_path = os.path.join(af2_work_dir, f"{stem}.fasta")
-        ok = write_colabfold_fasta(pdb_path, fasta_path, chains_for_fasta)
+        try:
+            target_crop = compute_target_crop(pdb_path)
+            print(f"  [AF2] Epitope crop: T{target_crop[0]}–{target_crop[1]}", flush=True)
+        except ValueError as e:
+            print(f"  [AF2 WARN] Could not compute crop ({e}), using full target.")
+            target_crop = None
+
+        ok = write_colabfold_fasta(pdb_path, fasta_path, chains_for_fasta,
+                                target_crop=target_crop)
         if not ok:
             result["error"] = "Failed to write FASTA (empty chain?)"
             return result

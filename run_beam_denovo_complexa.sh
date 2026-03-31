@@ -29,7 +29,7 @@ SCRIPT="${RFANTIBODY_ROOT}/beam_denovo_maturation_complexa.py"
 # ── Required inputs ───────────────────────────────────────────────────────────
 INPUT_PDB="/home/pymc/Deepak/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb"
 ANCHORS_JSON="/home/pymc/Deepak/RFantibody_partialflow/1n8z_anchors/1n8z_hlt_anchors.json"
-OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/1n8z_cbeam_denovo_width8_cp2_steps5"
+OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/1n8z_cbeam_denovo_width4_cp1_steps5"
 HOTSPOTS="T570,T571,T572,T573"
 MODEL_WEIGHTS="${RFANTIBODY_ROOT}/weights/RFdiffusion_Ab.pt"
 MPNN_WEIGHTS="${RFANTIBODY_ROOT}/weights/vanilla_model_weights/v_48_020.pt"
@@ -48,20 +48,20 @@ AF2_NUM_RECYCLES=1    # low recycle count keeps beam rollouts fast
 AF2_NUM_MODELS=1
 
 # ── Beam search hyperparameters ───────────────────────────────────────────────
-BEAM_WIDTH=8          # N: survivors kept after each checkpoint prune
+BEAM_WIDTH=4          # N: survivors kept after each checkpoint prune
 BRANCH_FACTOR=4       # L: rollouts launched per survivor per checkpoint
-N_CHECKPOINTS=2       # number of expand-score-prune cycles
+N_CHECKPOINTS=1       # number of expand-score-prune cycles
 STEPS_PER_CHECKPOINT=5
 RANKING_MODE="cumulative"   # cumulative | latest | average
 
 # ── Reward weights ────────────────────────────────────────────────────────────
-W_IPAE=1.0            # weight on ipAE reward component
+W_IPTM=2.0            # weight on ipAE reward component
 W_THERMO=0.5          # weight on ThermoMPNN DDG component
-IPAE_THRESHOLD=7.0    # success criterion: ipAE < threshold (Å)
+IPTM_THRESHOLD=0.6    # success criterion: ipAE < threshold (Å)
 
 # ── Optional ──────────────────────────────────────────────────────────────────
 FREE_LOOPS=""          # e.g. "H3:5-13" or leave empty
-NANOBODY_FLAG="--nanobody"       # set to "--nanobody" for nanobody design
+NANOBODY_FLAG=""       # set to "--nanobody" for nanobody design
 DEVICE="cuda"
 RUN_NAME="cbeam_run_1n8z"
 
@@ -88,14 +88,13 @@ CMD=(
     --n_checkpoints       "$N_CHECKPOINTS"
     --steps_per_checkpoint "$STEPS_PER_CHECKPOINT"
     --ranking_mode        "$RANKING_MODE"
-    --w_ipae              "$W_IPAE"
+    --w_iptm              "$W_IPTM"
     --w_thermo            "$W_THERMO"
-    --ipae_threshold      "$IPAE_THRESHOLD"
+    --iptm_threshold      "$IPTM_THRESHOLD"
     --af2_num_recycles    "$AF2_NUM_RECYCLES"
     --af2_num_models      "$AF2_NUM_MODELS"
     --device              "$DEVICE"
     --name                "$RUN_NAME"
-    --nanobody            "$NANOBODY_FLAG"
 )
 
 # Append colabfold paths only if the binary exists
@@ -111,6 +110,11 @@ fi
 # Append optional flags only if set
 [[ -n "$FREE_LOOPS"    ]] && CMD+=(--free_loops    "$FREE_LOOPS")
 [[ -n "$NANOBODY_FLAG" ]] && CMD+=("$NANOBODY_FLAG")
+
+# # In run_beam_denovo_complexa.sh
+# CMD+=(
+#     "diffuser.partial_T=50"           # increase noise (default is often 20-25)
+# )
 
 # ── Subcommands ───────────────────────────────────────────────────────────────
 

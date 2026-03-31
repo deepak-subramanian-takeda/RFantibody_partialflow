@@ -1015,6 +1015,9 @@ def run_denovo_round(
       1. Align and copy target chain from original PDB (Kabsch on framework Ca)
       2. Restore anchor residue identities
     """
+    # Add directly inside run_denovo_round, before build_denovo_rfdiffusion_cmd:
+    print(f"[DEBUG run_denovo_round] input_pdb={ref_pdb}", flush=True)
+    print(f"[DEBUG run_denovo_round] original_pdb={original_pdb}", flush=True)
     cmd = build_denovo_rfdiffusion_cmd(
         input_pdb=ref_pdb,
         output_prefix=output_prefix,
@@ -1024,6 +1027,8 @@ def run_denovo_round(
         num_designs=1,
         extra_args=extra_args,
     )
+    print(f"[DEBUG] RFdiffusion command:\n{' '.join(cmd)}", flush=True)
+    print(f"[DEBUG] inference.input_pdb in cmd: {[x for x in cmd if 'input_pdb' in x]}", flush=True)
     result = subprocess.run(" ".join(cmd), shell=True,
                             capture_output=True, text=True)
     if result.returncode != 0:
