@@ -1124,8 +1124,14 @@ def run_smc_denovo(
     )
     print(f"[SMC] Contig: {contig_string}")
 
-    cdr_mask   = build_cdr_mask(framework_pdb)
-    epitope_ca = load_epitope_ca(target_pdb, hotspots, device)
+    renumbered_split_dir = os.path.join(work_dir, "_split_renumbered")
+    renumbered_target_pdb, renumbered_framework_pdb = split_hlt_complex(
+        renumbered_pdb, renumbered_split_dir
+    )
+    cdr_mask = build_cdr_mask(renumbered_framework_pdb)
+    print(f"[Complexa-Beam] CDR mask: sum={cdr_mask.sum().item()} "
+        f"shape={tuple(cdr_mask.shape)}")
+    epitope_ca = load_epitope_ca(renumbered_target_pdb, remapped_hotspots, device)
 
     print("[SMC] Loading ThermoMPNN...")
     thermo = load_thermompnn(

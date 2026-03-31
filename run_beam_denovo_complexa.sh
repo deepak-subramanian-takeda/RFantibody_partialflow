@@ -29,7 +29,7 @@ SCRIPT="${RFANTIBODY_ROOT}/beam_denovo_maturation_complexa.py"
 # ── Required inputs ───────────────────────────────────────────────────────────
 INPUT_PDB="/home/pymc/Deepak/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb"
 ANCHORS_JSON="/home/pymc/Deepak/RFantibody_partialflow/1n8z_anchors/1n8z_hlt_anchors.json"
-OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/1n8z_cbeam_denovo_width4_cp1_steps5"
+OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/1n8z_cbeam_denovo_width4_cp2_steps5"
 HOTSPOTS="T570,T571,T572,T573"
 MODEL_WEIGHTS="${RFANTIBODY_ROOT}/weights/RFdiffusion_Ab.pt"
 MPNN_WEIGHTS="${RFANTIBODY_ROOT}/weights/vanilla_model_weights/v_48_020.pt"
@@ -50,7 +50,7 @@ AF2_NUM_MODELS=1
 # ── Beam search hyperparameters ───────────────────────────────────────────────
 BEAM_WIDTH=4          # N: survivors kept after each checkpoint prune
 BRANCH_FACTOR=4       # L: rollouts launched per survivor per checkpoint
-N_CHECKPOINTS=1       # number of expand-score-prune cycles
+N_CHECKPOINTS=2       # number of expand-score-prune cycles
 STEPS_PER_CHECKPOINT=5
 RANKING_MODE="cumulative"   # cumulative | latest | average
 
