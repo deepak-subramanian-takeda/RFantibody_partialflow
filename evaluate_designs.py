@@ -393,26 +393,47 @@ def run_colabfold(
 
 def find_top_af2_result(af2_out_dir: str, stem: str) -> Optional[Dict]:
     """
-    Locate the rank_001 scores JSON, PAE JSON, and PDB from colabfold_batch output.
+    Locate the best AF2 result from colabfold_batch output, selecting the
+    scores file with the highest ipTM across all rank_001 predictions.
 
-    ColabFold 1.5.5 writes output files named after the FASTA header (a short
-    hash), not the design stem, so we search by pattern only:
+    ColabFold 1.5.5 writes one scores JSON per recycle/model, all named
+    rank_001, e.g.:
       <hash>_scores_rank_001_alphafold2_multimer_v3_model_1_seed_000.json
-      <hash>_predicted_aligned_error_v1.json   ← PAE lives here separately
-      <hash>_unrelaxed_rank_001_...pdb
+      <hash>_scores_rank_001_alphafold2_multimer_v3_model_1_seed_001.json
+    Sorting alphabetically does not reliably pick the best prediction, so
+    we explicitly select the file with the highest ipTM score.
     """
     out = Path(af2_out_dir)
 
-    # Scores JSON (contains plddt, iptm, ptm but NOT pae in v1.5.5)
+    # Load all rank_001 scores files and pick the one with highest ipTM
     score_files = sorted(out.glob("*_scores_rank_001_*.json"))
     if not score_files:
         print(f"  [WARN] No rank_001 scores JSON found in {af2_out_dir}")
         return None
-    score_file = score_files[0]
-    with open(score_file) as f:
-        scores = json.load(f)
 
-    # PAE JSON — stored separately in colabfold 1.5.5
+    best_score_file = None
+    best_scores     = None
+    best_iptm       = -1.0
+
+    for sf in score_files:
+        try:
+            with open(sf) as f:
+                s = json.load(f)
+            iptm = float(s.get("iptm", 0.0))
+            if iptm > best_iptm:
+                best_iptm       = iptm
+                best_score_file = sf
+                best_scores     = s
+        except (json.JSONDecodeError, ValueError):
+            continue
+
+    if best_score_file is None:
+        print(f"  [WARN] Could not read any scores JSON in {af2_out_dir}")
+        return None
+
+    print(f"  [AF2] Best recycle: {best_score_file.name}  ipTM={best_iptm:.3f}")
+
+    # PAE JSON — ColabFold 1.5.5 stores a single PAE file per run
     pae_files = sorted(out.glob("*_predicted_aligned_error_v1.json"))
     pae_data  = None
     if pae_files:
@@ -421,15 +442,25 @@ def find_top_af2_result(af2_out_dir: str, stem: str) -> Optional[Dict]:
     else:
         print(f"  [WARN] No predicted_aligned_error JSON found in {af2_out_dir}")
 
-    # Unrelaxed rank_001 PDB
-    pdb_files = sorted(out.glob("*rank_001*.pdb"))
-    pdb_file  = str(pdb_files[0]) if pdb_files else None
+    # Match the unrelaxed PDB to the best scores file.
+    # ColabFold names the PDB with the same seed/recycle suffix as the scores
+    # file, e.g. ..._model_1_seed_000.pdb — extract that suffix and match.
+    pdb_file = None
+    suffix   = best_score_file.stem.replace("scores_", "")  # remove 'scores_' prefix
+    # Try exact suffix match first
+    pdb_candidates = sorted(out.glob(f"*{suffix}*.pdb"))
+    if pdb_candidates:
+        pdb_file = str(pdb_candidates[0])
+    else:
+        # Fallback: any rank_001 PDB
+        fallback = sorted(out.glob("*rank_001*.pdb"))
+        pdb_file = str(fallback[0]) if fallback else None
 
     return {
-        "scores":      scores,
+        "scores":      best_scores,
         "pae_data":    pae_data,
         "pdb":         pdb_file,
-        "scores_json": str(score_file),
+        "scores_json": str(best_score_file),
     }
 
 

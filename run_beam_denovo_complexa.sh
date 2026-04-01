@@ -29,7 +29,7 @@ SCRIPT="${RFANTIBODY_ROOT}/beam_denovo_maturation_complexa.py"
 # ── Required inputs ───────────────────────────────────────────────────────────
 INPUT_PDB="/home/pymc/Deepak/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb"
 ANCHORS_JSON="/home/pymc/Deepak/RFantibody_partialflow/1n8z_anchors/1n8z_hlt_anchors.json"
-OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/1n8z_cbeam_denovo_width4_cp2_steps5"
+OUTPUT_DIR="/home/pymc/Deepak/RFantibody_partialflow/1n8z_cbeam_denovo_width4_cp2_steps20"
 HOTSPOTS="T570,T571,T572,T573"
 MODEL_WEIGHTS="${RFANTIBODY_ROOT}/weights/RFdiffusion_Ab.pt"
 MPNN_WEIGHTS="${RFANTIBODY_ROOT}/weights/vanilla_model_weights/v_48_020.pt"
@@ -44,14 +44,14 @@ THERMO_CHECKPOINT="${THERMOMPNN_ROOT}/models/thermoMPNN_default.pt"
 # Leave COLABFOLD_BATCH_BIN empty to run ThermoMPNN-only scoring.
 COLABFOLD_BATCH_BIN="/home/pymc/miniconda3/envs/colabfold_env/bin/colabfold_batch"
 COLABFOLD_PYTHON="/home/pymc/miniconda3/envs/colabfold_env/bin/python"
-AF2_NUM_RECYCLES=1    # low recycle count keeps beam rollouts fast
+AF2_NUM_RECYCLES=3    # low recycle count keeps beam rollouts fast
 AF2_NUM_MODELS=1
 
 # ── Beam search hyperparameters ───────────────────────────────────────────────
 BEAM_WIDTH=4          # N: survivors kept after each checkpoint prune
 BRANCH_FACTOR=4       # L: rollouts launched per survivor per checkpoint
 N_CHECKPOINTS=2       # number of expand-score-prune cycles
-STEPS_PER_CHECKPOINT=5
+STEPS_PER_CHECKPOINT=20
 RANKING_MODE="cumulative"   # cumulative | latest | average
 
 # ── Reward weights ────────────────────────────────────────────────────────────
