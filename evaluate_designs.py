@@ -412,8 +412,8 @@ def find_top_af2_result(af2_out_dir: str, stem: str) -> Optional[Dict]:
         return None
 
     best_score_file = None
-    best_scores     = None
-    best_iptm       = -1.0
+    best_scores = None
+    best_iptm = -1.0
 
     for sf in score_files:
         try:
@@ -421,9 +421,9 @@ def find_top_af2_result(af2_out_dir: str, stem: str) -> Optional[Dict]:
                 s = json.load(f)
             iptm = float(s.get("iptm", 0.0))
             if iptm > best_iptm:
-                best_iptm       = iptm
+                best_iptm = iptm
                 best_score_file = sf
-                best_scores     = s
+                best_scores = s
         except (json.JSONDecodeError, ValueError):
             continue
 
