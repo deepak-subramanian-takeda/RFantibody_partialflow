@@ -37,12 +37,12 @@ ANCHORS_JSON="/home/sagemaker-user/RFantibody_partialflow/1n8z_anchors/1n8z_hlt_
 OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/1n8z_benchmark"
 HOTSPOTS="T570,T571,T572,T573"
 MODEL_WEIGHTS="${RFANTIBODY_ROOT}/weights/RFdiffusion_Ab.pt"
-MPNN_WEIGHTS="${RFANTIBODY_ROOT}/weights/vanilla_model_weights/v_48_020.pt"
 
 # ── ThermoMPNN config ─────────────────────────────────────────────────────────
 THERMO_LOCAL_YAML="${THERMOMPNN_ROOT}/local.yaml"
 THERMO_MODEL_YAML="${THERMOMPNN_ROOT}/config.yaml"
 THERMO_CHECKPOINT="${THERMOMPNN_ROOT}/models/thermoMPNN_default.pt"
+MPNN_WEIGHTS="${THERMOMPNN_ROOT}/vanilla_model_weights/v_48_020.pt"
 
 # ── ColabFold / AF2-Multimer ──────────────────────────────────────────────────
 # Required for ipTM scoring in all arms.
@@ -74,7 +74,7 @@ NUM_DESIGNS=50
 # ── Beam search hyperparameters (arms C and D) ────────────────────────────────
 BEAM_WIDTH=4           # N: survivors kept after each checkpoint prune
 BRANCH_FACTOR=4        # L: rollouts launched per survivor per checkpoint
-N_CHECKPOINTS=2        # number of expand-score-prune cycles
+N_CHECKPOINTS=4        # number of expand-score-prune cycles
 RANKING_MODE="cumulative"   # cumulative | latest | average
 
 # ── Reward weights (arms C and D) ────────────────────────────────────────────

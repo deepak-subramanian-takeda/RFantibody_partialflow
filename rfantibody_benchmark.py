@@ -199,35 +199,67 @@ def run_dockq(
     dockq_bin:    str = "DockQ",
 ) -> Optional[float]:
     """
-    Run DockQ and return the scalar DockQ score.
+    Run DockQ v2 and return the scalar DockQ score for the
+    binder–target interface.
 
-    DockQ CLI (v2+):
-        DockQ <model> <native> --short
-    Output line format:
-        DockQ 0.XXXX ...
+    DockQ v2 CLI (pip install DockQ):
+        DockQ <model> <native> [--mapping MODELCHAINS:NATIVECHAINS]
+
+    Chain mapping:
+      - For a full Fv (H+L vs T): --mapping HLT:HLT
+      - For a nanobody (H vs T):  --mapping HT:HT
+      The mapping is the same for model and native because RFantibody
+      preserves chain IDs.  DockQ v2 will auto-detect interfaces within
+      those chains (H–T and L–T) and return a GlobalDockQ.
+
+    Output (--short) format varies by v2 minor version; we try several
+    patterns to be robust across releases.
     """
-    cmd = [dockq_bin, model_pdb, native_pdb,
-           "--short",
-           f"--model_chain1={binder_chain}",
-           f"--native_chain1={binder_chain}"]
+    # Build the chain mapping string from whichever chains are present
+    # in the model.  We always include T (target); add H and L if present.
+    present = []
+    for ch in [binder_chain, CHAIN_L, target_chain]:
+        if ch != binder_chain and ch != target_chain and ch == CHAIN_L:
+            # only include L if it's actually present in the model PDB
+            if _chain_present(model_pdb, ch):
+                present.append(ch)
+        else:
+            present.append(ch)
+
+    # Build ordered chain string: H (+ L if present) + T
+    chain_order = ""
+    for ch in [CHAIN_H, CHAIN_L, CHAIN_T]:
+        if ch == CHAIN_L:
+            if _chain_present(model_pdb, CHAIN_L):
+                chain_order += ch
+        else:
+            chain_order += ch
+    # mapping is identical for model and native (chain IDs preserved)
+    mapping = f"{chain_order}:{chain_order}"
+
+    cmd = [dockq_bin, model_pdb, native_pdb, "--short", "--mapping", mapping]
     try:
-        out = subprocess.check_output(cmd, stderr=subprocess.DEVNULL,
+        out = subprocess.check_output(cmd, stderr=subprocess.STDOUT,
                                       text=True, timeout=120)
-    except (subprocess.CalledProcessError, FileNotFoundError,
-            subprocess.TimeoutExpired) as e:
+    except subprocess.CalledProcessError as e:
+        print(f"  [DockQ WARN] {e}\n  stdout: {e.output[:300]}")
+        return None
+    except (FileNotFoundError, subprocess.TimeoutExpired) as e:
         print(f"  [DockQ WARN] {e}")
         return None
 
-    # Parse "DockQ 0.XXXX" from --short output
-    for line in out.splitlines():
-        m = re.match(r"DockQ\s+([0-9.]+)", line.strip())
+    # v2 --short output patterns (varies across minor releases):
+    #   "Total DockQ over N native interfaces: 0.XXXX ..."
+    #   "GlobalDockQ 0.XXXX"
+    #   "DockQ 0.XXXX"                          (single interface)
+    for pattern in [
+        r"Total DockQ[^:]*:\s*([0-9.]+)",
+        r"GlobalDockQ\s+([0-9.]+)",
+        r"DockQ\s+([0-9.]+)",
+    ]:
+        m = re.search(pattern, out)
         if m:
             return float(m.group(1))
-
-    # Fallback: look for "DockQ:" anywhere
-    m = re.search(r"DockQ[:\s]+([0-9.]+)", out)
-    if m:
-        return float(m.group(1))
 
     print(f"  [DockQ WARN] Could not parse score from output:\n{out[:400]}")
     return None
@@ -622,6 +654,7 @@ def run_arm_C(
     af2_work_dir:        str,
     mpnn,
     cdr_mask,
+    framework_pdb:       str,   # accepted from eval_kw but not used directly
     thermo,
     epitope_ca,
     extra_args:          List[str],
@@ -805,6 +838,7 @@ def run_arm_D(
     af2_work_dir:        str,
     mpnn,
     cdr_mask,
+    framework_pdb:       str,   # accepted from eval_kw but not used directly
     thermo,
     epitope_ca,
     extra_args:          List[str],
