@@ -783,7 +783,11 @@ def run_arm_C(
 
         if candidates:
             candidates.sort(key=rank_fn, reverse=True)
-            beam = candidates[:beam_width]
+            # Skip pruning at the final checkpoint — keep all N*L candidates
+            if cp < n_checkpoints:
+                beam = candidates[:beam_width]
+            else:
+                beam = candidates
         _print_beam(beam, rank_fn, ranking_mode, f"C: Beam after cp {cp}")
 
     # ── Final evaluation of beam survivors ───────────────────────────────────
@@ -987,7 +991,11 @@ def run_arm_D(
 
         if candidates:
             candidates.sort(key=rank_fn, reverse=True)
-            beam = candidates[:beam_width]
+            # Skip pruning at the final checkpoint — keep all N*L candidates
+            if cp < n_checkpoints:
+                beam = candidates[:beam_width]
+            else:
+                beam = candidates
         _print_beam(beam, rank_fn, ranking_mode, f"D: Beam after cp {cp}")
 
     # ── Final evaluation ─────────────────────────────────────────────────────

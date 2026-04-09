@@ -687,35 +687,20 @@ def run_beam_denovo_complexa(
             )
             continue
 
-        # 5b. Prune: argmax_{T⊆C, |T|=N} Σ R_i  (Eq. 2 in the paper)
+        
+    # 5b. Prune: argmax_{T⊆C, |T|=N} Σ R_i  (Eq. 2 in the paper)
+        #     Skipped at the final checkpoint so all N*L candidates are
+        #     carried forward to final evaluation rather than discarding
+        #     potentially good designs at the last step.
         candidates.sort(key=rank_fn, reverse=True)
-        beam = candidates[:beam_width]
-
-        _print_beam(beam, rank_fn, ranking_mode,
-                    label=f"Beam after checkpoint {cp}")
-
-        # Diversity diagnostic (unique parent lineages)
-        unique_parents = len({n.parent_idx for n in beam})
-        print(
-            f"  Lineage diversity: {unique_parents}/{len(beam)} "
-            "unique parents survived pruning."
-        )
-        if unique_parents == 1:
-            print(
-                "  [WARN] Beam collapsed to a single lineage.  "
-                "Consider raising --beam_width or --branch_factor, "
-                "or switching to Feynman-Kac steering for softer pruning."
-            )
-
-        # Summary of in-silico successes (ipTM < threshold) in surviving beam
-        n_success = sum(
-            1 for n in beam
-            if n.reward_history and n.reward_history[-1].get("success", False)
-        )
-        print(
-            f"  In-silico successes in beam "
-            f"(ipTM < {iptm_threshold:.1f} Å): {n_success}/{len(beam)}"
-        )
+        if cp < n_checkpoints:
+            beam = candidates[:beam_width]
+            _print_beam(beam, rank_fn, ranking_mode,
+                        label=f"Beam after checkpoint {cp}")
+        else:
+            beam = candidates          # keep all N*L for final eval
+            _print_beam(beam, rank_fn, ranking_mode,
+                        label=f"Beam after checkpoint {cp} (no prune — final)")
 
     # ── 6. Write final outputs ────────────────────────────────────────────────
     final_dir = os.path.join(output_dir, "final_designs")
