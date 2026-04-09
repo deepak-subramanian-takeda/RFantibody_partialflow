@@ -8,7 +8,7 @@ Direct comparison of four RFantibody design strategies:
   C) Beam search (ipTM + ThermoMPNN DDG), no anchor conservation
   D) Beam search (ipTM + ThermoMPNN DDG) + anchor conservation
 
-Success metric: DockQ > 0.23  AND  ipTM > 0.6
+Success metric: DockQ > 0.4  AND  ipTM > 0.6
 Efficiency metric: successes per GPU-hour
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -136,7 +136,7 @@ class DesignResult:
     def __post_init__(self):
         self.success = (
             self.iptm  is not None and self.iptm  > 0.6 and
-            self.dockq is not None and self.dockq > 0.23
+            self.dockq is not None and self.dockq > 0.4
         )
 
 

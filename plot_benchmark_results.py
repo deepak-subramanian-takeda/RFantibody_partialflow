@@ -30,7 +30,7 @@ import pandas as pd
 # ─────────────────────────────────────────────────────────────────────────────
 
 IPTM_THRESHOLD  = 0.6
-DOCKQ_THRESHOLD = 0.23
+DOCKQ_THRESHOLD = 0.4
 
 ARM_LABELS = {
     "A": "A: Vanilla",
