@@ -29,11 +29,24 @@ Timing:
 
 from __future__ import annotations
 
+import sys
+import os
+
+# ── Ensure ThermoMPNN's protein_mpnn_utils is found before the installed
+#    RFantibody package version.  This must happen before any other local
+#    imports because multiprocessing.spawn re-imports this file from scratch
+#    in each child process, so PYTHONPATH set in the shell is not inherited.
+def _prepend_thermompnn_path():
+    _here = os.path.dirname(os.path.abspath(__file__))
+    _thermo = os.path.join(_here, "ThermoMPNN")
+    if os.path.isdir(_thermo) and _thermo not in sys.path:
+        sys.path.insert(0, _thermo)
+
+_prepend_thermompnn_path()
+
 import argparse
 import json
 import multiprocessing as mp
-import os
-import sys
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
