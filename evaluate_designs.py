@@ -355,6 +355,7 @@ def run_colabfold(
         "--num-models",   str(num_models),
         "--model-type",   "alphafold2_multimer_v3",
         "--rank",         "iptm",
+        # "--max-msa", "512:512",
         # "--msa-mode",     "single_sequence",  # skip MSA server entirely
         fasta_path,
         af2_out_dir,
