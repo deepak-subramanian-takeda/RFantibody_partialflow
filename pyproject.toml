@@ -24,6 +24,7 @@ dependencies = [
     "pyrsistent",
     "click>=8.0.0",
     "pandas",
+    "biopython>=1.87",
 ]
 
 [project.optional-dependencies]

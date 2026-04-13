@@ -20,17 +20,20 @@ import argparse
 import os
 from pathlib import Path
 
+import itertools
+
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 import numpy as np
 import pandas as pd
+from scipy import stats
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Constants
 # ─────────────────────────────────────────────────────────────────────────────
 
 IPTM_THRESHOLD  = 0.6
-DOCKQ_THRESHOLD = 0.4
+DOCKQ_THRESHOLD = 0.5
 
 ARM_LABELS = {
     "A": "A: Vanilla",
@@ -92,6 +95,39 @@ def arm_summary(df: pd.DataFrame) -> pd.DataFrame:
 # Plot helpers
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _draw_significance_brackets(
+    ax,
+    pairs:     list[tuple[int, int]],
+    pvalues:   list[float],
+    bar_tops:  list[float],   # top of each bar (mean + sd) per arm index
+    y_start:   float,         # baseline y for the first bracket tier
+    y_step:    float,         # vertical spacing between bracket tiers
+):
+    """
+    Draw horizontal significance brackets above bar pairs, annotated with
+    the actual p-value rather than asterisk shorthand.
+    """
+    for tier, ((i, j), p) in enumerate(zip(pairs, pvalues)):
+        if np.isnan(p):
+            label = "p=NA"
+        elif p < 0.001:
+            label = "p<0.001"
+        else:
+            label = f"p={p:.3f}"
+
+        y   = y_start + tier * y_step
+        x_l = i
+        x_r = j
+        ax.plot([x_l, x_l, x_r, x_r],
+                [y - y_step * 0.15, y, y, y - y_step * 0.15],
+                color="#374151", linewidth=0.9, zorder=5)
+
+        color = "#374151" if p >= 0.05 or np.isnan(p) else "#dc2626"
+        ax.text((x_l + x_r) / 2, y + y_step * 0.05,
+                label, ha="center", va="bottom",
+                fontsize=8, color=color, zorder=6)
+
+
 def _bar_plot(
     summary:    pd.DataFrame,
     df:         pd.DataFrame,
@@ -103,22 +139,41 @@ def _bar_plot(
     fmt:        str,
     dpi:        int,
 ):
-    fig, ax = plt.subplots(figsize=(6, 4.5))
-
-    x      = np.arange(len(summary))
-    means  = summary[f"mean_{metric}"].values
-    sds    = summary[f"sd_{metric}"].values
-    colors = summary["color"].tolist()
+    arms   = summary["arm"].tolist()
     labels = summary["label"].tolist()
     ns     = summary["n"].tolist()
-    arms   = summary["arm"].tolist()
+    colors = summary["color"].tolist()
+    means  = summary[f"mean_{metric}"].values
+    sds    = summary[f"sd_{metric}"].values
+    x      = np.arange(len(summary))
+
+    # ── Pairwise two-sided Welch t-tests ─────────────────────────────────────
+    pairs, pvalues = [], []
+    for (ia, arm_a), (ib, arm_b) in itertools.combinations(enumerate(arms), 2):
+        vals_a = df.loc[df["arm"] == arm_a, metric].dropna().values
+        vals_b = df.loc[df["arm"] == arm_b, metric].dropna().values
+        if len(vals_a) >= 2 and len(vals_b) >= 2:
+            _, p = stats.ttest_ind(vals_a, vals_b, equal_var=False)
+        else:
+            p = float("nan")
+        pairs.append((ia, ib))
+        pvalues.append(p)
+
+    # ── Layout: how much vertical room do brackets need? ─────────────────────
+    n_pairs  = len(pairs)
+    bar_tops = means + sds
+    y_start  = max(bar_tops) * 1.08
+    y_step   = max(bar_tops) * 0.10
+    y_max    = y_start + n_pairs * y_step + y_step
+
+    fig, ax = plt.subplots(figsize=(6, 5.5))
 
     bars = ax.bar(x, means, yerr=sds, capsize=5, width=0.55,
                   color=colors, edgecolor="white", linewidth=0.8,
                   error_kw=dict(elinewidth=1.5, ecolor="#475569", capthick=1.5),
                   zorder=3)
 
-    # individual data points — jittered horizontally within each bar
+    # Individual data points — jittered
     rng = np.random.default_rng(42)
     for xi, arm, color in zip(x, arms, colors):
         vals = df.loc[df["arm"] == arm, metric].dropna().values
@@ -128,24 +183,38 @@ def _bar_plot(
                    edgecolors="white", linewidths=0.4,
                    zorder=4)
 
-    # value labels above each bar
+    # Mean value labels above each bar
     for bar, m, sd in zip(bars, means, sds):
         ax.text(bar.get_x() + bar.get_width() / 2,
-                m + sd + 0.012,
+                m + sd + y_step * 0.12,
                 f"{m:.3f}",
-                ha="center", va="bottom", fontsize=9, color="#1e293b")
+                ha="center", va="bottom", fontsize=8.5, color="#1e293b")
 
-    # threshold line
+    # Significance brackets
+    _draw_significance_brackets(
+        ax, pairs, pvalues, bar_tops,
+        y_start=y_start, y_step=y_step,
+    )
+
+    # Threshold line
     ax.axhline(threshold, color="#ef4444", linewidth=1.2,
                linestyle="--", zorder=2)
-    ax.text(len(summary) - 0.5, threshold + 0.008,
-            f"{threshold}", color="#ef4444", fontsize=8, va="bottom", ha="right")
+    ax.text(len(summary) - 0.5, threshold + y_step * 0.08,
+            f"{threshold}", color="#ef4444", fontsize=8,
+            va="bottom", ha="right")
+
+    # Legend for significance colouring
+    legend_text = "Red = p<0.05   Grey = p≥0.05"
+    ax.text(0.5, -0.13, legend_text,
+            transform=ax.transAxes,
+            ha="center", va="top", fontsize=7.5, color="#64748b",
+            style="italic")
 
     ax.set_xticks(x)
     ax.set_xticklabels([f"{l}\n(n={n})" for l, n in zip(labels, ns)], fontsize=10)
     ax.set_ylabel(ylabel, fontsize=11)
     ax.set_title(title, fontsize=12, fontweight="bold", pad=10)
-    ax.set_ylim(0, max(means + sds) * 1.25)
+    ax.set_ylim(0, y_max)
     ax.yaxis.grid(True, linestyle=":", color="#e2e8f0", zorder=0)
     ax.set_axisbelow(True)
     ax.spines[["top", "right"]].set_visible(False)
@@ -154,6 +223,17 @@ def _bar_plot(
     fig.savefig(out_path, dpi=dpi, format=fmt, bbox_inches="tight")
     plt.close(fig)
     print(f"  Saved: {out_path}")
+
+    # Print t-test table to stdout
+    print(f"\n  Pairwise Welch t-tests ({metric}):")
+    print(f"  {'Arm A':<18} {'Arm B':<18} {'p-value':>10}  sig")
+    print(f"  {'-'*52}")
+    for (ia, ib), p in zip(pairs, pvalues):
+        a_lbl = ARM_LABELS.get(arms[ia], arms[ia])
+        b_lbl = ARM_LABELS.get(arms[ib], arms[ib])
+        p_str = f"{p:.4f}" if not np.isnan(p) else "   NA"
+        sig   = "p<0.001" if p < 0.001 else ("sig" if p < 0.05 else "ns")
+        print(f"  {a_lbl:<18} {b_lbl:<18} {p_str:>10}  {sig}")
 
 
 def _scatter_plot(

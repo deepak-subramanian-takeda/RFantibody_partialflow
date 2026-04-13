@@ -27,6 +27,22 @@ wheels = [
 ]
 
 [[package]]
+name = "biopython"
+version = "1.87"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "numpy" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/df/3e/3c6aa8b2a7e6b791a34407736db32f59657001f0446ada31db73a3e0b7d5/biopython-1.87.tar.gz", hash = "sha256:8456c803459b679a9712422e5a7fd9809f2f089bf69bb085f3b077946ac9bdbf", size = 19855264, upload-time = "2026-03-30T11:28:29.823Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a9/d6/a01a222dcb2a624f186907f9d7ded1d263ca6164805b0986828f8be3832c/biopython-1.87-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:35f13796188412f135acbed196bd6cfedc1257199d50b4883e289bbd96320efc", size = 2680405, upload-time = "2026-03-30T11:37:21.908Z" },
+    { url = "https://files.pythonhosted.org/packages/68/81/46d07aeac54d96e8beb20900fc8223bfae5ca5a9188d70e9f54cf704f36e/biopython-1.87-cp310-cp310-manylinux2014_aarch64.manylinux_2_17_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:63978e1b3ae040c52369bc1bd3f4c668171f5f1f0808798eccd74b575cce455d", size = 3194558, upload-time = "2026-03-30T11:37:27.573Z" },
+    { url = "https://files.pythonhosted.org/packages/cc/1e/7f5d251c133fd7f5f7dc57966b2116a15ffd1b8daf0a5144eda7419b2998/biopython-1.87-cp310-cp310-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:1e951f4862ffc1dccc28e1c25245059fa653d86028a88f5dfe1b7875875f3a4f", size = 3216226, upload-time = "2026-03-30T11:37:31.172Z" },
+    { url = "https://files.pythonhosted.org/packages/23/5b/76a1a5bf4384201f2f146371f67b191b9a5000d7f3be1f962f7e829fecbd/biopython-1.87-cp310-cp310-win32.whl", hash = "sha256:86596b05f39afbc5984ee6239c93fd75f6a97fffb9a630d74b45652c24aab964", size = 2708959, upload-time = "2026-03-30T11:37:39.005Z" },
+    { url = "https://files.pythonhosted.org/packages/b1/92/d09b783b7293567c9c662091c6dd69e9630657216deb441d1c4a9b20eeee/biopython-1.87-cp310-cp310-win_amd64.whl", hash = "sha256:efc16dd8a9312eb655fa590821495b0d8ca25d19f7b4ef4fa4da9e71d59d33e5", size = 2745184, upload-time = "2026-03-30T11:37:35.375Z" },
+]
+
+[[package]]
 name = "biotite"
 version = "1.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -762,6 +778,7 @@ name = "rfantibody"
 version = "1.0.0"
 source = { editable = "." }
 dependencies = [
+    { name = "biopython" },
     { name = "biotite" },
     { name = "click" },
     { name = "cuda-python" },
@@ -787,6 +804,7 @@ test = [
 
 [package.metadata]
 requires-dist = [
+    { name = "biopython", specifier = ">=1.87" },
     { name = "biotite", specifier = ">=0.38.0" },
     { name = "click", specifier = ">=8.0.0" },
     { name = "cuda-python", specifier = "==11.8" },
@@ -892,8 +910,8 @@ dependencies = [
     { name = "typing-extensions" },
 ]
 wheels = [
-    { url = "https://download.pytorch.org/whl/cu118/torch-2.3.1%2Bcu118-cp310-cp310-linux_x86_64.whl", hash = "sha256:fb4c9249b29f58e066ef1d259410de49a2c23c8727883f69065f61244bb780b9" },
-    { url = "https://download.pytorch.org/whl/cu118/torch-2.3.1%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:c8248eb98425573e496a7ee9d77b2329bb2ef70e3af7eb51fad5438a12b30b8e" },
+    { url = "https://download-r2.pytorch.org/whl/cu118/torch-2.3.1%2Bcu118-cp310-cp310-linux_x86_64.whl", hash = "sha256:fb4c9249b29f58e066ef1d259410de49a2c23c8727883f69065f61244bb780b9" },
+    { url = "https://download-r2.pytorch.org/whl/cu118/torch-2.3.1%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:c8248eb98425573e496a7ee9d77b2329bb2ef70e3af7eb51fad5438a12b30b8e" },
 ]
 
 [[package]]
@@ -913,8 +931,8 @@ dependencies = [
     { name = "torch" },
 ]
 wheels = [
-    { url = "https://download.pytorch.org/whl/cu118/torchaudio-2.3.1%2Bcu118-cp310-cp310-linux_x86_64.whl", hash = "sha256:b630724269100ccffd33bf56481718d9a0ea67c1a50bd90bcc5234fb8b4dfa04" },
-    { url = "https://download.pytorch.org/whl/cu118/torchaudio-2.3.1%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:62ee2cb802d60e19bdcc3455de0b9ece8d895a4c364a193d01df4f9b93c362d0" },
+    { url = "https://download-r2.pytorch.org/whl/cu118/torchaudio-2.3.1%2Bcu118-cp310-cp310-linux_x86_64.whl", hash = "sha256:b630724269100ccffd33bf56481718d9a0ea67c1a50bd90bcc5234fb8b4dfa04" },
+    { url = "https://download-r2.pytorch.org/whl/cu118/torchaudio-2.3.1%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:62ee2cb802d60e19bdcc3455de0b9ece8d895a4c364a193d01df4f9b93c362d0" },
 ]
 
 [[package]]
@@ -927,8 +945,8 @@ dependencies = [
     { name = "torch" },
 ]
 wheels = [
-    { url = "https://download.pytorch.org/whl/cu118/torchvision-0.18.1%2Bcu118-cp310-cp310-linux_x86_64.whl", hash = "sha256:87a4a03ea461053450ae631b5ff823dc77744c674a025cc8972b33a5c579272a" },
-    { url = "https://download.pytorch.org/whl/cu118/torchvision-0.18.1%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:be3de9ce061b5ca958e2b83ebb562f3371606866fdf1a66c52df3254ed027b2d" },
+    { url = "https://download-r2.pytorch.org/whl/cu118/torchvision-0.18.1%2Bcu118-cp310-cp310-linux_x86_64.whl", hash = "sha256:87a4a03ea461053450ae631b5ff823dc77744c674a025cc8972b33a5c579272a" },
+    { url = "https://download-r2.pytorch.org/whl/cu118/torchvision-0.18.1%2Bcu118-cp310-cp310-win_amd64.whl", hash = "sha256:be3de9ce061b5ca958e2b83ebb562f3371606866fdf1a66c52df3254ed027b2d" },
 ]
 
 [[package]]

@@ -1,0 +1,18 @@
+{
+  "A": {
+    "n_designs": 100,
+    "n_success": 0,
+    "total_gpu_hours": 44.1279,
+    "success_per_gpu_h": 0.0,
+    "mean_iptm": 0.4119,
+    "mean_dockq": NaN
+  },
+  "C": {
+    "n_designs": 100,
+    "n_success": 3,
+    "total_gpu_hours": 65.2395,
+    "success_per_gpu_h": 0.046,
+    "mean_iptm": 0.5627,
+    "mean_dockq": 0.6943
+  }
+}

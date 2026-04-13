@@ -12,6 +12,8 @@
 
 set -euo pipefail
 
+export PYTHONPATH="/home/sagemaker-user/RFantibody_partialflow/ThermoMPNN:${PYTHONPATH:-}"
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Configuration — edit these before running
 # ─────────────────────────────────────────────────────────────────────────────
@@ -23,13 +25,13 @@ PYTHON="${RFANTIBODY_ROOT}/.venv/bin/python"
 SCRIPT="${RFANTIBODY_ROOT}/rfantibody_benchmark_parallel.py"
 
 # ── Required inputs ───────────────────────────────────────────────────────────
-INPUT_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb"
-NATIVE_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb"
+INPUT_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/IL1RAP_5I1A_hlt.pdb"
+NATIVE_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/IL1RAP_5I1A_hlt.pdb"
 ANCHORS_JSON="/home/sagemaker-user/RFantibody_partialflow/1n8z_anchors/1n8z_hlt_anchors.json"
-OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/1n8z_benchmark_parallel"
-HOTSPOTS="T570,T571,T572,T573"
+OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_parallel"
+HOTSPOTS="T162,T165,T166,T170,T219,T287"
 MODEL_WEIGHTS="${RFANTIBODY_ROOT}/weights/RFdiffusion_Ab.pt"
-MPNN_WEIGHTS="${RFANTIBODY_ROOT}/weights/vanilla_model_weights/v_48_020.pt"
+MPNN_WEIGHTS="${THERMOMPNN_ROOT}/vanilla_model_weights/v_48_020.pt"
 
 # ── ThermoMPNN config ─────────────────────────────────────────────────────────
 THERMO_LOCAL_YAML="${THERMOMPNN_ROOT}/local.yaml"
@@ -44,10 +46,10 @@ AF2_NUM_RECYCLES_BEAM=1
 AF2_NUM_MODELS=1
 
 # ── DockQ ─────────────────────────────────────────────────────────────────────
-DOCKQ_BIN="DockQ"
+DOCKQ_BIN="/home/sagemaker-user/RFantibody_partialflow/.venv/bin/DockQ"
 
 # ── Arms to run ───────────────────────────────────────────────────────────────
-ARMS="A,B,C,D"
+ARMS="A,C"
 
 # ── GPU assignment ────────────────────────────────────────────────────────────
 # Format: ARM:GPU_ID  (comma-separated, no spaces)
@@ -70,14 +72,14 @@ ARMS="A,B,C,D"
 #   Arm A across two GPUs (CUDA_VISIBLE_DEVICES=0,1), C on GPU 2:
 #     ARMS="A,C"
 #     GPU_MAP="A:0,1,C:2"
-GPU_MAP="A:0,1,B:2,3,C:4,5,D:6,7"
+GPU_MAP="A:0,1,2,C:3,4,5,6,7"
 
 # ── Arms A and B: number of designs per run ───────────────────────────────────
-NUM_DESIGNS=50
+NUM_DESIGNS=100
 
 # ── Beam search hyperparameters (arms C and D) ────────────────────────────────
-BEAM_WIDTH=4
-BRANCH_FACTOR=4
+BEAM_WIDTH=10
+BRANCH_FACTOR=10
 N_CHECKPOINTS=2
 RANKING_MODE="cumulative"
 
@@ -89,7 +91,7 @@ IPTM_THRESHOLD=0.6
 # ── Optional ──────────────────────────────────────────────────────────────────
 FREE_LOOPS=""
 NANOBODY_FLAG=""
-RUN_NAME="benchmark_parallel_1n8z"
+RUN_NAME="benchmark_parallel_il1rap_5i1a"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Internal — do not edit below here
