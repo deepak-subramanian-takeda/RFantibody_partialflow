@@ -131,12 +131,12 @@ class DesignResult:
     dockq:        Optional[float]
     ddg:          Optional[float]
     gpu_seconds:  float          # wall-clock GPU seconds consumed for this design
-    success:      bool = False   # DockQ > 0.23 AND ipTM > 0.6
+    success:      bool = False   # DockQ > 0.5 AND ipTM > 0.6
 
     def __post_init__(self):
         self.success = (
             self.iptm  is not None and self.iptm  > 0.6 and
-            self.dockq is not None and self.dockq > 0.4
+            self.dockq is not None and self.dockq > 0.5
         )
 
 
