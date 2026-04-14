@@ -47,32 +47,51 @@ _prepend_thermompnn_path()
 import argparse
 import json
 import multiprocessing as mp
+import threading
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
-# ── re-use everything from the serial benchmark ───────────────────────────────
+# ── imports from the serial benchmark ────────────────────────────────────────
 from rfantibody_benchmark import (
-    # data structures
     DesignResult, ArmSummary, GPUTimer,
-    # arm runners
     run_arm_A, run_arm_B, run_arm_C, run_arm_D,
-    # reporting
     summarise, print_report, save_results,
-    # shared infrastructure
+    score_design,                        # used in post-budget evaluation
     CHAIN_H, CHAIN_L, CHAIN_T,
     IPTM_SUCCESS_THRESHOLD,
 )
 from partial_diffusion_maturation import (
     parse_free_loops, split_hlt_complex,
+    parse_hlt_remarks, read_pdb_residues,
+    build_contig_string, build_provide_seq,
+    mask_anchors_in_hlt, graft_target_sequence,
+    build_rfdiffusion_command, load_anchors,
+    CHAIN_H, CHAIN_L, CHAIN_T,
 )
 from smc_denovo_maturation import (
     build_cdr_mask, load_epitope_ca,
     load_thermompnn, load_proteinmpnn,
+    build_denovo_contig,
+    design_sequence_onto_backbone,
+    graft_anchor_identities,
+    run_denovo_round,
 )
-from evaluate_designs import BINDER_CHAINS
+from beam_denovo_maturation_complexa import (
+    BeamNode, RANKING_MODES,
+    score_complexa_reward,
+    _rollout_and_score,
+    _apply_sequence_and_anchors,
+    write_renumbered_pdb,
+    IPTM_SUCCESS_THRESHOLD,
+)
+from evaluate_designs import (
+    write_colabfold_fasta, compute_target_crop,
+    run_colabfold, find_top_af2_result,
+    extract_iptm, BINDER_CHAINS,
+)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -237,10 +256,11 @@ def _arm_worker(
                 **eval_kw, **beam_kw,
             )
 
+        completed_results.extend(results)
         elapsed = time.perf_counter() - t0
         print(f"{arm_label} Finished in {elapsed/3600:.2f} h  "
-              f"({len(results)} designs)", flush=True)
-        result_queue.put((arm, results, None))
+              f"({len(completed_results)} designs)", flush=True)
+        result_queue.put((arm, completed_results, None))
 
     except Exception as exc:
         import traceback
@@ -254,17 +274,22 @@ def _arm_worker(
 # ─────────────────────────────────────────────────────────────────────────────
 
 def run_parallel(
-    arms:      List[str],
-    gpu_map:   Dict[str, str],
-    args_dict: dict,
+    arms:          List[str],
+    gpu_map:       Dict[str, str],
+    args_dict:     dict,
+    max_gpu_hours: Optional[float] = None,
 ) -> Dict[str, List[DesignResult]]:
     """
     Group arms by GPU assignment.  Arms on different GPUs launch concurrently;
     arms sharing a GPU run sequentially within that GPU group.
 
+    If max_gpu_hours is set, a watchdog thread monitors wall-clock time and
+    sends SIGTERM to all child processes once the budget is exceeded.  Each
+    child catches the signal, flushes any completed results onto the queue,
+    and exits cleanly.  Results collected up to that point are returned.
+
     Returns {arm: List[DesignResult]}.
     """
-    # Group arms by their GPU string so shared-GPU arms run sequentially
     from collections import defaultdict
     gpu_groups: Dict[str, List[str]] = defaultdict(list)
     for arm in arms:
@@ -274,11 +299,13 @@ def run_parallel(
     for gpu_ids, group_arms in sorted(gpu_groups.items()):
         mode = "concurrent" if len(group_arms) == 1 else "sequential within group"
         print(f"  GPU {gpu_ids}: arms {group_arms}  ({mode})")
+    if max_gpu_hours is not None:
+        print(f"[Parallel] GPU-hour budget: {max_gpu_hours:.2f} h "
+              f"({max_gpu_hours * 3600:.0f} s wall-clock)")
 
     result_queue: mp.Queue = mp.Queue()
-    all_results: Dict[str, List[DesignResult]] = {}
+    all_results: Dict[str, List[DesignResult]] = {arm: [] for arm in arms}
 
-    # Launch one process per GPU group; each process runs its arms sequentially
     processes = []
     for gpu_ids, group_arms in gpu_groups.items():
         p = mp.Process(
@@ -291,19 +318,59 @@ def run_parallel(
         print(f"[Parallel] Launched PID {p.pid} for GPU {gpu_ids} "
               f"(arms {group_arms})", flush=True)
 
-    # Collect results as they arrive
-    n_expected = len(arms)
-    n_received = 0
-    while n_received < n_expected:
-        arm, results, error = result_queue.get()
-        n_received += 1
-        if error:
-            print(f"[Parallel] Arm {arm} reported error: {error}")
-            all_results[arm] = []
-        else:
-            all_results[arm] = results
-            print(f"[Parallel] Received results for arm {arm} "
-                  f"({len(results)} designs)", flush=True)
+    wall_start = time.perf_counter()
+
+    # ── Watchdog thread ───────────────────────────────────────────────────────
+    stop_event = threading.Event()
+
+    def _watchdog():
+        if max_gpu_hours is None:
+            return
+        budget_s = max_gpu_hours * 3600.0
+        while not stop_event.wait(timeout=30):
+            elapsed = time.perf_counter() - wall_start
+            if elapsed >= budget_s:
+                print(
+                    f"\n[Parallel] ⏰ GPU-hour budget ({max_gpu_hours:.2f} h) "
+                    f"reached after {elapsed / 3600:.3f} h — "
+                    "sending SIGTERM to all workers…",
+                    flush=True,
+                )
+                for p in processes:
+                    if p.is_alive():
+                        p.terminate()
+                return
+
+    watchdog = threading.Thread(target=_watchdog, daemon=True)
+    watchdog.start()
+
+    # ── Collect results ───────────────────────────────────────────────────────
+    # We don't know exactly how many results will arrive (workers may be
+    # terminated early), so we drain the queue until all processes have exited.
+    while any(p.is_alive() for p in processes):
+        try:
+            arm, results, error = result_queue.get(timeout=5)
+            if error:
+                print(f"[Parallel] Arm {arm} reported error: {error}")
+            else:
+                all_results[arm].extend(results)
+                print(f"[Parallel] Received results for arm {arm} "
+                      f"({len(results)} designs)", flush=True)
+        except Exception:
+            pass  # queue.Empty or timeout — loop and recheck process liveness
+
+    # Drain any remaining items that arrived after processes exited
+    while not result_queue.empty():
+        try:
+            arm, results, error = result_queue.get_nowait()
+            if not error:
+                all_results[arm].extend(results)
+                print(f"[Parallel] (drain) Arm {arm}: {len(results)} design(s)")
+        except Exception:
+            break
+
+    stop_event.set()   # stop watchdog
+    watchdog.join(timeout=5)
 
     for p in processes:
         p.join()
@@ -312,17 +379,14 @@ def run_parallel(
 
 
 def _gpu_group_worker(
-    arms:         List[str],
-    gpu_ids:      str,
-    args_dict:    dict,
-    result_queue: mp.Queue,
+    arms:             List[str],
+    gpu_ids:          str,
+    args_dict:        dict,
+    generated_queue:  mp.Queue,
 ):
-    """
-    Runs a list of arms sequentially, all on the same GPU(s).
-    Each arm result is placed on result_queue as it completes.
-    """
+    """Runs a list of arms sequentially on the same GPU(s)."""
     for arm in arms:
-        _arm_worker(arm, gpu_ids, args_dict, result_queue)
+        _arm_worker(arm, gpu_ids, args_dict, generated_queue)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -362,6 +426,14 @@ def parse_args() -> argparse.Namespace:
             "'A:0,B:0,C:1,D:1'  (A+B share GPU 0; C+D share GPU 1). "
             "Omit to place all arms on GPU 0 (serial fallback). "
             "Multi-GPU per arm: 'A:0,1' sets CUDA_VISIBLE_DEVICES=0,1 for arm A."
+        ),
+    )
+    p.add_argument(
+        "--max_gpu_hours", type=float, default=None,
+        help=(
+            "Optional wall-clock budget in GPU-hours. When elapsed time "
+            "exceeds this limit all worker processes are terminated and "
+            "results collected so far are saved (default: no limit)."
         ),
     )
     # ── arm selection ─────────────────────────────────────────────────────────
@@ -413,7 +485,8 @@ def main():
     args_dict = vars(args)
 
     wall_t0 = time.perf_counter()
-    all_results = run_parallel(arms, gpu_map, args_dict)
+    all_results = run_parallel(arms, gpu_map, args_dict,
+                               max_gpu_hours=args.max_gpu_hours)
     wall_elapsed = time.perf_counter() - wall_t0
 
     print(f"\n[Parallel] All arms complete. "
