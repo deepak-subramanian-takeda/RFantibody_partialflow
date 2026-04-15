@@ -12,8 +12,6 @@
 
 set -euo pipefail
 
-export PYTHONPATH="/home/sagemaker-user/RFantibody_partialflow/ThermoMPNN:${PYTHONPATH:-}"
-
 # ─────────────────────────────────────────────────────────────────────────────
 # Configuration — edit these before running
 # ─────────────────────────────────────────────────────────────────────────────
@@ -24,14 +22,16 @@ export THERMOMPNN_ROOT="/home/sagemaker-user/RFantibody_partialflow/ThermoMPNN"
 PYTHON="${RFANTIBODY_ROOT}/.venv/bin/python"
 SCRIPT="${RFANTIBODY_ROOT}/rfantibody_benchmark_parallel.py"
 
+DEVICE="cuda"
+
 # ── Required inputs ───────────────────────────────────────────────────────────
 INPUT_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/IL1RAP_5I1A_hlt.pdb"
 NATIVE_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/IL1RAP_5I1A_hlt.pdb"
 ANCHORS_JSON="/home/sagemaker-user/RFantibody_partialflow/1n8z_anchors/1n8z_hlt_anchors.json"
-OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_parallel_additionalA"
+OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_benchmark_parallel_igdesign"
 HOTSPOTS="T162,T165,T166,T170,T219,T287"
 MODEL_WEIGHTS="${RFANTIBODY_ROOT}/weights/RFdiffusion_Ab.pt"
-MPNN_WEIGHTS="${THERMOMPNN_ROOT}/vanilla_model_weights/v_48_020.pt"
+MPNN_WEIGHTS="${RFANTIBODY_ROOT}/igdesign/ckpts/igdesign_acvr2b_holdout.ckpt"
 
 # ── ThermoMPNN config ─────────────────────────────────────────────────────────
 THERMO_LOCAL_YAML="${THERMOMPNN_ROOT}/local.yaml"
@@ -49,36 +49,41 @@ AF2_NUM_MODELS=1
 DOCKQ_BIN="/home/sagemaker-user/RFantibody_partialflow/.venv/bin/DockQ"
 
 # ── Arms to run ───────────────────────────────────────────────────────────────
-ARMS="A"
+ARMS="A,C"
 
 # ── GPU assignment ────────────────────────────────────────────────────────────
-# Format: ARM:GPU_ID  (comma-separated, no spaces)
+# Format: ARM:GPU_IDs  (comma-separated, no spaces between entries)
+#
+# GPUs listed for an arm are used IN PARALLEL within that arm:
+#   Arms A/B: designs split evenly across listed GPUs (e.g. 100 designs
+#             across 4 GPUs = 25 per GPU, all running simultaneously)
+#   Arms C/D: beam rollouts distributed round-robin across listed GPUs
+#             (e.g. 16 rollouts across 4 GPUs = 4 per GPU simultaneously);
+#             scoring/pruning runs on the first GPU in the list.
+#
+# Different arm groups still run concurrently with each other.
 #
 # Examples:
-#   4 GPUs — fully parallel:
-#     GPU_MAP="A:0,B:1,C:2,D:3"
+#   8 GPUs — A uses 4 GPUs in parallel, C uses 4 GPUs in parallel,
+#             both arm groups run concurrently:
+#     GPU_MAP="A:0,1,2,3,C:4,5,6,7"
 #
-#   2 GPUs — A+B share GPU 0 (sequential), C+D share GPU 1 (sequential),
-#             the two GPU groups run concurrently:
-#     GPU_MAP="A:0,B:0,C:1,D:1"
+#   8 GPUs — all four arms run concurrently, 2 GPUs each:
+#     GPU_MAP="A:0,1,B:2,3,C:4,5,D:6,7"
 #
-#   2 GPUs — A on GPU 0, C on GPU 1, skip B and D:
-#     ARMS="A,C"
-#     GPU_MAP="A:0,C:1"
+#   4 GPUs — A and B share 2 GPUs (sequential between A and B,
+#             but each uses both GPUs in parallel); same for C and D:
+#     GPU_MAP="A:0,1,B:0,1,C:2,3,D:2,3"
 #
-#   1 GPU — all arms sequential (same as serial script):
+#   1 GPU — all arms sequential, all on GPU 0:
 #     GPU_MAP="A:0,B:0,C:0,D:0"
-#
-#   Arm A across two GPUs (CUDA_VISIBLE_DEVICES=0,1), C on GPU 2:
-#     ARMS="A,C"
-#     GPU_MAP="A:0,1,C:2"
-GPU_MAP="A:0"
+GPU_MAP="A:0,1,2,3,C:4,5,6,7"
 
 # ── Arms A and B: number of designs per run ───────────────────────────────────
 NUM_DESIGNS=300
 
 # ── Beam search hyperparameters (arms C and D) ────────────────────────────────
-BEAM_WIDTH=10
+BEAM_WIDTH=30
 BRANCH_FACTOR=10
 N_CHECKPOINTS=2
 RANKING_MODE="cumulative"
@@ -87,12 +92,12 @@ RANKING_MODE="cumulative"
 W_IPTM=2.0
 W_THERMO=0.5
 IPTM_THRESHOLD=0.6
-MAX_GPU_HOURS=21
+MAX_GPU_HOURS=80
 
 # ── Optional ──────────────────────────────────────────────────────────────────
 FREE_LOOPS=""
 NANOBODY_FLAG=""
-RUN_NAME="benchmark_parallel_il1rap_5i1a"
+RUN_NAME="benchmark_parallel_1n8z_igdesign"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Internal — do not edit below here
@@ -128,6 +133,7 @@ CMD=(
     --af2_num_recycles_eval  "$AF2_NUM_RECYCLES_EVAL"
     --af2_num_models         "$AF2_NUM_MODELS"
     --name                   "$RUN_NAME"
+    --device                 "$DEVICE"
 )
 
 [[ -n "$MAX_GPU_HOURS" ]] && CMD+=(--max_gpu_hours "$MAX_GPU_HOURS")

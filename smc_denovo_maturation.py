@@ -354,13 +354,42 @@ def load_thermompnn(
 
 def load_proteinmpnn(weights_path: str, device: str) -> ProteinMPNN:
     ckpt = torch.load(weights_path, map_location="cpu")
-    m = ProteinMPNN(
-        num_letters=21, node_features=128, edge_features=128,
-        hidden_dim=128, num_encoder_layers=3, num_decoder_layers=3,
-        augment_eps=0.0, k_neighbors=ckpt.get("num_edges", 48),
+
+    # Handle three checkpoint formats:
+    #   1. Vanilla ProteinMPNN:  {"model_state_dict": ..., "num_edges": ...}
+    #   2. PyTorch Lightning:    {"state_dict": ..., "epoch": ...}  (IgDesign)
+    #   3. Raw state dict:       {"encoder.layers.0.weight": ...}   (bare weights)
+    if "model_state_dict" in ckpt:
+        state_dict = ckpt["model_state_dict"]
+        num_edges  = ckpt.get("num_edges", 48)
+    elif "state_dict" in ckpt:
+        # Lightning checkpoint — weights may be prefixed with "model."
+        state_dict = ckpt["state_dict"]
+        state_dict = {
+            k[len("model."):] if k.startswith("model.") else k: v
+            for k, v in state_dict.items()
+        }
+        num_edges  = ckpt.get("num_edges", 48)
+    else:
+        # Assume the checkpoint is already a raw state dict
+        state_dict = ckpt
+        num_edges  = 48
+
+    hidden_dim  = 128
+    num_layers  = 3
+    model = ProteinMPNN(
+        num_letters=21,
+        node_features=hidden_dim,
+        edge_features=hidden_dim,
+        hidden_dim=hidden_dim,
+        num_encoder_layers=num_layers,
+        num_decoder_layers=num_layers,
+        augment_eps=0.0,
+        k_neighbors=num_edges,
     )
-    m.load_state_dict(ckpt["model_state_dict"])
-    return m.eval().to(device)
+    model.load_state_dict(state_dict, strict=False)
+    model.to(device).eval()
+    return model
 
 
 # ─────────────────────────────────────────────────────────────────────────────
