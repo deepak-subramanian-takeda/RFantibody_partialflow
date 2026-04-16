@@ -28,7 +28,7 @@ DEVICE="cuda"
 INPUT_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/IL1RAP_5I1A_hlt.pdb"
 NATIVE_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/IL1RAP_5I1A_hlt.pdb"
 ANCHORS_JSON="/home/sagemaker-user/RFantibody_partialflow/1n8z_anchors/1n8z_hlt_anchors.json"
-OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_benchmark_parallel_igdesign"
+OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_benchmark_parallel_igdesign_armC"
 HOTSPOTS="T162,T165,T166,T170,T219,T287"
 MODEL_WEIGHTS="${RFANTIBODY_ROOT}/weights/RFdiffusion_Ab.pt"
 MPNN_WEIGHTS="${RFANTIBODY_ROOT}/igdesign/ckpts/igdesign_acvr2b_holdout.ckpt"
@@ -49,7 +49,7 @@ AF2_NUM_MODELS=1
 DOCKQ_BIN="/home/sagemaker-user/RFantibody_partialflow/.venv/bin/DockQ"
 
 # ── Arms to run ───────────────────────────────────────────────────────────────
-ARMS="A,C"
+ARMS="C"
 
 # ── GPU assignment ────────────────────────────────────────────────────────────
 # Format: ARM:GPU_IDs  (comma-separated, no spaces between entries)
@@ -77,13 +77,13 @@ ARMS="A,C"
 #
 #   1 GPU — all arms sequential, all on GPU 0:
 #     GPU_MAP="A:0,B:0,C:0,D:0"
-GPU_MAP="A:0,1,2,3,C:4,5,6,7"
+GPU_MAP="C:0,1,2,3,4,5,6,7"
 
 # ── Arms A and B: number of designs per run ───────────────────────────────────
-NUM_DESIGNS=300
+NUM_DESIGNS=100
 
 # ── Beam search hyperparameters (arms C and D) ────────────────────────────────
-BEAM_WIDTH=30
+BEAM_WIDTH=10
 BRANCH_FACTOR=10
 N_CHECKPOINTS=2
 RANKING_MODE="cumulative"

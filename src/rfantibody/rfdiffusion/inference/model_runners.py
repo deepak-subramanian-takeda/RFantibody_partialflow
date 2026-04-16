@@ -194,8 +194,10 @@ class Sampler:
         self._log.info(f'Reading checkpoint from {self.ckpt_path}')
         print('This is inf_conf.ckpt_path')
         print(self.ckpt_path)
-        self.ckpt  = torch.load(
-            self.ckpt_path, map_location=self.device)
+        self.ckpt = torch.load(
+            self._conf.inference.ckpt_override_path,
+            map_location="cpu",
+        )
 
     def assemble_config_from_chk(self) -> None:
         """
