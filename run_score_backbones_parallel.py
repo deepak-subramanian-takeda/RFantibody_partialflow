@@ -19,6 +19,7 @@ export PYTHONPATH="/home/sagemaker-user/RFantibody_partialflow/ThermoMPNN:${PYTH
 # ─────────────────────────────────────────────────────────────────────────────
 
 export RFANTIBODY_ROOT="/home/sagemaker-user/RFantibody_partialflow"
+export THERMOMPNN_ROOT="/home/sagemaker-user/RFantibody_partialflow/ThermoMPNN"
 
 PYTHON="${RFANTIBODY_ROOT}/.venv/bin/python"
 SCRIPT="${RFANTIBODY_ROOT}/score_backbones_parallel.py"

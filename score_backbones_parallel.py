@@ -53,7 +53,7 @@ import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import numpy as np
 
@@ -101,20 +101,63 @@ class BackboneResult:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def find_backbone_pdbs(input_dir: str) -> List[Path]:
+    """
+    Return all backbone .pdb files in input_dir, excluding sequence designs,
+    grafted structures, and RFdiffusion trajectory outputs.
+
+    Special rule for arm_C folders:
+        Beam search checkpoints are named cp<NN>_*.pdb.  For any folder
+        whose path contains 'arm_C', only PDBs from the highest-numbered
+        checkpoint are kept, discarding earlier intermediate checkpoints.
+        This avoids scoring redundant intermediate structures when only
+        the final beam survivors are of interest.
+    """
     excluded = re.compile(
         r"(_seq\.pdb|_seq_\d+\.pdb|_grafted\.pdb|_traj\.pdb|_pX0.*\.pdb)$"
     )
+    cp_re = re.compile(r"cp(\d+)_")
 
-    backbone_pdbs = sorted(
+    all_pdbs = [
         p for p in Path(input_dir).rglob("*.pdb")
         if not excluded.search(p.name)
-    )
+    ]
 
-    if "arm_C" in input_dir:
-        for pdb in backbone_pdbs:
-            if "cp02" not in pdb:
-                backbone_pdbs.remove(pdb)
-    return backbone_pdbs
+    # Separate arm_C PDBs from the rest
+    arm_c_pdbs  = [p for p in all_pdbs if "arm_C" in str(p)]
+    other_pdbs  = [p for p in all_pdbs if "arm_C" not in str(p)]
+
+    # For arm_C: group by parent folder, keep only the highest checkpoint
+    filtered_arm_c: List[Path] = []
+    by_folder: Dict[Path, List[Path]] = {}
+    for p in arm_c_pdbs:
+        by_folder.setdefault(p.parent, []).append(p)
+
+    for folder, pdbs in by_folder.items():
+        # Find the highest checkpoint number present in this folder
+        max_cp = -1
+        for p in pdbs:
+            m = cp_re.search(p.name)
+            if m:
+                max_cp = max(max_cp, int(m.group(1)))
+
+        if max_cp == -1:
+            # No checkpoint pattern found — include all as-is
+            filtered_arm_c.extend(pdbs)
+        else:
+            # Keep only PDBs from the highest checkpoint
+            kept = [
+                p for p in pdbs
+                if (m := cp_re.search(p.name)) and int(m.group(1)) == max_cp
+            ]
+            filtered_arm_c.extend(kept)
+            skipped = len(pdbs) - len(kept)
+            if skipped:
+                print(f"  [find_backbone_pdbs] arm_C folder {folder.name}: "
+                      f"keeping cp{max_cp:02d} ({len(kept)} PDB(s)), "
+                      f"skipping {skipped} earlier checkpoint(s)")
+
+    result = sorted(other_pdbs + filtered_arm_c)
+    return result
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -287,7 +330,6 @@ def _evaluate_generated(
     dockq_bin:           str,
     af2_num_recycles:    int,
     af2_num_models:      int,
-    device:              str,
 ) -> List[BackboneResult]:
     """Run ColabFold ipTM + DockQ on every GeneratedDesign."""
     results = []
@@ -306,7 +348,6 @@ def _evaluate_generated(
             timer=timer,
             af2_num_recycles=af2_num_recycles,
             af2_num_models=af2_num_models,
-            device=device,
         )
         r = BackboneResult(
             backbone=g.backbone, seq_idx=g.seq_idx,
@@ -481,7 +522,6 @@ def run(
         dockq_bin=dockq_bin,
         af2_num_recycles=af2_num_recycles,
         af2_num_models=af2_num_models,
-        device=device,
     )
 
     # ── Sort by ipTM descending ───────────────────────────────────────────────
