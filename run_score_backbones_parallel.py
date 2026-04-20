@@ -27,9 +27,9 @@ SCRIPT="${RFANTIBODY_ROOT}/score_backbones_parallel.py"
 # ── Required inputs ───────────────────────────────────────────────────────────
 # Folder containing backbone PDB files to score (e.g. RFdiffusion outputs).
 # Files matching *_seq.pdb, *_grafted.pdb, *_traj.pdb are excluded automatically.
-INPUT_DIR="IL1RAP_5I1A_benchmark_parallel_igdesign_armC/arm_C_beam_no_anchor/_beam_work"
+INPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_parallel/arm_C_beam_no_anchor/_beam_work"
 NATIVE_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/IL1RAP_5I1A_hlt.pdb"
-OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_benchmark_parallel_igdesign_armC/arm_C_beam_no_anchor/generated_and_scored"
+OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_parallel/arm_C_beam_no_anchor/arm_C_beam_no_anchor/generated_and_scored"
 
 # ── ProteinMPNN / IgDesign weights ───────────────────────────────────────────
 # Pass vanilla ProteinMPNN weights OR IgDesign fine-tuned weights here.
@@ -66,7 +66,7 @@ GPU_IDS="0,1,2,3,4,5,6,7"
 # Maximum wall-clock time (hours) for the GENERATION phase only.
 # Evaluation (ColabFold + DockQ) always runs to completion afterwards.
 # Set to "" for no limit.
-MAX_GPU_HOURS="4.0"
+MAX_GPU_HOURS=""
 
 # ── Other ─────────────────────────────────────────────────────────────────────
 DEVICE="cuda"

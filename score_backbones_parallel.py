@@ -321,8 +321,13 @@ def _shard_worker(
 # Post-budget evaluation
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _evaluate_generated(
-    generated:           List[GeneratedDesign],
+# ─────────────────────────────────────────────────────────────────────────────
+# Post-generation evaluation — parallelised across GPUs
+# ─────────────────────────────────────────────────────────────────────────────
+
+def _eval_worker(
+    gpu_id:              str,
+    shard:               List[GeneratedDesign],
     native_pdb:          str,
     colabfold_batch_bin: str,
     colabfold_python:    str,
@@ -331,13 +336,13 @@ def _evaluate_generated(
     af2_num_recycles:    int,
     af2_num_models:      int,
 ) -> List[BackboneResult]:
-    """Run ColabFold ipTM + DockQ on every GeneratedDesign."""
+    """
+    Score a shard of GeneratedDesigns on a single GPU.
+    ColabFold uses CUDA_VISIBLE_DEVICES to select the GPU.
+    """
+    os.environ["CUDA_VISIBLE_DEVICES"] = gpu_id
     results = []
-    total   = len(generated)
-    print(f"\n[Eval] Evaluating {total} structure(s)…")
-
-    for i, g in enumerate(generated, 1):
-        print(f"  [{i:>4}/{total}] {g.design_id}", end=" ", flush=True)
+    for g in shard:
         timer = GPUTimer()
         iptm, dockq = score_design(
             pdb_path=g.pdb_path,
@@ -357,10 +362,60 @@ def _evaluate_generated(
         results.append(r)
         iptm_s  = f"{iptm:.3f}"  if iptm  is not None else "NA"
         dockq_s = f"{dockq:.3f}" if dockq is not None else "NA"
-        print(f"ipTM={iptm_s}  DockQ={dockq_s}  "
-              f"{'✓' if r.success else '✗'}")
-
+        print(f"  [GPU {gpu_id}] {g.design_id}  "
+              f"ipTM={iptm_s}  DockQ={dockq_s}  "
+              f"{'✓' if r.success else '✗'}", flush=True)
     return results
+
+
+def _evaluate_generated(
+    generated:           List[GeneratedDesign],
+    native_pdb:          str,
+    colabfold_batch_bin: str,
+    colabfold_python:    str,
+    af2_work_dir:        str,
+    dockq_bin:           str,
+    af2_num_recycles:    int,
+    af2_num_models:      int,
+    gpu_ids:             List[str],
+) -> List[BackboneResult]:
+    """
+    Run ColabFold ipTM + DockQ on every GeneratedDesign, parallelised
+    across gpu_ids.  Designs are split evenly across GPUs; each GPU runs
+    its shard sequentially in a separate process.
+    """
+    total = len(generated)
+    print(f"\n[Eval] Evaluating {total} structure(s) across "
+          f"{len(gpu_ids)} GPU(s): {gpu_ids}")
+
+    shards = _split_evenly(generated, len(gpu_ids))
+
+    all_results: List[BackboneResult] = []
+    with ProcessPoolExecutor(max_workers=len(gpu_ids)) as exe:
+        futures = {}
+        for gpu_id, shard in zip(gpu_ids, shards):
+            if not shard:
+                continue
+            fut = exe.submit(
+                _eval_worker,
+                gpu_id, shard, native_pdb,
+                colabfold_batch_bin, colabfold_python,
+                af2_work_dir, dockq_bin,
+                af2_num_recycles, af2_num_models,
+            )
+            futures[fut] = gpu_id
+
+        for fut in as_completed(futures):
+            gpu_id = futures[fut]
+            try:
+                results = fut.result()
+                all_results.extend(results)
+                print(f"[Eval] GPU {gpu_id} finished: "
+                      f"{len(results)} structure(s)", flush=True)
+            except Exception as e:
+                print(f"[Eval] GPU {gpu_id} ERROR: {e}", flush=True)
+
+    return all_results
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -522,6 +577,7 @@ def run(
         dockq_bin=dockq_bin,
         af2_num_recycles=af2_num_recycles,
         af2_num_models=af2_num_models,
+        gpu_ids=gpu_ids,
     )
 
     # ── Sort by ipTM descending ───────────────────────────────────────────────
