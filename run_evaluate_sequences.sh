@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# run_score_backbones_parallel.sh
+# run_evaluate_sequences.sh
 #
-# Runs score_backbones_parallel.py on a remote server and keeps it alive
+# Runs evaluate_sequences.py on a remote server and keeps it alive
 # after you disconnect using nohup + output logging.
 #
 # Usage:
-#   bash run_score_backbones_parallel.sh          # start the job
-#   bash run_score_backbones_parallel.sh status   # check if running
-#   bash run_score_backbones_parallel.sh log      # tail the live log
-#   bash run_score_backbones_parallel.sh stop     # kill the job
+#   bash run_evaluate_sequences.sh          # start the job
+#   bash run_evaluate_sequences.sh status   # check if running
+#   bash run_evaluate_sequences.sh log      # tail the live log
+#   bash run_evaluate_sequences.sh stop     # kill the job
 
 set -euo pipefail
 
@@ -19,58 +19,51 @@ export PYTHONPATH="/home/sagemaker-user/RFantibody_partialflow/ThermoMPNN:${PYTH
 # ─────────────────────────────────────────────────────────────────────────────
 
 export RFANTIBODY_ROOT="/home/sagemaker-user/RFantibody_partialflow"
-export THERMOMPNN_ROOT="/home/sagemaker-user/RFantibody_partialflow/ThermoMPNN"
 
 PYTHON="${RFANTIBODY_ROOT}/.venv/bin/python"
-SCRIPT="${RFANTIBODY_ROOT}/score_backbones_parallel.py"
+SCRIPT="${RFANTIBODY_ROOT}/evaluate_sequences.py"
 
 # ── Required inputs ───────────────────────────────────────────────────────────
-# Folder containing backbone PDB files to score (e.g. RFdiffusion outputs).
-# Files matching *_seq.pdb, *_grafted.pdb, *_traj.pdb are excluded automatically.
-INPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_parallel/arm_C_beam_no_anchor/_beam_work"
-NATIVE_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/IL1RAP_5I1A_hlt.pdb"
-OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_parallel/arm_C_beam_no_anchor/generated_and_scored"
+# Folder (or folder of subfolders) containing *_seq*.pdb files to evaluate.
+INPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/sequences/"
 
-# ── ProteinMPNN / IgDesign weights ───────────────────────────────────────────
-# Pass vanilla ProteinMPNN weights OR IgDesign fine-tuned weights here.
-# Both .pt and .ckpt formats are handled automatically.
-MPNN_WEIGHTS="${RFANTIBODY_ROOT}/weights/ProteinMPNN_v48_noise_0.2.pt"
+# Native/reference PDB for DockQ scoring.
+# If scoring redesigns of a known binder, this is often the same as the
+# original HLT input PDB.
+NATIVE_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb"
 
-# Optional: PDB to build the CDR mask from.
-# If left empty, the first backbone found is used.
-FRAMEWORK_PDB=""
+OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/1n8z_evaluated"
 
 # ── ColabFold / AF2 ───────────────────────────────────────────────────────────
+# ColabFold runs in --msa-mode single_sequence to avoid MSA downloads and
+# prevent "no space left on device" errors.
 COLABFOLD_BATCH_BIN="/home/sagemaker-user/.conda/envs/colabfold/bin/colabfold_batch"
 COLABFOLD_PYTHON="/home/sagemaker-user/.conda/envs/colabfold/bin/python"
-AF2_NUM_RECYCLES=3
+
+# Lower recycle count is appropriate here since single_sequence mode is
+# already a fast scoring pass.  Increase for higher-quality final evaluation.
+AF2_NUM_RECYCLES=1
 AF2_NUM_MODELS=1
 
 # ── DockQ ─────────────────────────────────────────────────────────────────────
 DOCKQ_BIN="${RFANTIBODY_ROOT}/.venv/bin/DockQ"
 
-# ── Sequence generation ───────────────────────────────────────────────────────
-N_SEQS=15            # sequences generated per backbone
-TEMPERATURE=0.2      # ProteinMPNN sampling temperature
-
 # ── GPU assignment ────────────────────────────────────────────────────────────
-# Comma-separated GPU IDs.  Backbone PDBs are split evenly across all listed
-# GPUs and generation runs simultaneously on each.
+# Comma-separated GPU IDs.  Structures are split evenly across all listed
+# GPUs and evaluation runs simultaneously on each.
 # Examples:
 #   All 8 GPUs:  GPU_IDS="0,1,2,3,4,5,6,7"
 #   4 GPUs:      GPU_IDS="0,1,2,3"
 #   Single GPU:  GPU_IDS="0"
 GPU_IDS="0,1,2,3,4,5,6,7"
 
-# ── GPU budget ────────────────────────────────────────────────────────────────
-# Maximum wall-clock time (hours) for the GENERATION phase only.
-# Evaluation (ColabFold + DockQ) always runs to completion afterwards.
-# Set to "" for no limit.
-MAX_GPU_HOURS=""
+# ── Disk management ───────────────────────────────────────────────────────────
+# By default, AF2 working directories are cleaned up after each structure
+# is scored to keep disk usage bounded.  Set to "--no_cleanup" to keep them.
+CLEANUP_FLAG=""   # leave empty for cleanup (default), set to "--no_cleanup" to keep
 
-# ── Other ─────────────────────────────────────────────────────────────────────
-DEVICE="cuda"
-RUN_NAME="score_backbones_run"
+# ── Job name ──────────────────────────────────────────────────────────────────
+RUN_NAME="evaluate_sequences_run"
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Internal — do not edit below here
@@ -84,20 +77,15 @@ CMD=(
     --input_dir           "$INPUT_DIR"
     --native              "$NATIVE_PDB"
     --output_dir          "$OUTPUT_DIR"
-    --n_seqs              "$N_SEQS"
-    --mpnn_weights        "$MPNN_WEIGHTS"
     --colabfold_batch_bin "$COLABFOLD_BATCH_BIN"
     --colabfold_python    "$COLABFOLD_PYTHON"
     --dockq_bin           "$DOCKQ_BIN"
     --af2_num_recycles    "$AF2_NUM_RECYCLES"
     --af2_num_models      "$AF2_NUM_MODELS"
-    --device              "$DEVICE"
-    --temperature         "$TEMPERATURE"
     --gpu_ids             "$GPU_IDS"
 )
 
-[[ -n "$FRAMEWORK_PDB"  ]] && CMD+=(--framework_pdb  "$FRAMEWORK_PDB")
-[[ -n "$MAX_GPU_HOURS"  ]] && CMD+=(--max_gpu_hours  "$MAX_GPU_HOURS")
+[[ -n "$CLEANUP_FLAG" ]] && CMD+=("$CLEANUP_FLAG")
 
 # ── Subcommands ───────────────────────────────────────────────────────────────
 
@@ -154,14 +142,15 @@ start() {
         fi
     fi
 
-    echo "[start] Launching parallel backbone scoring…"
-    echo "[start] Input dir : $INPUT_DIR"
-    echo "[start] Native    : $NATIVE_PDB"
-    echo "[start] Output    : $OUTPUT_DIR"
-    echo "[start] GPUs      : $GPU_IDS"
-    echo "[start] Seqs/bb   : $N_SEQS"
-    echo "[start] Budget    : ${MAX_GPU_HOURS:-unlimited} GPU-hours"
-    echo "[start] Log       → $LOG_FILE"
+    echo "[start] Launching sequence evaluation…"
+    echo "[start] Input dir  : $INPUT_DIR"
+    echo "[start] Native PDB : $NATIVE_PDB"
+    echo "[start] Output dir : $OUTPUT_DIR"
+    echo "[start] GPUs       : $GPU_IDS"
+    echo "[start] MSA mode   : single_sequence (no MSA download)"
+    echo "[start] AF2 recycles: $AF2_NUM_RECYCLES"
+    echo "[start] Cleanup    : ${CLEANUP_FLAG:-enabled (default)}"
+    echo "[start] Log        → $LOG_FILE"
     echo "[start] Command:"
     printf "  %s\n" "${CMD[@]}"
     echo ""
