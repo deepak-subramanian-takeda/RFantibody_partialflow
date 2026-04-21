@@ -25,14 +25,14 @@ SCRIPT="${RFANTIBODY_ROOT}/evaluate_sequences.py"
 
 # ── Required inputs ───────────────────────────────────────────────────────────
 # Folder (or folder of subfolders) containing *_seq*.pdb files to evaluate.
-INPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/sequences/"
+INPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_parallel/arm_C_beam_no_anchor/generated_and_scored/_sequences"
 
 # Native/reference PDB for DockQ scoring.
 # If scoring redesigns of a known binder, this is often the same as the
 # original HLT input PDB.
-NATIVE_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/1n8z_hlt.pdb"
+NATIVE_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example_inputs/IL1RAP_5I1A_hlt.pdb"
 
-OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/1n8z_evaluated"
+OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_parallel/arm_C_beam_no_anchor/generated_and_scored/evaluated_sequences"
 
 # ── ColabFold / AF2 ───────────────────────────────────────────────────────────
 # ColabFold runs in --msa-mode single_sequence to avoid MSA downloads and
