@@ -195,8 +195,18 @@ def score_one(
     cleanup_af2:         bool = True,
 ) -> Tuple[Optional[float], Optional[float]]:
     """
-    Score one PDB with ColabFold (single_sequence MSA mode) + DockQ.
-    Cleans up the AF2 working subdirectory afterwards if cleanup_af2=True.
+    Score one PDB with ColabFold (full MSA mode) + DockQ.
+
+    MSA mode: uses the default MMseqs2 paired+unpaired MSA so that ipTM
+    scores are comparable to those produced by the benchmark pipeline.
+    Single_sequence mode produces systematically lower ipTM (~0.1) and
+    should not be used for scoring.
+
+    Disk space: the AF2 working subdirectory is deleted after scoring
+    (if cleanup_af2=True) to prevent accumulation of MSA tarballs.
+    A minimum free-space check before each run skips ColabFold and marks
+    ipTM as NA rather than crashing if space is critically low.
+
     Returns (iptm, dockq).
     """
     stem    = Path(pdb_path).stem
@@ -205,7 +215,7 @@ def score_one(
 
     iptm: Optional[float] = None
 
-    # ── ColabFold ─────────────────────────────────────────────────────────────
+    # ── ColabFold (full MSA mode) ─────────────────────────────────────────────
     if colabfold_batch_bin and os.path.isfile(colabfold_batch_bin):
         if not _check_disk(af2_work_dir):
             pass  # skip ColabFold, iptm stays None
@@ -222,12 +232,11 @@ def score_one(
             ok = write_colabfold_fasta(pdb_path, fasta_path, chains,
                                        target_crop=target_crop)
             if ok:
-                # Build colabfold command manually so we can inject
-                # --msa-mode single_sequence to avoid MSA disk writes
+                # Use colabfold_batch directly (same as the benchmark pipeline)
+                # Full MSA mode is essential for reliable ipTM scores.
                 cmd = [
-                    colabfold_python, "-m", "colabfold.batch",
+                    colabfold_batch_bin,
                     fasta_path, out_dir,
-                    "--msa-mode", "single_sequence",
                     "--num-recycle", str(af2_num_recycles),
                     "--num-models",  str(af2_num_models),
                     "--model-type",  "alphafold2_multimer_v3",
@@ -259,11 +268,21 @@ def score_one(
     )
 
     # ── Cleanup AF2 working dir to free disk space ────────────────────────────
+    # This removes MSA tarballs and model PDBs for this structure,
+    # keeping disk usage bounded when scoring many structures.
     if cleanup_af2 and os.path.isdir(out_dir):
         try:
             shutil.rmtree(out_dir)
         except Exception as e:
             print(f"  [WARN] Could not clean up {out_dir}: {e}", flush=True)
+
+    # Also clean up the FASTA file
+    fasta = os.path.join(af2_work_dir, f"{stem}.fasta")
+    if cleanup_af2 and os.path.isfile(fasta):
+        try:
+            os.remove(fasta)
+        except Exception:
+            pass
 
     return iptm, dockq
 

@@ -19,6 +19,7 @@ export PYTHONPATH="/home/sagemaker-user/RFantibody_partialflow/ThermoMPNN:${PYTH
 # ─────────────────────────────────────────────────────────────────────────────
 
 export RFANTIBODY_ROOT="/home/sagemaker-user/RFantibody_partialflow"
+export THERMOMPNN_ROOT="/home/sagemaker-user/RFantibody_partialflow/ThermoMPNN"
 
 PYTHON="${RFANTIBODY_ROOT}/.venv/bin/python"
 SCRIPT="${RFANTIBODY_ROOT}/evaluate_sequences.py"
@@ -35,14 +36,16 @@ NATIVE_PDB="/home/sagemaker-user/RFantibody_partialflow/scripts/examples/example
 OUTPUT_DIR="/home/sagemaker-user/RFantibody_partialflow/IL1RAP_5I1A_parallel/arm_C_beam_no_anchor/generated_and_scored/evaluated_sequences"
 
 # ── ColabFold / AF2 ───────────────────────────────────────────────────────────
-# ColabFold runs in --msa-mode single_sequence to avoid MSA downloads and
-# prevent "no space left on device" errors.
+#  Full MSA mode is used (not single_sequence) to produce ipTM values
+# comparable to those from the benchmark pipeline.
+# AF2 working directories are cleaned up after each structure to prevent
+# MSA tarballs from filling disk. Use --no_cleanup to disable this.
 COLABFOLD_BATCH_BIN="/home/sagemaker-user/.conda/envs/colabfold/bin/colabfold_batch"
 COLABFOLD_PYTHON="/home/sagemaker-user/.conda/envs/colabfold/bin/python"
 
 # Lower recycle count is appropriate here since single_sequence mode is
 # already a fast scoring pass.  Increase for higher-quality final evaluation.
-AF2_NUM_RECYCLES=1
+AF2_NUM_RECYCLES=3
 AF2_NUM_MODELS=1
 
 # ── DockQ ─────────────────────────────────────────────────────────────────────
