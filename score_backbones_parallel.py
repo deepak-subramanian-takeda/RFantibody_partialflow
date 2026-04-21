@@ -340,6 +340,7 @@ def _eval_worker(
     Score a shard of GeneratedDesigns on a single GPU.
     ColabFold uses CUDA_VISIBLE_DEVICES to select the GPU.
     """
+    _prepend_thermompnn_path()
     os.environ["CUDA_VISIBLE_DEVICES"] = gpu_id
     results = []
     for g in shard:
@@ -353,6 +354,7 @@ def _eval_worker(
             timer=timer,
             af2_num_recycles=af2_num_recycles,
             af2_num_models=af2_num_models,
+            dockq_bin=dockq_bin,
         )
         r = BackboneResult(
             backbone=g.backbone, seq_idx=g.seq_idx,
