@@ -1,0 +1,27 @@
+2026-04-22 16:36:05,783 Running colabfold 1.6.1
+2026-04-22 16:36:08,179 Running on GPU
+2026-04-22 16:36:08,245 Found 5 citations for tools or databases
+2026-04-22 16:36:08,246 Query 1/1: 7a854c46b120 (length 444)
+2026-04-22 16:36:08,939 Sleeping for 6s. Reason: PENDING
+2026-04-22 16:36:15,611 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:36:24,255 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:36:34,910 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:36:42,563 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:36:48,209 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:36:57,850 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:37:08,503 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:37:14,172 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:37:24,856 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:37:30,539 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:37:40,224 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:37:45,911 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:37:55,570 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:38:04,221 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:38:12,919 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:38:20,578 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:38:30,267 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:38:38,932 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:38:48,576 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:38:54,215 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:39:00,861 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:39:11,530 Sleeping for 10s. Reason: RUNNING

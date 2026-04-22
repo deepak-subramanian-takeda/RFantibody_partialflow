@@ -1,0 +1,44 @@
+2026-04-22 16:31:43,456 Running colabfold 1.6.1
+2026-04-22 16:31:45,770 Running on GPU
+2026-04-22 16:31:45,835 Found 5 citations for tools or databases
+2026-04-22 16:31:45,835 Query 1/1: a83fcba23af7 (length 450)
+2026-04-22 16:31:46,559 Sleeping for 8s. Reason: PENDING
+2026-04-22 16:31:55,275 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:32:01,959 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:32:08,610 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:32:19,322 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:32:28,001 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:32:35,661 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:32:41,300 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:32:49,999 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:33:00,694 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:33:07,371 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:33:18,047 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:33:24,719 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:33:33,382 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:33:39,014 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:33:47,707 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:33:55,395 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:34:02,079 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:34:12,757 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:34:20,406 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:34:28,085 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:34:37,751 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:34:48,431 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:34:57,088 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:35:10,288 Sleeping for 9s. Reason: PENDING
+2026-04-22 16:35:19,930 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:35:26,617 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:35:32,271 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:35:41,954 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:35:49,623 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:35:58,279 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:36:03,932 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:36:10,601 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:36:20,281 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:36:26,960 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:36:37,629 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:36:44,307 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:36:51,991 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:37:05,419 Setting max_seq=508, max_extra_seq=2048
+2026-04-22 16:38:28,849 alphafold2_multimer_v3_model_1_seed_000 recycle=0 pLDDT=79.9 pTM=0.548 ipTM=0.418

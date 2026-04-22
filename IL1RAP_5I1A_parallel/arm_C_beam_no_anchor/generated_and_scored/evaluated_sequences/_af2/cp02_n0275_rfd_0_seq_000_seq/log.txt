@@ -1,0 +1,11 @@
+2026-04-22 16:38:16,775 Running colabfold 1.6.1
+2026-04-22 16:38:19,106 Running on GPU
+2026-04-22 16:38:19,172 Found 5 citations for tools or databases
+2026-04-22 16:38:19,172 Query 1/1: d2e11f814037 (length 448)
+2026-04-22 16:38:19,846 Sleeping for 9s. Reason: PENDING
+2026-04-22 16:38:29,531 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:38:37,168 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:38:46,811 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:38:57,591 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:39:05,241 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:39:10,868 Sleeping for 9s. Reason: RUNNING

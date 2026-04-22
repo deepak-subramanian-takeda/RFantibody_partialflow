@@ -1,0 +1,43 @@
+2026-04-22 16:34:00,886 Running colabfold 1.6.1
+2026-04-22 16:34:03,269 Running on GPU
+2026-04-22 16:34:03,335 Found 5 citations for tools or databases
+2026-04-22 16:34:03,336 Query 1/1: 2917cfd918de (length 449)
+2026-04-22 16:34:04,025 Sleeping for 5s. Reason: PENDING
+2026-04-22 16:34:09,715 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:34:17,385 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:34:24,061 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:34:31,725 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:34:42,405 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:34:52,076 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:35:00,729 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:35:07,363 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:35:16,020 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:35:25,701 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:35:34,365 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:35:42,037 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:35:50,670 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:36:00,305 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:36:05,944 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:36:13,596 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:36:19,250 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:36:27,900 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:36:37,546 Sleeping for 5s. Reason: RUNNING
+2026-04-22 16:36:43,185 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:36:50,901 Sleeping for 10s. Reason: RUNNING
+2026-04-22 16:37:01,545 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:37:09,184 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:37:16,861 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:37:27,228 Sleeping for 6s. Reason: PENDING
+2026-04-22 16:37:33,886 Sleeping for 9s. Reason: PENDING
+2026-04-22 16:37:43,566 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:37:51,274 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:37:58,921 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:38:05,607 Sleeping for 7s. Reason: RUNNING
+2026-04-22 16:38:13,261 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:38:19,936 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:38:29,655 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:38:39,310 Sleeping for 6s. Reason: RUNNING
+2026-04-22 16:38:46,020 Sleeping for 9s. Reason: RUNNING
+2026-04-22 16:38:55,675 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:39:04,310 Sleeping for 8s. Reason: RUNNING
+2026-04-22 16:39:12,976 Sleeping for 9s. Reason: RUNNING
